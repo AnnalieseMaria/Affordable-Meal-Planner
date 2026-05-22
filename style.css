@@ -1,0 +1,63 @@
+/* styles all links in my document */
+a { 
+    color: rgb(241, 65, 164); 
+    font-family: 'monospace', sans-serif;
+}
+
+ a:visited { color: rgb(226, 147, 192); }
+
+ h1, h2, h3 { 
+    font-family: 'Brush Script MT', sans-serif;
+ }
+
+ h4, h5, h6 { 
+    font-family: 'cursive', sans-serif;
+
+ }
+
+body{ 
+    font-family: 'Arial', sans-serif;
+    color: rgb(99, 6, 61)
+    
+}
+
+.youtube-button { 
+    background-color: rgb(255, 196, 196);
+    color: rgb(99, 6, 61);
+    font-size: 15px;
+    font-family: 'monospace', sans-serif;
+    padding: 12px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.youtube-button:hover {
+  background-color: rgb(250, 109, 109);
+}
+
+.full-screen-block { 
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(255, 227, 227);
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row; 
+  gap: 5px;           
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column; 
+  flex: 1;               
+  gap: 3px;              
+}
+
+.column img {
+  width: 100%;           
+  height: auto;          
+  object-fit: cover;
+}
