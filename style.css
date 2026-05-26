@@ -61,3 +61,154 @@ body{
   height: auto;          
   object-fit: cover;
 }
+
+/* Container that controls scrolligng feature */
+.carousel-container {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+
+/* Inner part of container: Holds cards next to each other and controls spaccing between cards */
+.carousel-track {
+  display: flex;
+  gap: 0px;
+  align-items: center;
+}
+
+
+/* each card */
+.box {
+  position: relative;
+  width: 45vw;
+  flex-shrink:0; 
+  aspect-ratio: 16 / 9;
+  background: black;
+  border-radius: 12px;
+  overflow: hidden;
+  padding-top: 25px;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+}
+
+
+/* movie posters */
+.box img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: left center; 
+  padding-left: 11px; 
+}
+
+.movie-info { /* includes the movie name/release date & genre */
+  position: absolute;
+
+  right: 30px;
+  top: 45%;
+
+  transform: translateY(-50%);
+
+  width: 60%;
+
+  color: white;
+
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.movie-review { 
+  position: absolute;
+
+  right: 30px;
+  top: 45%;
+
+  transform: translateY(-50%);
+
+  width: 60%;
+
+  color: white;
+
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* FILM STRIP EFFECT */
+.box::before,
+.box::after {
+  content: ""; 
+
+  position: absolute; /* positioned relative to Box */
+
+  left: 12px;
+  right: 12px;
+
+  height: 14px;
+
+  background-image: repeating-linear-gradient( /* Repetadly stamps white/invisible 20px chunks */
+    to right,
+    white 0px,
+    white 10px,
+    transparent 10px,
+    transparent 20px
+  );
+
+  z-index: 2; /* places pattern above movie poster */
+}
+
+
+/* top film strip */
+.box::before {
+  top: 8px;
+}
+
+
+/* bottom film strip */
+.box::after {
+  bottom: 8px;
+}
+
+/* flexbox parent container to arrange children inside */
+.movies-wrapper {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+}
+
+/* adjusting/englarging movie strip display for mobile */
+@media (max-width: 900px) {
+  .movies-wrapper {
+    align-items: flex-start;
+    padding-top: 180px;
+    
+  }
+
+  .box {
+    width: 92vw;
+    flex-direction: column;
+    
+    aspect-ratio: 3.5/5;
+    
+  }
+
+   .box img {
+    width: 55%;
+    height: auto;
+    padding-left: 0;
+  }
+
+  .movie-info {
+    width: 35%;
+
+    margin-left: auto; 
+
+    font-size: 12px;
+  }
+}
