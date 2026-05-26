@@ -17,7 +17,7 @@
 	
         <div class="full-screen-block">
             <h1>Welcome to Annaliese's Blog</h1>
-            <h1> hello </h1>
+            
             <!-- how can i make there be less space between these two words? -->
             <h2>Click an image to discover more about me!</h2>
 
