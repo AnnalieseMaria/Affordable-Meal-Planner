@@ -1,24 +1,13 @@
 <!DOCTYPE html>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style> 
         body {
-        /* Replace with your image path */
         background-image: url('movie-site-background.jpg');
-
-        /* Center the image */
         background-position: center;
-
-        /* Do not repeat the image */
         background-repeat: no-repeat;
-
-        /* Scale the image to cover the entire container */
         background-size: cover;
-
-        /* Keep the background fixed during scroll (optional) */
         background-attachment: fixed;
-
-        /* Ensure the body covers the full viewport height */
         min-height: 100vh;
         margin: 0;
         }
