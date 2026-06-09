@@ -88,9 +88,15 @@
         ";
         
         foreach($comments as $comment){
-            echo "<div class='comment'>";
-            echo $comment['content'];
-            echo "</div>";
+            $userId = $comment['userId'];
+            $commentUser = getUserForComment($userId);
+            $userName = $commentUser['userName'];
+
+            echo "<div class='comment'>
+                    <p>@$userName</p>
+                    <p>{$comment['content']}</p>
+                    </div>
+            ";
         }
 
     echo "

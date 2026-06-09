@@ -161,3 +161,9 @@
             "SELECT * FROM user WHERE userId IN ($userIdString)")-> fetchAll();
             return $result; 
     }
+
+    function getUserForComment($userId){
+        $result = dbQuery(
+            "SELECT * FROM user WHERE userId = $userId")-> fetch();
+            return $result;
+    }
