@@ -1,25 +1,4 @@
 <?php
-    // include ('include/init.php');
-   
-    // echoHeader('Post');
-
-    // $post_ID = $_REQUEST['postid'];
-    // getPost($post_ID);
-
-    // $postArr = getPost($post_ID);
-    // $postTitle = $postArr['title'];
-    // $postContent = $postArr['content'];
-    // echo "<h1>$postTitle</h1>";
-    // echo "<h4>$postContent</h4>";
-
-    
-
-    // var_dump($postArr);
-    // debugOutput($postArr);
-    // echoFooter();
-
-
-    // below is the corrected code for my new pages 
     include ('include/init.php');
 
     //ORIGINAL: $post_ID = $_REQUEST['postid'];
@@ -36,6 +15,28 @@
     header("Location: index.php"); 
       exit; 
 }
+
+
+     debugOutput($_GET);
+    if(isset($_POST['commentContent'])) {
+        $submittedContent = $_POST['commentContent'];
+        // debugOutput($_POST);
+         saveComment($submittedContent, $post_ID);
+         header("Location: view-post.php?postid=$post_ID");
+         exit; 
+    }
+
+    $comments = getComments($post_ID);
+    $userIdArr = [];
+
+    foreach($comments as $comment) {
+        $userId = $comment['userId'];
+        $userIdArr = [$userId]; 
+    }
+
+    $userIdString = implode(",", $userIdArr);
+    $users = getUsersForCommentsOnPost($userIdString);
+
 
     echoHeader('Post');
     $postArr = getPost($post_ID);
@@ -64,19 +65,18 @@
     }
         echo " 
         </div>
+
+        <form action=' ' method='POST'>
+            <label for='userName'>username:</label>
+            <input type='text' id='userName' name='userName'>
+            
+            <label for'commentContent'>comment content:</label>
+            <input type='text' id='commentContent' name='commentContent'>
+            
+            <input type='submit' value='Submit'>
+        </form>
         ";
-    
-
-    $comments = getComments($post_ID);
-    $userIdArr = [];
-
-    foreach($comments as $comment) {
-        $userId = $comment['userId'];
-        $userIdArr = [$userId]; 
-    }
-
-    $userIdString = implode(",", $userIdArr);
-    $users = getUsersForCommentsOnPost($userIdString);
+       
 
     echo "
         <div class='comments-section-header'>

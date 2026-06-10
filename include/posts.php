@@ -167,3 +167,9 @@
             "SELECT * FROM user WHERE userId = $userId")-> fetch();
             return $result;
     }
+
+    function saveComment($content, $post_ID){
+        dbQuery("INSERT INTO `comment`(`content`, `userId`, `postId`) VALUES ('$content','1','$post_ID')");
+    }
+
+  
