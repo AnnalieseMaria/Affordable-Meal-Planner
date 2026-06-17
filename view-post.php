@@ -17,11 +17,11 @@
 }
 
 
-     debugOutput($_GET);
+    debugOutput($_GET);
     if(isset($_POST['commentContent'])) {
         $submittedContent = $_POST['commentContent'];
         // debugOutput($_POST);
-         saveComment($submittedContent, $post_ID);
+         saveComment($submittedContent, $_SESSION['userId'], $post_ID); //we need '' aroudn userId cause its they key (name) of session variable, the integer it maps to is the value 
          header("Location: view-post.php?postid=$post_ID");
          exit; 
     }
@@ -67,9 +67,6 @@
         </div>
 
         <form action=' ' method='POST'>
-            <label for='userName'>username:</label>
-            <input type='text' id='userName' name='userName'>
-            
             <label for'commentContent'>comment content:</label>
             <input type='text' id='commentContent' name='commentContent'>
             

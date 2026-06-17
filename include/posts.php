@@ -168,8 +168,41 @@
             return $result;
     }
 
-    function saveComment($content, $post_ID){
-        dbQuery("INSERT INTO `comment`(`content`, `userId`, `postId`) VALUES ('$content','1','$post_ID')");
+    function saveComment($content, $userId, $post_ID){
+        dbQuery("INSERT INTO `comment`(`content`, `userId`, `postId`) VALUES ('$content', $userId,'$post_ID')");
     }
 
+   
+    function userSignup($userName, $userPwd){
+        $hashedPwd = password_hash($userPwd, PASSWORD_DEFAULT);
+//PASSWORD_DEFAULT allows php to pick the safest default, 
+         dbQuery("
+            INSERT INTO `user` (`userName`, `password_hash`) VALUES ('$userName', '$hashedPwd')");
+    }
+
+    function userLogin (){
+
+
+    }
+
+    function getUserbyUsername($userName) { 
+       $userInfo = dbQuery(
+            "SELECT * FROM user WHERE userName = '$userName'")-> fetch();
+        return $userInfo; 
+    }
   
+    function saveThisComment($name, $comment)
+    {
+        dbQuery(" 
+            INSERT INTO injection_test (name, comment) 
+            VALUES (:name, :comment) 
+        ",
+        [
+        'name' => $name,
+        'comment' => $comment,
+        ]);
+    }
+
+// notes: :name and :comment are placeholders to reserve spots for the data,
+// without directly imbedding user inputs into the query. 
+// after placeholder, we create key/value pairs 
