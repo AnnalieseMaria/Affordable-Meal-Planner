@@ -8,7 +8,7 @@
         <body>
 	
         <div class='full-screen-block'>
-            <h1 style='text-align: center;'>Welcome to Annaliese's Blog</h1>
+            <h1 style='text-align: center;'>Welcome to Annaliese's Blog!</h1>
             
             <!-- how can i make there be less space between these two words? -->
             <h4 style='text-align: center;'>Click an image to discover more about me!</h4>
