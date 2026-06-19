@@ -1,0 +1,2853 @@
+[
+  {
+    "recipeId": 1,
+    "name": "Berry Oatmeal with Almond Butter",
+    "culturalName": null,
+    "cuisine": "American",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 5,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 380,
+      "protein": 12,
+      "carbs": 52,
+      "fat": 14,
+      "fiber": 8,
+      "sugar": 12,
+      "sodium": 85
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Quick Oats",
+        "amount": "1 cup",
+        "brand": "Millville",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Blueberries",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Almond Butter",
+        "amount": "1 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Milk or oat milk",
+        "amount": "1 cup",
+        "brand": "Friendly Farms",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Cook oats with milk on stovetop or microwave per package directions.",
+      "Microwave frozen blueberries 60 seconds until thawed and juicy.",
+      "Top oats with berries and 1 tbsp almond butter."
+    ],
+    "mealPrep": false,
+    "region": "United States"
+  },
+  {
+    "recipeId": 2,
+    "name": "Veggie Egg Scramble",
+    "culturalName": null,
+    "cuisine": "American",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 10,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 290,
+      "protein": 18,
+      "carbs": 10,
+      "fat": 18,
+      "fiber": 3,
+      "sugar": 4,
+      "sodium": 310
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Pasture Raised Large Eggs",
+        "amount": "2-3",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Pepper & Onion Blend",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Organic Salsa Mild",
+        "amount": "2 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Heat olive oil in pan over medium heat.",
+      "Add frozen peppers & onions, cook 3 minutes until softened.",
+      "Add a handful of frozen spinach, stir until wilted.",
+      "Whisk 2-3 eggs, pour over vegetables, scramble to preference.",
+      "Serve topped with salsa."
+    ],
+    "mealPrep": false,
+    "region": "United States"
+  },
+  {
+    "recipeId": 3,
+    "name": "Greek Yogurt Parfait",
+    "culturalName": null,
+    "cuisine": "American",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 3,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 310,
+      "protein": 20,
+      "carbs": 38,
+      "fat": 7,
+      "fiber": 4,
+      "sugar": 18,
+      "sodium": 75
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Plain Greek Yogurt",
+        "amount": "¾ cup",
+        "brand": "Friendly Farms",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Mixed Berries, thawed",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Granola",
+        "amount": "2 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Honey",
+        "amount": "1 tsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Thaw berries overnight in fridge or microwave 60 seconds.",
+      "Layer yogurt, berries, and granola in a cup or bowl.",
+      "Drizzle with a small amount of honey if desired."
+    ],
+    "mealPrep": false,
+    "region": "United States"
+  },
+  {
+    "recipeId": 4,
+    "name": "Avocado Toast with Egg",
+    "culturalName": null,
+    "cuisine": "American",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 10,
+    "dietType": [
+      "Vegetarian"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 340,
+      "protein": 14,
+      "carbs": 30,
+      "fat": 18,
+      "fiber": 6,
+      "sugar": 2,
+      "sodium": 320
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Whole Grain Bread",
+        "amount": "2 slices",
+        "brand": "L'oven Fresh",
+        "aldiProduct": true
+      },
+      {
+        "name": "Chunky Guacamole",
+        "amount": "3 tbsp",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Large Eggs",
+        "amount": "1",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Everything Bagel Seasoning",
+        "amount": "pinch",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Toast bread to preference.",
+      "Fry or poach one egg.",
+      "Spread guacamole generously on toast.",
+      "Top with egg and a pinch of everything bagel seasoning."
+    ],
+    "mealPrep": false,
+    "region": "United States"
+  },
+  {
+    "recipeId": 5,
+    "name": "Black Bean & Rice Bowl",
+    "culturalName": null,
+    "cuisine": "American",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 10,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 420,
+      "protein": 14,
+      "carbs": 72,
+      "fat": 8,
+      "fiber": 12,
+      "sugar": 4,
+      "sodium": 380
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Instant Brown Rice",
+        "amount": "1 cup cooked",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Black Beans, 15 oz Can",
+        "amount": "½ can, drained and rinsed",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Organic Salsa Mild",
+        "amount": "3 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Chunky Guacamole",
+        "amount": "2 tbsp",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Corn",
+        "amount": "¼ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Cook brown rice per package directions.",
+      "Drain and rinse black beans, warm in microwave 60 seconds.",
+      "Microwave frozen corn 2 minutes.",
+      "Layer rice, beans, corn, salsa, and guacamole in bowl.",
+      "Tip: rinsing canned beans reduces sodium by approximately 40%."
+    ],
+    "mealPrep": false,
+    "region": "United States"
+  },
+  {
+    "recipeId": 6,
+    "name": "Hummus Veggie Wrap",
+    "culturalName": null,
+    "cuisine": "Mediterranean",
+    "mealType": [
+      "Lunch"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 5,
+    "dietType": [
+      "Vegetarian"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 370,
+      "protein": 14,
+      "carbs": 46,
+      "fat": 14,
+      "fiber": 7,
+      "sugar": 3,
+      "sodium": 480
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Whole Wheat Tortillas",
+        "amount": "1 large",
+        "brand": "L'oven Fresh",
+        "aldiProduct": true
+      },
+      {
+        "name": "Hummus Quartet",
+        "amount": "3 tbsp",
+        "brand": "Specially Selected",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Baby Spinach",
+        "amount": "handful",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Cucumber, sliced",
+        "amount": "¼ cup",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Crumbled Feta Cheese",
+        "amount": "2 tbsp",
+        "brand": "Specially Selected",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Lay tortilla flat and spread hummus generously.",
+      "Layer spinach, cucumber slices, and feta.",
+      "Roll tightly and slice in half."
+    ],
+    "mealPrep": false,
+    "region": "Mediterranean"
+  },
+  {
+    "recipeId": 7,
+    "name": "Lentil & Spinach Soup",
+    "culturalName": null,
+    "cuisine": "Mediterranean",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 30,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 310,
+      "protein": 18,
+      "carbs": 48,
+      "fat": 5,
+      "fiber": 14,
+      "sugar": 5,
+      "sodium": 420
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": null,
+    "ingredients": [
+      {
+        "name": "Lentils, 16 oz",
+        "amount": "1 cup dry",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Diced Tomatoes, canned",
+        "amount": "1 can (14.5 oz)",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Cumin",
+        "amount": "1 tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Garlic Powder",
+        "amount": "½ tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Paprika",
+        "amount": "½ tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Rinse lentils, add to pot with broth over medium heat.",
+      "Add canned tomatoes and spices, bring to boil.",
+      "Reduce heat, simmer 20 minutes until lentils are soft.",
+      "Stir in frozen spinach, cook 3 more minutes.",
+      "Drizzle with olive oil before serving."
+    ],
+    "mealPrep": false,
+    "region": "Mediterranean"
+  },
+  {
+    "recipeId": 8,
+    "name": "Caprese Salad with Whole Grain Bread",
+    "culturalName": null,
+    "cuisine": "Italian",
+    "mealType": [
+      "Lunch"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 5,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 380,
+      "protein": 18,
+      "carbs": 28,
+      "fat": 20,
+      "fiber": 4,
+      "sugar": 5,
+      "sodium": 360
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Capri, Italy",
+      "context": "Named after the island of Capri, this salad is a staple of southern Italian cuisine representing the colors of the Italian flag. Traditionally made with just three ingredients — tomato, mozzarella, and basil — it reflects the Italian philosophy that simple, quality ingredients need little else."
+    },
+    "ingredients": [
+      {
+        "name": "Fresh Mozzarella",
+        "amount": "4 oz",
+        "brand": "Specially Selected",
+        "aldiProduct": true
+      },
+      {
+        "name": "Vine Tomatoes",
+        "amount": "2 medium",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Balsamic Vinegar",
+        "amount": "1 tsp",
+        "brand": "Specially Selected",
+        "aldiProduct": true
+      },
+      {
+        "name": "Whole Grain Bread",
+        "amount": "1 slice",
+        "brand": "L'oven Fresh",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Slice mozzarella and tomatoes to similar thickness.",
+      "Alternate tomato and mozzarella slices on a plate.",
+      "Drizzle with olive oil and balsamic vinegar.",
+      "Season with black pepper, serve with bread on the side."
+    ],
+    "mealPrep": false,
+    "region": "Capri, Italy"
+  },
+  {
+    "recipeId": 9,
+    "name": "Chickpea & Spinach Curry",
+    "culturalName": null,
+    "cuisine": "South Asian",
+    "mealType": [
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 25,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 440,
+      "protein": 16,
+      "carbs": 68,
+      "fat": 10,
+      "fiber": 13,
+      "sugar": 7,
+      "sodium": 390
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Indian subcontinent",
+      "context": "Chickpea and spinach curry (chana palak) is a beloved vegetarian staple across northern India and Pakistan, eaten in homes and dhabas (roadside restaurants) alike. Chickpeas have been cultivated in South Asia for thousands of years and remain one of the region's most important protein sources."
+    },
+    "ingredients": [
+      {
+        "name": "Canned Chickpeas",
+        "amount": "1 can (15 oz), drained and rinsed",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Diced Tomatoes, canned",
+        "amount": "1 can (14.5 oz)",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Instant Brown Rice",
+        "amount": "1 cup cooked",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Curry Powder",
+        "amount": "2 tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Cumin",
+        "amount": "1 tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Garlic Powder",
+        "amount": "½ tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Heat olive oil in pan, add garlic powder and spices, cook 1 minute until fragrant.",
+      "Add drained chickpeas, stir to coat in spices.",
+      "Add canned tomatoes, simmer 10 minutes.",
+      "Stir in frozen spinach, cook until wilted (about 3 minutes).",
+      "Serve over cooked brown rice."
+    ],
+    "mealPrep": false,
+    "region": "Indian subcontinent"
+  },
+  {
+    "recipeId": 10,
+    "name": "Veggie Quesadillas",
+    "culturalName": null,
+    "cuisine": "Mexican",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 15,
+    "dietType": [
+      "Vegetarian"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 480,
+      "protein": 20,
+      "carbs": 56,
+      "fat": 18,
+      "fiber": 9,
+      "sugar": 4,
+      "sodium": 520
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Mexico",
+      "context": "Quesadillas originate from colonial Mexico, traditionally made with a corn tortilla and cheese melted over a comal (flat griddle). The word comes from 'queso' (cheese). Regional variations exist across all of Mexico — in Mexico City they're often made without cheese, while in northern Mexico flour tortillas are more common."
+    },
+    "ingredients": [
+      {
+        "name": "Flour Tortillas",
+        "amount": "2 large",
+        "brand": "L'oven Fresh",
+        "aldiProduct": true
+      },
+      {
+        "name": "Black Beans, 15 oz Can",
+        "amount": "½ can, drained and rinsed",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Shredded Mexican Cheese",
+        "amount": "½ cup",
+        "brand": "Happy Farms",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Pepper & Onion Blend",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Organic Salsa",
+        "amount": "3 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Chunky Guacamole",
+        "amount": "2 tbsp",
+        "brand": "ALDI",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Microwave peppers & onions 2 minutes, drain excess liquid.",
+      "Drain and rinse black beans.",
+      "Layer half of one tortilla with cheese, beans, and peppers.",
+      "Fold tortilla over, cook in a dry pan 2-3 minutes per side until golden and crispy.",
+      "Slice and serve with salsa and guacamole."
+    ],
+    "mealPrep": false,
+    "region": "Mexico"
+  },
+  {
+    "recipeId": 11,
+    "name": "Pasta Primavera",
+    "culturalName": null,
+    "cuisine": "Italian",
+    "mealType": [
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 20,
+    "dietType": [
+      "Vegetarian"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 420,
+      "protein": 16,
+      "carbs": 62,
+      "fat": 12,
+      "fiber": 8,
+      "sugar": 5,
+      "sodium": 180
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Italian-American",
+      "context": "Pasta primavera (spring pasta) became popular in the 1970s in New York City, though it draws on Italian traditions of cooking pasta with seasonal vegetables. 'Primavera' means spring in Italian, referring to the fresh vegetables used. It's now a staple of Italian-American cooking."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Pasta",
+        "amount": "2 oz dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Stir-Fry Vegetables",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Shredded Parmesan",
+        "amount": "2 tbsp",
+        "brand": "Happy Farms",
+        "aldiProduct": true
+      },
+      {
+        "name": "Garlic Powder",
+        "amount": "½ tsp",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Black Pepper",
+        "amount": "to taste",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Cook pasta per package directions, reserve ½ cup pasta water before draining.",
+      "In a pan, heat olive oil and sauté frozen vegetables 5 minutes.",
+      "Add garlic powder and black pepper.",
+      "Toss drained pasta with vegetables, add a splash of pasta water to loosen the sauce.",
+      "Top with parmesan and serve immediately."
+    ],
+    "mealPrep": false,
+    "region": "Italian-American"
+  },
+  {
+    "recipeId": 12,
+    "name": "Egg Fried Rice",
+    "culturalName": null,
+    "cuisine": "Chinese-American",
+    "mealType": [
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 20,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 410,
+      "protein": 18,
+      "carbs": 54,
+      "fat": 12,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 340
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "China, popularized in Chinese-American restaurants",
+      "context": "Fried rice originated in China during the Sui Dynasty (589–618 AD) as a practical way to use leftover rice. Day-old rice fries better than fresh. It spread globally with Chinese diaspora communities and became a staple of Chinese-American restaurant menus in the 20th century."
+    },
+    "ingredients": [
+      {
+        "name": "Instant Brown Rice",
+        "amount": "1 cup cooked (day-old preferred)",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Large Eggs",
+        "amount": "2",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Stir-Fry Vegetables",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Corn",
+        "amount": "¼ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Cook rice and let cool slightly — day-old refrigerated rice works best.",
+      "Scramble eggs in oiled pan until just set, set aside.",
+      "Stir-fry frozen vegetables in same pan over high heat 3-4 minutes.",
+      "Add rice, push everything to the sides, add eggs back in and mix together.",
+      "Add a small splash of low-sodium soy sauce, toss and serve."
+    ],
+    "mealPrep": false,
+    "region": "China, popularized in Chinese-American restaurants"
+  },
+  {
+    "recipeId": 13,
+    "name": "Savory Congee",
+    "culturalName": "粥 · Zhōu",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 30,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "Low Sodium",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 280,
+      "protein": 12,
+      "carbs": 38,
+      "fat": 4,
+      "fiber": 1,
+      "sugar": 2,
+      "sodium": 340
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Cantonese tradition, Guangdong province and Hong Kong",
+      "context": "Congee has been eaten in China for over 2,000 years and is one of the most universally comforting foods across all regions. In Cantonese culture it is served at dim sum restaurants, given to the sick, and eaten as a late-night meal. Different regions have distinct styles — Cantonese congee is silky and slow-cooked, while northeastern Chinese congee tends to be thicker with millet."
+    },
+    "ingredients": [
+      {
+        "name": "White Rice",
+        "amount": "½ cup dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "1-2",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks, thinly sliced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "¼ tsp drizzle",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Combine rice and broth in pot, bring to boil over medium-high heat.",
+      "Reduce to low, simmer uncovered 25-30 minutes stirring occasionally until thick and creamy.",
+      "In the last 5 minutes, crack egg directly into congee and stir gently for soft egg pieces, or poach separately.",
+      "Ladle into bowls, top with sliced scallions and grated ginger.",
+      "Finish with a tiny drizzle of sesame oil and a few drops of soy sauce."
+    ],
+    "mealPrep": false,
+    "region": "Cantonese — Guangdong province and Hong Kong"
+  },
+  {
+    "recipeId": 14,
+    "name": "Egg & Scallion Crepe",
+    "culturalName": "煎饼 · Jiānbǐng",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 15,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 310,
+      "protein": 16,
+      "carbs": 38,
+      "fat": 10,
+      "fiber": 4,
+      "sugar": 2,
+      "sodium": 290
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Tianjin and Beijing, northern China",
+      "context": "Jianbing is one of China's most popular street breakfast foods, eaten by millions every morning from street cart vendors. It originated in Shandong province and spread throughout northern China. A skilled vendor can make a jianbing in under 2 minutes on a large circular griddle. It is considered one of China's oldest street foods with records dating back to the Han Dynasty."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Flour",
+        "amount": "½ cup",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "2",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, chopped",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Hoisin Sauce",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Seeds",
+        "amount": "pinch (optional)",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ¾ cup water to make a thin, pourable batter.",
+      "Lightly oil a non-stick pan over medium heat, pour in a thin layer of batter and swirl to spread evenly.",
+      "Crack one egg onto the crepe, use spatula to break yolk and spread across surface.",
+      "Sprinkle scallions over egg, let cook 2 minutes until egg is set.",
+      "Flip carefully, cook 30 seconds on other side.",
+      "Spread a thin layer of hoisin on the egg side, fold into thirds and serve."
+    ],
+    "mealPrep": false,
+    "region": "Tianjin and Beijing, northern China"
+  },
+  {
+    "recipeId": 15,
+    "name": "Steamed Silky Eggs",
+    "culturalName": "蒸水蛋 · Zhēng Shuǐ Dàn",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 15,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 140,
+      "protein": 13,
+      "carbs": 1,
+      "fat": 9,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 160
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Cantonese and Shanghainese home cooking, eaten across all of China",
+      "context": "Steamed eggs are a fundamental dish in Chinese home cooking, prized for their silky smooth custard-like texture. The key is the ratio of water to egg and gentle steaming. It is one of the first dishes taught to children learning to cook in Chinese households and is commonly prepared for the elderly and young children because of its soft texture and gentle flavors."
+    },
+    "ingredients": [
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "2-3",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Warm water",
+        "amount": "1.5x the volume of beaten egg",
+        "brand": null,
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "1 stalk, thinly sliced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "tiny drizzle",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Whisk eggs thoroughly, then whisk in warm (not hot) water at 1.5x the egg volume.",
+      "Strain mixture through a fine sieve into a shallow bowl to remove bubbles for a smoother texture.",
+      "Cover bowl loosely with plastic wrap or a plate.",
+      "Steam over medium-low heat for 10-12 minutes until just set but still slightly jiggly in the center.",
+      "Top with scallions, a few drops of soy sauce, and sesame oil."
+    ],
+    "mealPrep": false,
+    "region": "Cantonese and Shanghainese home cooking"
+  },
+  {
+    "recipeId": 16,
+    "name": "Baked Youtiao",
+    "culturalName": "油条 · Yóutiáo",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 35,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 180,
+      "protein": 6,
+      "carbs": 28,
+      "fat": 5,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 210
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "China, eaten across all regions",
+      "context": "Youtiao are one of China's oldest breakfast foods with records dating back to the Song Dynasty (960–1279 AD). Traditionally deep-fried and eaten alongside congee or warm soy milk for dipping, they are sold by street vendors every morning across China. The name literally means 'oil strip.' This baked version captures the shape and flavor while significantly reducing fat."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "1 cup",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Baking Powder",
+        "amount": "1 tsp",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "1",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Milk",
+        "amount": "¼ cup",
+        "brand": "Friendly Farms",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Salt",
+        "amount": "pinch",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Preheat oven to 400°F, line baking sheet with parchment.",
+      "Mix flour, baking powder, and salt in a bowl.",
+      "Whisk egg, milk, and olive oil together, add to dry ingredients and mix into a soft dough.",
+      "Rest dough 15 minutes covered.",
+      "Roll into long sticks about ¾ inch wide, place on baking sheet.",
+      "Brush lightly with olive oil, bake 15-18 minutes until golden and puffed.",
+      "Serve immediately alongside congee or warm soy milk for dipping."
+    ],
+    "mealPrep": false,
+    "region": "China — nationwide"
+  },
+  {
+    "recipeId": 17,
+    "name": "Scallion Pancakes",
+    "culturalName": "葱油饼 · Cōngyóubǐng",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 25,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 280,
+      "protein": 8,
+      "carbs": 42,
+      "fat": 9,
+      "fiber": 4,
+      "sugar": 1,
+      "sodium": 180
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Northern China and Taiwan",
+      "context": "Scallion pancakes (cong you bing) are a beloved staple of northern Chinese and Taiwanese street food culture, sold at night markets and breakfast stalls. Unlike Western pancakes they are made from dough rather than batter, rolled in layers with scallions and a small amount of fat to create the characteristic flaky texture. They have been eaten in China for centuries and remain one of the most recognized Chinese street foods internationally."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Flour",
+        "amount": "1½ cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "4 stalks, chopped",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tsp (for dipping sauce)",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Rice Vinegar",
+        "amount": "1 tsp (for dipping sauce)",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ½ cup boiling water, knead into smooth dough, rest 20 minutes covered.",
+      "Divide into 4 balls, roll each out thin.",
+      "Brush with a tiny amount of sesame oil, scatter chopped scallions across surface.",
+      "Roll dough up like a scroll, then coil into a spiral, flatten again with rolling pin.",
+      "Pan fry in light olive oil over medium heat 2-3 minutes per side until golden and crispy.",
+      "Mix soy sauce and rice vinegar for dipping sauce and serve alongside."
+    ],
+    "mealPrep": false,
+    "region": "Northern China and Taiwan"
+  },
+  {
+    "recipeId": 18,
+    "name": "Vegetable Congee Bowl",
+    "culturalName": "蔬菜粥 · Shūcài Zhōu",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 35,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 320,
+      "protein": 14,
+      "carbs": 48,
+      "fat": 6,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 360
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Southern China, particularly Guangdong and Fujian provinces",
+      "context": "Congee is not just a breakfast food in China — in southern Chinese households it is commonly eaten at dinner, especially during cooler months or when someone is unwell. A congee dinner spread often includes multiple small toppings served alongside so each person can customize their bowl. This tradition of communal congee eating reflects the Chinese value of sharing meals together."
+    },
+    "ingredients": [
+      {
+        "name": "Instant Brown Rice",
+        "amount": "½ cup dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Stir-Fry Vegetables",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "1",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks, sliced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "tiny drizzle",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Simmer brown rice in broth 35-40 minutes until creamy, stirring occasionally.",
+      "Soft boil egg separately: 6-7 minutes in boiling water, transfer to ice bath, peel and halve.",
+      "Sauté frozen vegetables in olive oil 3 minutes with a pinch of grated ginger.",
+      "Ladle congee into bowls, arrange egg halves and vegetables on top.",
+      "Garnish with scallions and a drizzle of sesame oil."
+    ],
+    "mealPrep": false,
+    "region": "Southern China — Guangdong and Fujian provinces"
+  },
+  {
+    "recipeId": 19,
+    "name": "Egg & Vegetable Stir Fry",
+    "culturalName": "蔬菜炒蛋 · Shūcài Chǎo Dàn",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Dinner"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 15,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 390,
+      "protein": 20,
+      "carbs": 48,
+      "fat": 12,
+      "fiber": 4,
+      "sugar": 5,
+      "sodium": 310
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "China — eaten in every region and every household",
+      "context": "Tomato and egg stir fry (西红柿炒蛋, xīhóngshì chǎo dàn) is arguably the most universally loved home-cooked dish in all of China. Nearly every Chinese person grew up eating it. It requires only pantry staples, comes together in minutes, and perfectly balances savory and slightly sweet flavors. It is often the first dish Chinese children learn to cook and is deeply tied to feelings of home and family."
+    },
+    "ingredients": [
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "3",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Vine Tomatoes",
+        "amount": "2 medium",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "1 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Instant Brown Rice",
+        "amount": "1 cup cooked",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "tiny drizzle",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Cook brown rice per package directions, set aside.",
+      "Whisk eggs with a pinch of salt, scramble in hot oiled pan until just set, set aside.",
+      "In same pan over high heat, cook chopped tomatoes 3-4 minutes until softened and juicy.",
+      "Return eggs to pan, toss everything together quickly.",
+      "Add scallions and a splash of soy sauce, toss off heat.",
+      "Serve over rice with a drizzle of sesame oil."
+    ],
+    "mealPrep": false,
+    "region": "China — nationwide"
+  },
+  {
+    "recipeId": 20,
+    "name": "Brown Rice Congee with Toppings",
+    "culturalName": "糙米粥 · Cāomǐ Zhōu",
+    "cuisine": "Chinese",
+    "mealType": [
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 40,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 350,
+      "protein": 16,
+      "carbs": 50,
+      "fat": 8,
+      "fiber": 6,
+      "sugar": 4,
+      "sodium": 320
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Southern Chinese dinner tradition, Guangdong and Fujian provinces",
+      "context": "Brown rice congee is a more nutritious variation on traditional white rice congee, increasingly popular as awareness of whole grain benefits has grown. In traditional Chinese medicine, congee is considered one of the most nourishing and easily digestible foods, recommended for recovery, digestion, and overall wellbeing. The toppings served alongside transform it from a simple porridge into a complete and satisfying meal."
+    },
+    "ingredients": [
+      {
+        "name": "Instant Brown Rice",
+        "amount": "½ cup dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "2",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach or Broccoli",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks, sliced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "drizzle",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Simmer brown rice in broth 35-40 minutes until creamy, stirring occasionally.",
+      "Soft boil eggs 6-7 minutes, cool in ice water, peel and halve.",
+      "Sauté frozen spinach or broccoli in olive oil 3 minutes with a pinch of grated ginger.",
+      "Ladle congee into bowls, arrange egg halves and greens on top.",
+      "Garnish with scallions and a drizzle of sesame oil."
+    ],
+    "mealPrep": false,
+    "region": "Southern China — Guangdong and Fujian provinces"
+  },
+  {
+    "recipeId": 21,
+    "name": "Stuffed Sticky Rice Rolls",
+    "culturalName": "粽子 · Zòngzi",
+    "cuisine": "Chinese",
+    "region": "Nationwide, particularly southern China",
+    "mealType": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 60,
+    "mealPrep": true,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 380,
+      "protein": 14,
+      "carbs": 58,
+      "fat": 10,
+      "fiber": 3,
+      "sugar": 1,
+      "sodium": 420
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Southern China, nationwide tradition",
+      "context": "Zongzi are glutinous rice parcels wrapped in bamboo leaves, traditionally eaten during the Dragon Boat Festival. They have been made in China for over 2,000 years. Fillings vary by region — southern Chinese zongzi tend to be savory with pork and salted egg yolk, while northern versions are often sweet with red bean paste."
+    },
+    "ingredients": [
+      {
+        "name": "Glutinous (Sticky) Rice",
+        "amount": "2 cups dry",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Pork Belly or Ground Pork",
+        "amount": "½ lb",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "2 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "2 (yolks only)",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Dried bamboo leaves",
+        "amount": "12-15 leaves",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Five spice powder",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Soak glutinous rice in cold water for at least 4 hours or overnight.",
+      "Soak bamboo leaves in hot water 30 minutes until pliable.",
+      "Marinate pork in soy sauce, sesame oil, and five spice for 30 minutes.",
+      "Drain rice and season with a pinch of salt.",
+      "Form two bamboo leaves into a cone shape, add a layer of rice, a piece of pork and egg yolk, then cover with more rice.",
+      "Fold leaves over to seal into a pyramid shape, tie tightly with kitchen twine.",
+      "Steam or boil 45-60 minutes. Can be refrigerated up to 5 days or frozen up to 1 month."
+    ]
+  },
+  {
+    "recipeId": 22,
+    "name": "Stuffed Sticky Rice Rolls (Vegetarian)",
+    "culturalName": "素粽子 · Sù Zòngzi",
+    "cuisine": "Chinese",
+    "region": "Southern China",
+    "mealType": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 60,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Dairy-Free",
+      "Gluten-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber"
+    ],
+    "estimatedNutrition": {
+      "calories": 320,
+      "protein": 8,
+      "carbs": 60,
+      "fat": 5,
+      "fiber": 4,
+      "sugar": 2,
+      "sodium": 310
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Southern China — vegetarian versions are common in Buddhist temple cuisine",
+      "context": "Vegetarian zongzi are a staple of Chinese Buddhist temple cuisine, where no meat is consumed. Fillings typically include red bean paste, chestnuts, or mushrooms. Sweet red bean zongzi are particularly popular across Taiwan and southeastern China."
+    },
+    "ingredients": [
+      {
+        "name": "Glutinous (Sticky) Rice",
+        "amount": "2 cups dry",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Black Beans, canned",
+        "amount": "½ cup, drained",
+        "brand": "Dakota's Pride",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Corn",
+        "amount": "¼ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Dried bamboo leaves",
+        "amount": "12-15 leaves",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Soak glutinous rice in cold water for at least 4 hours or overnight.",
+      "Soak bamboo leaves in hot water 30 minutes until pliable.",
+      "Season drained rice with soy sauce and sesame oil.",
+      "Mix black beans and corn as filling.",
+      "Form two bamboo leaves into a cone, add rice layer, filling, then more rice.",
+      "Fold and tie securely with kitchen twine.",
+      "Steam or boil 45-60 minutes. Refrigerate up to 5 days or freeze up to 1 month."
+    ]
+  },
+  {
+    "recipeId": 23,
+    "name": "Marbled Tea Eggs",
+    "culturalName": "茶叶蛋 · Chá Yè Dàn",
+    "cuisine": "Chinese",
+    "region": "Nationwide — a universal Chinese street food snack",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 40,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 80,
+      "protein": 7,
+      "carbs": 1,
+      "fat": 5,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 180
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "China — sold at convenience stores, street stalls, and train stations nationwide",
+      "context": "Tea eggs are one of the most iconic Chinese snack foods, recognizable by their beautiful cracked marble pattern from the tea-and-spice braising liquid seeping through cracked shells. They are sold warm from large pots at virtually every 7-Eleven in Taiwan and at train station vendors across mainland China. The marbling pattern is both decorative and functional — it means the flavor has fully penetrated the egg."
+    },
+    "ingredients": [
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "6",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Black Tea Bags",
+        "amount": "2",
+        "brand": "Specially Selected",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "3 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Star Anise",
+        "amount": "2 pods",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Cinnamon Stick",
+        "amount": "1",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      },
+      {
+        "name": "Black Pepper",
+        "amount": "½ tsp whole",
+        "brand": "Stonemill",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Hard boil eggs 8 minutes, transfer to ice bath to cool.",
+      "Gently tap each egg all over with the back of a spoon to create cracks — do not peel.",
+      "Combine 3 cups water, soy sauce, tea bags, star anise, cinnamon, and pepper in a pot, bring to boil.",
+      "Add cracked eggs to the braising liquid, simmer on low 30 minutes.",
+      "Turn off heat, let eggs sit in liquid at least 2 hours (overnight is better).",
+      "Peel to reveal the marble pattern. Store in braising liquid in fridge up to 5 days."
+    ]
+  },
+  {
+    "recipeId": 24,
+    "name": "Pork & Cabbage Dumplings",
+    "culturalName": "饺子 · Jiǎozi",
+    "cuisine": "Chinese",
+    "region": "Northern China, particularly Shandong, Beijing, and northeastern provinces",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 45,
+    "mealPrep": true,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 320,
+      "protein": 18,
+      "carbs": 38,
+      "fat": 10,
+      "fiber": 2,
+      "sugar": 1,
+      "sodium": 480
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Northern China, particularly Shandong province",
+      "context": "Dumplings are one of the most important foods in Chinese culture, especially in northern China where they are eaten to celebrate the Lunar New Year. Families gather to fold dumplings together — the act of making them is as meaningful as eating them. The crescent shape is said to resemble ancient Chinese gold ingots, symbolizing wealth and good fortune. Over 1,800 years old, they remain one of China's most beloved foods."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Ground Pork",
+        "amount": "½ lb",
+        "brand": "ALDI Fresh Meat",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Shredded Cabbage or fresh",
+        "amount": "1 cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "2 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Rice Vinegar",
+        "amount": "1 tbsp (dipping sauce)",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ½ cup warm water, knead into smooth dough, rest covered 30 minutes.",
+      "Combine pork, cabbage, scallions, soy sauce, sesame oil, and ginger for filling.",
+      "Roll dough into a log, cut into 20 equal pieces, roll each into a thin circle.",
+      "Place 1 tsp filling in center, fold dough over and pleat edges to seal.",
+      "Boil in batches in unsalted water 6-8 minutes until they float and skins are cooked through.",
+      "Serve with soy sauce and rice vinegar dipping sauce.",
+      "Uncooked dumplings freeze well — freeze flat on a tray then transfer to a bag, cook from frozen adding 2 extra minutes."
+    ]
+  },
+  {
+    "recipeId": 25,
+    "name": "Egg & Cabbage Dumplings (Vegetarian)",
+    "culturalName": "素饺子 · Sù Jiǎozi",
+    "cuisine": "Chinese",
+    "region": "Northern China",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 45,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 260,
+      "protein": 12,
+      "carbs": 38,
+      "fat": 7,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 320
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Northern China — vegetarian dumpling fillings are common in Buddhist and everyday cooking",
+      "context": "Vegetarian dumplings with egg and vegetable fillings are a staple of Chinese Buddhist cuisine and widely eaten during religious observances when meat is avoided. Egg and chive (韭菜鸡蛋) is one of the most classic and beloved vegetarian dumpling combinations across all of China."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "3, scrambled and cooled",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach or Cabbage",
+        "amount": "1 cup, squeezed dry",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ½ cup warm water, knead into smooth dough, rest covered 30 minutes.",
+      "Scramble eggs, chop finely once cooled. Squeeze all moisture from spinach or cabbage.",
+      "Combine eggs, greens, scallions, sesame oil, soy sauce, and ginger for filling.",
+      "Roll dough into a log, cut into 20 pieces, roll each into a thin circle.",
+      "Place 1 tsp filling in center, fold and pleat edges to seal.",
+      "Boil 6-8 minutes until they float and skins are translucent.",
+      "Freeze uncooked dumplings flat on a tray for easy meal prep — cook from frozen."
+    ]
+  },
+  {
+    "recipeId": 26,
+    "name": "Pork Wonton Soup",
+    "culturalName": "馄饨汤 · Húntun Tāng",
+    "cuisine": "Chinese",
+    "region": "Guangdong (Cantonese), Shanghai, and Sichuan — each with distinct styles",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 40,
+    "mealPrep": true,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 340,
+      "protein": 20,
+      "carbs": 36,
+      "fat": 10,
+      "fiber": 2,
+      "sugar": 1,
+      "sodium": 580
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Guangdong, Shanghai, and Sichuan provinces — each region has its own style",
+      "context": "Wonton soup is one of the most iconic Cantonese dishes, served in noodle shops across Hong Kong and southern China for generations. Cantonese wontons are filled with shrimp and pork and served in a clear broth. Shanghai wontons (小馄饨) are smaller and thinner. Sichuan wontons (红油抄手) are served in a spicy chili oil sauce rather than broth. The name 'wonton' comes from the Cantonese word meaning 'swallowing clouds.'"
+    },
+    "ingredients": [
+      {
+        "name": "Wonton Wrappers",
+        "amount": "20 wrappers",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Ground Pork",
+        "amount": "¼ lb",
+        "brand": "ALDI Fresh Meat",
+        "aldiProduct": true
+      },
+      {
+        "name": "Medium EZ Peel Raw Shrimp",
+        "amount": "¼ lb, minced",
+        "brand": "Fremont Fish Market",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Combine pork, shrimp, soy sauce, sesame oil, and ginger into filling.",
+      "Place ½ tsp filling in center of each wrapper, fold into a triangle then bring two corners together.",
+      "Bring broth to a gentle simmer, season with a splash of soy sauce.",
+      "Cook wontons in the broth 4-5 minutes until they float and filling is cooked through.",
+      "Ladle into bowls, top with sliced scallions and a drizzle of sesame oil.",
+      "Wontons can be frozen uncooked — cook directly from frozen adding 2 extra minutes."
+    ]
+  },
+  {
+    "recipeId": 27,
+    "name": "Vegetable Wonton Soup",
+    "culturalName": "素馄饨汤 · Sù Húntun Tāng",
+    "cuisine": "Chinese",
+    "region": "Guangdong and Shanghai",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 35,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein",
+      "Low Fat",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 260,
+      "protein": 12,
+      "carbs": 36,
+      "fat": 6,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 420
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Guangdong and Shanghai",
+      "context": "Vegetable wontons are common in Chinese Buddhist temple kitchens and in homes on days when meat is avoided. The filling typically combines tofu, egg, and finely chopped greens. In Shanghai, vegetable wontons are a breakfast staple sold from small street carts every morning."
+    },
+    "ingredients": [
+      {
+        "name": "Wonton Wrappers",
+        "amount": "20 wrappers",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "2, scrambled and chopped",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach",
+        "amount": "½ cup, squeezed dry",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "4 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Combine chopped scrambled eggs, squeezed spinach, scallions, sesame oil, and a pinch of salt for filling.",
+      "Place ½ tsp filling in center of each wrapper, fold into triangle then pinch two corners together.",
+      "Bring broth to gentle simmer, season with soy sauce.",
+      "Cook wontons 3-4 minutes until they float.",
+      "Ladle into bowls with broth and top with scallions.",
+      "Freeze uncooked for easy meal prep — cook from frozen."
+    ]
+  },
+  {
+    "recipeId": 28,
+    "name": "Scallion Oil Noodles",
+    "culturalName": "葱油拌面 · Cōngyóu Bànmiàn",
+    "cuisine": "Chinese",
+    "region": "Shanghai",
+    "mealType": [
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 20,
+    "mealPrep": false,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 420,
+      "protein": 12,
+      "carbs": 62,
+      "fat": 14,
+      "fiber": 3,
+      "sugar": 4,
+      "sodium": 490
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Shanghai",
+      "context": "Scallion oil noodles are one of Shanghai's most beloved everyday dishes — deceptively simple, using only a handful of ingredients, but deeply flavorful from the slow-cooked scallion oil. In Shanghai households this is considered comfort food at its purest. The key is patience — the scallions must be cooked slowly in oil until deeply golden and slightly crispy before the sauce is made."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Pasta or Chinese Noodles",
+        "amount": "4 oz dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "8 stalks, cut into 2-inch pieces",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "3 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "2 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Dark soy sauce",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sugar",
+        "amount": "1 tsp",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Cook scallion pieces in olive oil over medium-low heat 15 minutes, stirring occasionally, until deep golden and fragrant — do not rush this step.",
+      "Remove scallions, add soy sauce, dark soy sauce, and sugar to the scallion oil in the pan, stir to combine.",
+      "Cook noodles per package directions, drain well.",
+      "Toss hot noodles in the scallion sauce until fully coated.",
+      "Top with the crispy scallion pieces and serve immediately."
+    ]
+  },
+  {
+    "recipeId": 29,
+    "name": "Chongqing Spicy Noodles",
+    "culturalName": "重庆小面 · Chóngqìng Xiǎomiàn",
+    "cuisine": "Chinese",
+    "region": "Chongqing, Sichuan province",
+    "mealType": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 25,
+    "mealPrep": false,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 480,
+      "protein": 22,
+      "carbs": 58,
+      "fat": 16,
+      "fiber": 4,
+      "sugar": 3,
+      "sodium": 720
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Chongqing municipality, Sichuan province",
+      "context": "Chongqing xiaomian (small noodles) are eaten for breakfast, lunch, and dinner in Chongqing — a city so devoted to this dish that there are annual competitions to find the best bowl. The broth is built from a complex sauce layered with chili oil, Sichuan pepper, sesame paste, and preserved vegetables. It is one of the defining dishes of Sichuan cuisine and known for its bold numbing spice (mala — 麻辣)."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Pasta or Noodles",
+        "amount": "4 oz dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Ground Pork",
+        "amount": "¼ lb",
+        "brand": "ALDI Fresh Meat",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "2 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Chili Oil",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame paste or peanut butter",
+        "amount": "1 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Rice Vinegar",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sichuan peppercorn (optional)",
+        "amount": "¼ tsp ground",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Brown ground pork in a pan over medium heat, breaking it up. Set aside.",
+      "Build sauce in bowl: whisk together chili oil, sesame paste, soy sauce, rice vinegar, and Sichuan pepper.",
+      "Heat broth and pour into sauce bowl, stir to combine.",
+      "Cook noodles per package directions, drain.",
+      "Add noodles to broth bowl, top with pork and sliced scallions.",
+      "Mix everything together at the table before eating."
+    ]
+  },
+  {
+    "recipeId": 30,
+    "name": "Chongqing Spicy Noodles (Vegetarian)",
+    "culturalName": "重庆小面 (素) · Chóngqìng Xiǎomiàn Sù",
+    "cuisine": "Chinese",
+    "region": "Chongqing, Sichuan province",
+    "mealType": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 20,
+    "mealPrep": false,
+    "dietType": [
+      "Vegetarian",
+      "Vegan",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Fat"
+    ],
+    "estimatedNutrition": {
+      "calories": 390,
+      "protein": 14,
+      "carbs": 58,
+      "fat": 12,
+      "fiber": 5,
+      "sugar": 3,
+      "sodium": 580
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Chongqing municipality, Sichuan province",
+      "context": "The vegetarian version of Chongqing noodles keeps the essential mala (numbing spicy) flavor profile while swapping the meat topping for crispy tofu or extra vegetables. The soul of the dish is in the layered sauce — the noodles and protein are secondary."
+    },
+    "ingredients": [
+      {
+        "name": "Whole Wheat Pasta or Noodles",
+        "amount": "4 oz dry",
+        "brand": "Earthly Grains",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "2 cups",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Stir-Fry Vegetables",
+        "amount": "½ cup",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "2 stalks",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Chili Oil",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Peanut Butter",
+        "amount": "1 tbsp",
+        "brand": "Simply Nature",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Rice Vinegar",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sichuan peppercorn (optional)",
+        "amount": "¼ tsp ground",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Stir-fry frozen vegetables in a dry pan 3-4 minutes. Set aside.",
+      "Whisk chili oil, peanut butter, soy sauce, rice vinegar, and Sichuan pepper in a bowl.",
+      "Heat broth and pour into sauce bowl.",
+      "Cook noodles, drain, add to broth bowl.",
+      "Top with vegetables and scallions, mix before eating."
+    ]
+  },
+  {
+    "recipeId": 31,
+    "name": "Stuffed Flatbread",
+    "culturalName": "馅饼 · Xiànbǐng",
+    "cuisine": "Chinese",
+    "region": "Northern China, particularly Beijing and Inner Mongolia",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 35,
+    "mealPrep": true,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 420,
+      "protein": 20,
+      "carbs": 46,
+      "fat": 16,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 540
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Northern China, Beijing and Inner Mongolia",
+      "context": "Stuffed flatbread (xianbing) is a northern Chinese staple, particularly popular in Beijing street food culture. They are pan-fried dough pockets filled with seasoned meat and vegetables — similar in concept to a filled pancake. They are common at breakfast and lunch and are sold at most northern Chinese street food stalls. The dough uses boiling water which makes it soft and pliable rather than chewy."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Ground Pork or Ground Beef",
+        "amount": "½ lb",
+        "brand": "ALDI Fresh Meat",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Cabbage or Spinach",
+        "amount": "½ cup, squeezed dry",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "2 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ½ cup boiling water, knead into smooth soft dough, rest 20 minutes covered.",
+      "Combine ground meat, scallions, cabbage, soy sauce, sesame oil, and ginger for filling.",
+      "Divide dough into 8 pieces, roll each into a thin circle.",
+      "Place 1-2 tbsp filling in center, gather dough edges and pinch to seal, then flatten gently into a disc.",
+      "Pan fry in olive oil over medium heat 3-4 minutes per side until golden brown and cooked through.",
+      "Cooked flatbreads reheat well in a pan or oven — good for meal prep."
+    ]
+  },
+  {
+    "recipeId": 32,
+    "name": "Stuffed Flatbread (Vegetarian)",
+    "culturalName": "素馅饼 · Sù Xiànbǐng",
+    "cuisine": "Chinese",
+    "region": "Northern China",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 35,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 320,
+      "protein": 12,
+      "carbs": 46,
+      "fat": 10,
+      "fiber": 5,
+      "sugar": 2,
+      "sodium": 380
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Northern China",
+      "context": "Vegetarian xianbing typically use an egg and vegetable filling, often combining egg, glass noodles, and dried tofu. The egg and chive combination is one of the most classic vegetarian fillings in northern Chinese cooking."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "3, scrambled and chopped",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Spinach or Cabbage",
+        "amount": "½ cup, squeezed dry",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "2 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with ½ cup boiling water, knead into smooth dough, rest 20 minutes.",
+      "Combine chopped scrambled eggs, squeezed greens, scallions, sesame oil, and soy sauce.",
+      "Divide dough into 8 pieces, roll each thin.",
+      "Fill, seal, and flatten each into a disc.",
+      "Pan fry in olive oil 3-4 minutes per side until golden.",
+      "Reheat in a dry pan or oven — good for meal prep."
+    ]
+  },
+  {
+    "recipeId": 33,
+    "name": "Pan-Fried Meat Pies",
+    "culturalName": "煎包 · Jiānbāo",
+    "cuisine": "Chinese",
+    "region": "Shanghai and northern China",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 50,
+    "mealPrep": true,
+    "dietType": [
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 390,
+      "protein": 18,
+      "carbs": 44,
+      "fat": 14,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 560
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Shanghai (shengjianbao) and northern China (xianbing)",
+      "context": "Pan-fried meat pies are a street food staple across northern China and Shanghai. Shanghai's version (shengjianbao) is a pan-fried pork bun with a soup-filled interior and crispy bottom, sold from large flat iron pans at breakfast stalls every morning. They are one of Shanghai's most iconic foods and have been eaten there for over a century."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Ground Pork",
+        "amount": "½ lb",
+        "brand": "ALDI Fresh Meat",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-Sodium Vegetable Broth",
+        "amount": "¼ cup (for filling juiciness)",
+        "brand": "ALDI",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "2 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "amount": "½ tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Yeast",
+        "amount": "1 tsp",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      }
+    ],
+    "steps": [
+      "Mix flour with yeast and ½ cup warm water, knead into dough, rest covered 30 minutes until slightly risen.",
+      "Combine pork, scallions, soy sauce, sesame oil, ginger, and broth — mix vigorously until filling is sticky.",
+      "Divide dough into 12 pieces, roll each into a circle.",
+      "Fill each, gather edges and twist to seal at the top.",
+      "Place sealed side down in oiled pan over medium heat, cook 3 minutes until bottoms are golden.",
+      "Add ¼ cup water to pan, cover immediately and steam 8 minutes until water evaporates.",
+      "Uncover and cook 1-2 more minutes until bottoms are crispy again. Refrigerate up to 3 days, reheat in a pan."
+    ]
+  },
+  {
+    "recipeId": 34,
+    "name": "Pan-Fried Vegetable Pies",
+    "culturalName": "素煎包 · Sù Jiānbāo",
+    "cuisine": "Chinese",
+    "region": "Shanghai and northern China",
+    "mealType": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "complexity": "Moderate",
+    "prepTimeMinutes": 50,
+    "mealPrep": true,
+    "dietType": [
+      "Vegetarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Fiber",
+      "Low Sodium"
+    ],
+    "estimatedNutrition": {
+      "calories": 300,
+      "protein": 10,
+      "carbs": 44,
+      "fat": 10,
+      "fiber": 4,
+      "sugar": 2,
+      "sodium": 380
+    },
+    "hasNonAldiIngredients": true,
+    "culturalContext": {
+      "origin": "Shanghai and northern China",
+      "context": "Vegetarian pan-fried buns are common in Chinese Buddhist cuisine and at vegetarian restaurants across China. The filling typically uses a combination of egg, glass noodles, and finely chopped vegetables to create a savory, satisfying interior without meat."
+    },
+    "ingredients": [
+      {
+        "name": "All-Purpose Flour",
+        "amount": "2 cups",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Pasture Raised Eggs",
+        "amount": "3, scrambled and chopped",
+        "brand": "Goldhen",
+        "aldiProduct": true
+      },
+      {
+        "name": "Frozen Cabbage or Spinach",
+        "amount": "1 cup, squeezed dry",
+        "brand": "Season's Choice",
+        "aldiProduct": true
+      },
+      {
+        "name": "Fresh Scallions",
+        "amount": "3 stalks, minced",
+        "brand": "Fresh produce",
+        "aldiProduct": true
+      },
+      {
+        "name": "Olive Oil",
+        "amount": "2 tbsp",
+        "brand": "Carlini",
+        "aldiProduct": true
+      },
+      {
+        "name": "Yeast",
+        "amount": "1 tsp",
+        "brand": "Baker's Corner",
+        "aldiProduct": true
+      },
+      {
+        "name": "Sesame Oil",
+        "amount": "1 tsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      },
+      {
+        "name": "Low-sodium soy sauce",
+        "amount": "1 tbsp",
+        "brand": "Non-Aldi",
+        "aldiProduct": false
+      }
+    ],
+    "steps": [
+      "Mix flour with yeast and ½ cup warm water, rest 30 minutes until slightly risen.",
+      "Combine eggs, squeezed greens, scallions, sesame oil, and soy sauce for filling.",
+      "Divide dough into 12 pieces, fill and seal each.",
+      "Place sealed side down in oiled pan, cook 3 minutes until golden on bottom.",
+      "Add ¼ cup water, cover and steam 8 minutes.",
+      "Uncover and crisp for 1-2 more minutes. Refrigerate up to 3 days."
+    ]
+  }
+]
