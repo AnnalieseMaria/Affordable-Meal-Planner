@@ -2849,5 +2849,93 @@
       "Add ¼ cup water, cover and steam 8 minutes.",
       "Uncover and crisp for 1-2 more minutes. Refrigerate up to 3 days."
     ]
+  },
+  {
+    "recipeId": 35,
+    "name": "Shrimp & Vegetable Stir Fry",
+    "culturalName": "虾仁炒蔬菜 · Xiārén Chǎo Shūcài",
+    "cuisine": "Chinese",
+    "region": "Cantonese, Southern China",
+    "mealType": ["Dinner"],
+    "complexity": "Simple",
+    "prepTimeMinutes": 20,
+    "dietType": ["Pescatarian", "Dairy-Free", "Gluten-Free"],
+    "nutritionHighlights": ["High Protein", "Low Fat"],
+    "estimatedNutrition": {
+      "calories": 280,
+      "protein": 26,
+      "carbs": 18,
+      "fat": 8,
+      "fiber": 4,
+      "sugar": 5,
+      "sodium": 420
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Cantonese cuisine, Southern China",
+      "context": "Stir frying over high heat is a cornerstone of Cantonese cooking. Shrimp cooked this way stays tender and absorbs the savory sauce quickly — the key is a very hot pan and not overcrowding."
+    },
+    "ingredients": [
+      { "name": "Frozen Shrimp", "amount": "8 oz", "brand": "Season's Choice", "aldiProduct": true },
+      { "name": "Frozen Stir Fry Vegetables", "amount": "2 cups", "brand": "Season's Choice", "aldiProduct": true },
+      { "name": "Instant Brown Rice", "amount": "1 cup cooked", "brand": "Earthly Grains", "aldiProduct": true },
+      { "name": "Sesame Oil", "amount": "1 tsp", "brand": "Non-Aldi", "aldiProduct": false },
+      { "name": "Low-sodium soy sauce", "amount": "2 tbsp", "brand": "Non-Aldi", "aldiProduct": false },
+      { "name": "Garlic Powder", "amount": "½ tsp", "brand": "Stonemill", "aldiProduct": true },
+      { "name": "Olive Oil", "amount": "1 tbsp", "brand": "Carlini", "aldiProduct": true }
+    ],
+    "steps": [
+      "Thaw shrimp under cold running water, pat dry.",
+      "Heat olive oil in a pan over high heat until very hot.",
+      "Add shrimp, cook 1-2 minutes per side until pink. Remove and set aside.",
+      "Add frozen vegetables to the same pan, stir fry 4-5 minutes.",
+      "Return shrimp to pan, add soy sauce, sesame oil, and garlic powder. Toss for 1 minute.",
+      "Serve over brown rice."
+    ],
+    "mealPrep": false
+  },
+  {
+    "recipeId": 36,
+    "name": "Fish Congee",
+    "culturalName": "鱼粥 · Yú Zhōu",
+    "cuisine": "Chinese",
+    "region": "Cantonese, Southern China",
+    "mealType": ["Breakfast", "Dinner"],
+    "complexity": "Simple",
+    "prepTimeMinutes": 25,
+    "dietType": ["Pescatarian", "Dairy-Free", "Gluten-Free"],
+    "nutritionHighlights": ["High Protein", "Low Fat", "Low Sodium"],
+    "estimatedNutrition": {
+      "calories": 260,
+      "protein": 22,
+      "carbs": 32,
+      "fat": 4,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 310
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Cantonese cuisine, Southern China",
+      "context": "Congee with fish is a classic Cantonese comfort food, often eaten for breakfast or when recovering from illness. The fish is added at the end so it stays silky and doesn't overcook in the hot porridge."
+    },
+    "ingredients": [
+      { "name": "Instant Brown Rice", "amount": "½ cup uncooked", "brand": "Earthly Grains", "aldiProduct": true },
+      { "name": "Frozen Tilapia Fillets", "amount": "6 oz", "brand": "Sea Queen", "aldiProduct": true },
+      { "name": "Low-sodium chicken broth", "amount": "3 cups", "brand": "Fit & Active", "aldiProduct": true },
+      { "name": "Fresh Ginger", "amount": "1 tsp grated", "brand": "N/A", "aldiProduct": true },
+      { "name": "Sesame Oil", "amount": "½ tsp", "brand": "Non-Aldi", "aldiProduct": false },
+      { "name": "Low-sodium soy sauce", "amount": "1 tbsp", "brand": "Non-Aldi", "aldiProduct": false },
+      { "name": "Scallions", "amount": "2 stalks sliced", "brand": "N/A", "aldiProduct": true }
+    ],
+    "steps": [
+      "Bring broth to a boil, add rice and ginger. Reduce heat to low.",
+      "Simmer 20 minutes, stirring occasionally, until rice breaks down into a thick porridge.",
+      "Slice thawed tilapia into bite-sized pieces, add to congee.",
+      "Cook 3-4 minutes until fish is opaque and flakes easily.",
+      "Season with soy sauce and sesame oil.",
+      "Top with sliced scallions and serve hot."
+    ],
+    "mealPrep": false
   }
 ]

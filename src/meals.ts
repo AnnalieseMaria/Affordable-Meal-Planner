@@ -29,8 +29,10 @@ export type Ingredient = {
 }
 
 export type MealIngredient = {
-  ingredientId: number
+  name: string
   amount: string
+  brand: string
+  aldiProduct: boolean
 }
 
 type Nutrition = {
