@@ -5,7 +5,7 @@ import { filterMeals } from './filters.ts'
 
 const meals = mealsData as Meal[]
 
-const filtered = filterMeals(meals, { cuisine: 'Chinese', dietType: 'Pescatarian' })
+const filtered = filterMeals(meals, { cuisine: 'Mediterranean', dietType: '' })
 
 console.log(filtered)
 
