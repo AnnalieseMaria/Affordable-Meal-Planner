@@ -3,15 +3,10 @@ export type Ingredient = {
   name: string
   brandName: string
   comparisonPriceUnit: string
-  urlSlugText: string
-  productConcreteSku: string
   usaSnapEligible: boolean
   formattedPrice: string
-  preFormattedUnitContent: string
   categoryName: string
-  categoryKey: string
   mainCategoryName: string
-  mainCategoryKey: string
   isMeat: boolean
   isFish: boolean
   isDairy: boolean
@@ -26,13 +21,18 @@ export type Ingredient = {
   sugar: number
   sodium: number
   nutritionFlagged: boolean
+
+  servingsPerContainer: number | null
+  servingSize: number | null
+  servingUnit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "g" | "can" | "slice" |  "tortilla" | "egg" |null
+  servingDisplay: string | null
 }
 
 export type MealIngredient = {
   name: string
-  amount: string
-  brand: string
+  amountInfo: amountInfo
   aldiProduct: boolean
+  ingredientId: number | null
 }
 
 type Nutrition = {
@@ -48,6 +48,7 @@ type Nutrition = {
 export type Meal = {
   recipeId: number
   name: string
+  recipeServings: number
   culturalName: string | null
   cuisine: string
   region: string
@@ -63,3 +64,10 @@ export type Meal = {
   steps: string[]
   mealPrep: boolean
 }
+
+type amountInfo = {
+  size: number,
+  unit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "tortilla" | "can" | "stalk"
+}
+
+//Consider how i might account for fl oz. conversion function? insert manually to units? 
