@@ -24,7 +24,7 @@ export type Ingredient = {
 
   servingsPerContainer: number | null
   servingSize: number | null
-  servingUnit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "g" | "can" | "slice" |  "tortilla" | "egg" |null
+  servingUnit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "can" | "slice" | "tortilla" | "unit" | "egg" | "g" | null
   servingDisplay: string | null
 }
 
@@ -48,7 +48,7 @@ type Nutrition = {
 export type Meal = {
   recipeId: number
   name: string
-  recipeServings: number
+  recipeServings: number | null // some recipes haven't had this filled in yet
   culturalName: string | null
   cuisine: string
   region: string
@@ -67,7 +67,10 @@ export type Meal = {
 
 type amountInfo = {
   size: number,
-  unit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "tortilla" | "can" | "stalk"
+  unit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "tortilla" | "can" | "stalk" | "unit" | "bag" | "egg" | "hello"
 }
+// "hello" is a known placeholder-unit bug still present in some non-Mexican
+// recipes; kept in the type for now so TS doesn't error on that data while
+// it's still being cleaned up. Remove once every recipe is fixed.
 
 //Consider how i might account for fl oz. conversion function? insert manually to units? 

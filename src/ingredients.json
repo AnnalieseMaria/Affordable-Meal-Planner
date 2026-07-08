@@ -26950,7 +26950,7 @@
     "isEgg": false,
     "containsGluten": false,
     "containsNuts": false,
-    "calories": 19,
+    "calories": 16,
     "protein": 0.8,
     "carbs": 3.9,
     "fat": 0.1,
@@ -42416,7 +42416,7 @@
     "nutritionFlagged": true,
     "servingsPerContainer": 10,
     "servingSize": 1,
-    "servingUnit": "unit",
+    "servingUnit": "tortilla",
     "servingDisplay": "1 tortilla"
   },
   "1583": {

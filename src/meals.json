@@ -438,7 +438,7 @@
       {
         "name": "Whole Wheat Tortillas",
         "aldiProduct": true,
-        "ingredientId": 1643,
+        "ingredientId": 1582,
         "amountInfo": {
           "size": 1,
           "unit": "tortilla"
@@ -733,7 +733,7 @@
       {
         "name": "Flour Tortillas",
         "aldiProduct": true,
-        "ingredientId": 1330,
+        "ingredientId": 1582,
         "amountInfo": {
           "size": 3,
           "unit": "tortilla"
@@ -2938,7 +2938,7 @@
   },
   {
     "recipeId": 30,
-    "name": "Black Bean Tostadas (Vegetarian)",
+    "name": "Black Bean Tostadas",
     "recipeServings": 2,
     "culturalName": "Tostadas de Frijol Negro",
     "cuisine": "Mexican",
@@ -3323,7 +3323,7 @@
   },
   {
     "recipeId": 34,
-    "name": "Migas",
+    "name": " Migas with Cheese",
     "recipeServings": 2,
     "culturalName": "Migas con Huevo",
     "cuisine": "Mexican",
@@ -3372,7 +3372,7 @@
         "ingredientId": 734,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -3423,6 +3423,97 @@
   },
   {
     "recipeId": 35,
+    "name": "Migas",
+    "recipeServings": 2,
+    "culturalName": "Migas con Huevo",
+    "cuisine": "Mexican",
+    "region": "Northern Mexico and Tex-Mex tradition",
+    "mealType": [
+      "Breakfast"
+    ],
+    "complexity": "Simple",
+    "prepTimeMinutes": 15,
+    "mealPrep": false,
+    "dietType": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Pescatarian",
+      "Dairy-Free"
+    ],
+    "nutritionHighlights": [
+      "High Protein"
+    ],
+    "estimatedNutrition": {
+      "calories": 340,
+      "protein": 18,
+      "carbs": 28,
+      "fat": 16,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 460
+    },
+    "hasNonAldiIngredients": false,
+    "culturalContext": {
+      "origin": "Northern Mexico and the Texas-Mexico border \u2014 a Tex-Mex staple",
+      "context": "Migas (meaning 'crumbs' in Spanish) is a brilliant use of leftover or stale tortillas \u2014 torn into pieces and scrambled with eggs, peppers, cheese, and salsa. It is morning comfort food across northern Mexico and Texas and is considered one of the defining dishes of Tex-Mex cuisine. Healthier note: using baked tortilla chips instead of fried tortilla strips significantly cuts fat without losing the essential crunch."
+    },
+    "ingredients": [
+      {
+        "name": "Corn Tortillas",
+        "aldiProduct": true,
+        "ingredientId": 1633,
+        "amountInfo": {
+          "size": 2,
+          "unit": "tortilla"
+        }
+      },
+      {
+        "name": "Cage Free Large Eggs - Grade A, 1 dozen",
+        "aldiProduct": true,
+        "ingredientId": 734,
+        "amountInfo": {
+          "size": 2,
+          "unit": "egg"
+        }
+      },
+      {
+        "name": "green onions",
+        "aldiProduct": false,
+        "ingredientId": 1032,
+        "amountInfo": {
+          "size": 0.3,
+          "unit": "oz"
+        }
+      },
+      {
+        "name": "Organic Salsa Mild, 16 oz",
+        "aldiProduct": true,
+        "ingredientId": 7,
+        "amountInfo": {
+          "size": 3,
+          "unit": "tbsp"
+        }
+      },
+      {
+        "name": "Olive Oil",
+        "aldiProduct": true,
+        "ingredientId": 2442,
+        "amountInfo": {
+          "size": 1,
+          "unit": "tsp"
+        }
+      }
+    ],
+    "steps": [
+      "Healthier swap: use baked or air-fried tortilla chips instead of frying fresh tortillas \u2014 you get the same crunch with less oil.",
+      "Saut\u00e9 peppers and onions in olive oil 3 minutes until softened.",
+      "Add crushed tortilla chips to the pan, stir briefly.",
+      "Whisk eggs and pour over chip mixture, scramble together gently until eggs are just set.",
+      "Serve topped with salsa. Optionally wrap in a Low Carb Flour Tortilla for a lower-calorie breakfast burrito."
+    ]
+  },
+  {
+    "recipeId": 36,
     "name": "Migas with Low-Carb Tortilla (Lower Calorie)",
     "recipeServings": 1,
     "culturalName": "Migas Ligeras",
@@ -3522,7 +3613,7 @@
     ]
   },
   {
-    "recipeId": 36,
+    "recipeId": 37,
     "name": "Chicken Quesadillas",
     "recipeServings": 2,
     "culturalName": "Quesadillas de Pollo",
@@ -3611,7 +3702,7 @@
     ]
   },
   {
-    "recipeId": 37,
+    "recipeId": 38,
     "name": "Black Bean & Cheese Quesadillas (Vegetarian)",
     "recipeServings": 1,
     "culturalName": "Quesadillas de Frijol Negro",
@@ -3712,7 +3803,7 @@
     ]
   },
   {
-    "recipeId": 38,
+    "recipeId": 39,
     "name": "Chicken Fajitas & Spanish Rice",
     "recipeServings": 2,
     "culturalName": "Fajitas de Pollo",
@@ -3804,7 +3895,7 @@
     ]
   },
   {
-    "recipeId": 39,
+    "recipeId": 40,
     "name": "Vegetable Fajitas",
     "recipeServings": 2,
     "culturalName": "Fajitas de Verduras",
@@ -3899,7 +3990,7 @@
     ]
   },
   {
-    "recipeId": 40,
+    "recipeId": 41,
     "name": "Chicken Tortilla Soup",
     "recipeServings": 4,
     "culturalName": "Sopa Azteca",
@@ -4046,7 +4137,7 @@
     ]
   },
   {
-    "recipeId": 41,
+    "recipeId": 42,
     "name": "Vegetable Tortilla Soup",
     "recipeServings": 4,
     "culturalName": "Sopa Azteca Vegetariana",
@@ -4168,7 +4259,7 @@
     ]
   },
   {
-    "recipeId": 42,
+    "recipeId": 43,
     "name": "Gluten-Free Chicken Fajita Bowl",
     "recipeServings": 4,
     "culturalName": "Bowl de Fajita Sin Gluten",
@@ -4270,7 +4361,7 @@
     ]
   },
   {
-    "recipeId": 43,
+    "recipeId": 44,
     "name": "Baja Fish Tacos",
     "recipeServings": 4,
     "culturalName": "Tacos de Pescado Estilo Baja",
@@ -4408,7 +4499,7 @@
     ]
   },
   {
-    "recipeId": 44,
+    "recipeId": 45,
     "name": "Shrimp Tacos",
     "recipeServings": 3,
     "culturalName": "Tacos de Camar\u00f3n",
@@ -4519,7 +4610,7 @@
     ]
   },
   {
-    "recipeId": 45,
+    "recipeId": 46,
     "name": "Caldo de Camar\u00f3n",
     "recipeServings": 4,
     "culturalName": "Caldo de Camar\u00f3n",
@@ -4607,8 +4698,8 @@
         "aldiProduct": true,
         "ingredientId": 1029,
         "amountInfo": {
-          "size": 1,
-          "unit": "unit"
+          "size": 0.5,
+          "unit": "cup"
         }
       },
       {
@@ -4659,7 +4750,7 @@
     ]
   },
   {
-    "recipeId": 46,
+    "recipeId": 47,
     "name": "Tilapia Tostadas",
     "recipeServings": 2,
     "culturalName": "Tostadas de Tilapia",
@@ -4799,7 +4890,7 @@
     ]
   },
   {
-    "recipeId": 47,
+    "recipeId": 48,
     "name": "Shrimp and Grits",
     "recipeServings": null,
     "culturalName": "Shrimp and Grits",
@@ -4947,7 +5038,7 @@
     ]
   },
   {
-    "recipeId": 48,
+    "recipeId": 49,
     "name": "Grits Bowl with Saut\u00e9ed Greens and Fried Egg",
     "recipeServings": null,
     "culturalName": "Grits Bowl",
@@ -5074,7 +5165,7 @@
     ]
   },
   {
-    "recipeId": 49,
+    "recipeId": 50,
     "name": "Sweet Potato Hash with Turkey Sausage",
     "recipeServings": 1,
     "culturalName": "Sweet Potato Hash",
@@ -5203,7 +5294,7 @@
     ]
   },
   {
-    "recipeId": 50,
+    "recipeId": 51,
     "name": "Baked Black Eyed Pea Fritters",
     "recipeServings": null,
     "culturalName": "Baked Akara-Style Fritters",
@@ -5336,7 +5427,7 @@
     ]
   },
   {
-    "recipeId": 51,
+    "recipeId": 52,
     "name": "Black Eyed Pea and Collard Green Soup",
     "recipeServings": null,
     "culturalName": "Black Eyed Pea and Greens Soup",
@@ -5475,7 +5566,7 @@
     ]
   },
   {
-    "recipeId": 52,
+    "recipeId": 53,
     "name": "Smothered Chicken over Brown Rice",
     "recipeServings": 2,
     "culturalName": "Smothered Chicken",
@@ -5614,7 +5705,7 @@
     ]
   },
   {
-    "recipeId": 53,
+    "recipeId": 54,
     "name": "Red Beans and Rice with Turkey Sausage",
     "recipeServings": 4,
     "culturalName": "Red Beans and Rice",
@@ -5725,7 +5816,7 @@
     ]
   },
   {
-    "recipeId": 54,
+    "recipeId": 55,
     "name": "Hoppin John Bowl",
     "recipeServings": null,
     "culturalName": "Hoppin' John",
@@ -5864,7 +5955,7 @@
     ]
   },
   {
-    "recipeId": 55,
+    "recipeId": 56,
     "name": "Lentil and Sweet Potato Stew",
     "recipeServings": null,
     "culturalName": "Lentil Sweet Potato Stew",
@@ -6015,7 +6106,7 @@
     ]
   },
   {
-    "recipeId": 56,
+    "recipeId": 57,
     "name": "Baked Fried Chicken",
     "recipeServings": null,
     "culturalName": "Oven Fried Chicken",
@@ -6153,7 +6244,7 @@
     ]
   },
   {
-    "recipeId": 57,
+    "recipeId": 58,
     "name": "Smothered Pork Chops with Collard Greens",
     "recipeServings": null,
     "culturalName": "Smothered Pork Chops",
@@ -6299,7 +6390,7 @@
     ]
   },
   {
-    "recipeId": 58,
+    "recipeId": 59,
     "name": "Sweet Potato and Black Eyed Pea Stew (Vegan)",
     "recipeServings": null,
     "culturalName": "Sweet Potato and Black Eyed Pea Stew",
@@ -6450,7 +6541,7 @@
     ]
   },
   {
-    "recipeId": 59,
+    "recipeId": 60,
     "name": "Turkey Neck and White Bean Soup",
     "recipeServings": null,
     "culturalName": "Turkey and White Bean Soup",
@@ -6598,7 +6689,7 @@
     ]
   },
   {
-    "recipeId": 60,
+    "recipeId": 61,
     "name": "Oxtail-Style Braised Chicken Thighs",
     "recipeServings": null,
     "culturalName": "Braised Chicken Thighs",
@@ -6764,7 +6855,7 @@
     ]
   },
   {
-    "recipeId": 61,
+    "recipeId": 62,
     "name": "High Protein Baked Mac and Cheese",
     "recipeServings": null,
     "culturalName": "Baked Mac and Cheese",
@@ -6912,7 +7003,7 @@
     ]
   },
   {
-    "recipeId": 62,
+    "recipeId": 63,
     "name": "Shakshuka",
     "recipeServings": null,
     "culturalName": "\u0634\u0643\u0634\u0648\u0643\u0629 \u00b7 Shakshuka",
@@ -7051,7 +7142,7 @@
     ]
   },
   {
-    "recipeId": 63,
+    "recipeId": 64,
     "name": "Turkish Menemen",
     "recipeServings": null,
     "culturalName": "Menemen",
@@ -7171,7 +7262,7 @@
     ]
   },
   {
-    "recipeId": 64,
+    "recipeId": 65,
     "name": "Eggs with Tomatoes, Olives and Feta",
     "recipeServings": null,
     "culturalName": "\u0391\u03c5\u03b3\u03ac \u03bc\u03b5 \u039d\u03c4\u03bf\u03bc\u03ac\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03a6\u03ad\u03c4\u03b1",
@@ -7270,7 +7361,7 @@
     ]
   },
   {
-    "recipeId": 65,
+    "recipeId": 66,
     "name": "Avocado Toast with Smoked Salmon, Dill and Capers",
     "recipeServings": null,
     "culturalName": "Avocado Toast con Salmone Affumicato",
@@ -7378,7 +7469,7 @@
     ]
   },
   {
-    "recipeId": 66,
+    "recipeId": 67,
     "name": "Spinach and Ricotta Frittata",
     "recipeServings": null,
     "culturalName": "Frittata di Spinaci e Ricotta",
@@ -7500,7 +7591,7 @@
     ]
   },
   {
-    "recipeId": 67,
+    "recipeId": 68,
     "name": "Spinach and Goat Cheese Quiche",
     "recipeServings": null,
     "culturalName": "Quiche aux \u00c9pinards et Ch\u00e8vre",
@@ -7629,7 +7720,7 @@
     ]
   },
   {
-    "recipeId": 68,
+    "recipeId": 69,
     "name": "Ful Medames",
     "recipeServings": null,
     "culturalName": "\u0641\u0648\u0644 \u0645\u062f\u0645\u0633 \u00b7 Ful Medames",
@@ -7745,7 +7836,7 @@
     ]
   },
   {
-    "recipeId": 69,
+    "recipeId": 70,
     "name": "Lebanese Breakfast Bulgur with Fruits and Nuts",
     "recipeServings": null,
     "culturalName": "Burghul bil Fawakeh \u00b7 \u0628\u0631\u063a\u0644 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647",
@@ -7846,7 +7937,7 @@
     ]
   },
   {
-    "recipeId": 70,
+    "recipeId": 71,
     "name": "High Protein Cappuccino Muffins",
     "recipeServings": null,
     "culturalName": "Muffin al Cappuccino",
@@ -7984,7 +8075,7 @@
     ]
   },
   {
-    "recipeId": 71,
+    "recipeId": 72,
     "name": "Harcha",
     "recipeServings": null,
     "culturalName": "\u0647\u0631\u0634\u0629 \u00b7 Harcha",
@@ -8075,7 +8166,7 @@
     ]
   },
   {
-    "recipeId": 72,
+    "recipeId": 73,
     "name": "Tuscan Tuna and White Bean Salad",
     "recipeServings": null,
     "culturalName": "Tonno e Fagioli",
@@ -8195,7 +8286,7 @@
     ]
   },
   {
-    "recipeId": 73,
+    "recipeId": 74,
     "name": "Greek Horiatiki Village Salad",
     "recipeServings": null,
     "culturalName": "\u03a7\u03c9\u03c1\u03b9\u03ac\u03c4\u03b9\u03ba\u03b7 \u03a3\u03b1\u03bb\u03ac\u03c4\u03b1 \u00b7 Horiatiki",
@@ -8305,7 +8396,7 @@
     ]
   },
   {
-    "recipeId": 74,
+    "recipeId": 75,
     "name": "Ni\u00e7oise Salad",
     "recipeServings": null,
     "culturalName": "Salade Ni\u00e7oise",
@@ -8434,7 +8525,7 @@
     ]
   },
   {
-    "recipeId": 75,
+    "recipeId": 76,
     "name": "Lebanese Fattoush Salad",
     "recipeServings": null,
     "culturalName": "\u0641\u062a\u0648\u0634 \u00b7 Fattoush",
@@ -8555,7 +8646,7 @@
     ]
   },
   {
-    "recipeId": 76,
+    "recipeId": 77,
     "name": "Mujaddara",
     "recipeServings": null,
     "culturalName": "\u0645\u062c\u062f\u0631\u0629 \u00b7 Mujaddara",
@@ -8661,7 +8752,7 @@
     ]
   },
   {
-    "recipeId": 77,
+    "recipeId": 78,
     "name": "Moroccan Harira Soup",
     "recipeServings": null,
     "culturalName": "\u062d\u0631\u064a\u0631\u0629 \u00b7 Harira",
@@ -8803,7 +8894,7 @@
     ]
   },
   {
-    "recipeId": 78,
+    "recipeId": 79,
     "name": "Turkish Red Lentil Soup",
     "recipeServings": null,
     "culturalName": "Mercimek \u00c7orbas\u0131",
@@ -8928,7 +9019,7 @@
     ]
   },
   {
-    "recipeId": 79,
+    "recipeId": 80,
     "name": "Moroccan Chicken Tagine with Olives",
     "recipeServings": null,
     "culturalName": "\u0637\u0627\u062c\u064a\u0646 \u0627\u0644\u062f\u062c\u0627\u062c \u0628\u0627\u0644\u0632\u064a\u062a\u0648\u0646 \u00b7 Tagine Djaj bil Zaytoun",
@@ -9065,7 +9156,7 @@
     ]
   },
   {
-    "recipeId": 80,
+    "recipeId": 81,
     "name": "Greek Gigantes Plaki",
     "recipeServings": null,
     "culturalName": "\u0393\u03af\u03b3\u03b1\u03bd\u03c4\u03b5\u03c2 \u03a0\u03bb\u03b1\u03ba\u03af \u00b7 Gigantes Plaki",
@@ -9191,7 +9282,7 @@
     ]
   },
   {
-    "recipeId": 81,
+    "recipeId": 82,
     "name": "Lebanese Chicken Shawarma Bowl",
     "recipeServings": null,
     "culturalName": "\u0634\u0627\u0648\u0631\u0645\u0627 \u00b7 Shawarma Bowl",
@@ -9318,7 +9409,7 @@
     ]
   },
   {
-    "recipeId": 82,
+    "recipeId": 83,
     "name": "Algerian Couscous with Roasted Vegetables",
     "recipeServings": null,
     "culturalName": "\u0643\u0633\u0643\u0633\u064a \u0628\u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Couscous bil Khodar",
@@ -9448,7 +9539,7 @@
     ]
   },
   {
-    "recipeId": 83,
+    "recipeId": 84,
     "name": "Moroccan Lamb Kefta in Tomato Sauce",
     "recipeServings": null,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0628\u0627\u0644\u0637\u0645\u0627\u0637\u0645 \u00b7 Kefta bil Matisha",
@@ -9575,7 +9666,7 @@
     ]
   },
   {
-    "recipeId": 84,
+    "recipeId": 85,
     "name": "Moroccan Vegetable Kefta",
     "recipeServings": null,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Kefta bil Khodar",
@@ -9697,7 +9788,7 @@
     ]
   },
   {
-    "recipeId": 85,
+    "recipeId": 86,
     "name": "Israeli Baked Fish with Chermoula",
     "recipeServings": null,
     "culturalName": "\u05d3\u05d2 \u05d1\u05d7\u05e8\u05de\u05d5\u05dc\u05d4 \u00b7 Dag b'Chermoula",
@@ -9817,7 +9908,7 @@
     ]
   },
   {
-    "recipeId": 86,
+    "recipeId": 87,
     "name": "Spanish Lentejas",
     "recipeServings": null,
     "culturalName": "Lentejas",
@@ -9942,7 +10033,7 @@
     ]
   },
   {
-    "recipeId": 87,
+    "recipeId": 88,
     "name": "Ribollita",
     "recipeServings": null,
     "culturalName": "Ribollita",
