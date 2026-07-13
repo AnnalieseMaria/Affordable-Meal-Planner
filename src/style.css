@@ -1,0 +1,44 @@
+/* ============================================================
+   Form field layout — one label + input per line, small boxes.
+   If you already have other rules in style.css, just paste this
+   block in rather than replacing the whole file.
+   ============================================================ */
+
+/* ============================================================
+   Form field layout — one label + input per line where there's room,
+   gracefully wrapping to two lines on narrow screens instead of
+   cutting content off. Sizes use em units so everything scales
+   together with font-size, rather than fixed pixel widths that only
+   look right at one specific screen size.
+   ============================================================ */
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;     /* wrap to a new line if there's not enough room, instead of clipping */
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.form-row label {
+  flex: 0 1 auto;      /* take only the space the text actually needs — don't stretch to fill the row */
+}
+
+/* Small, consistent input sizing using em (scales with font-size) */
+.form-row input[type="number"] {
+  width: 4em;
+  flex: 0 0 auto;
+}
+
+.form-row input[type="date"] {
+  width: 11em;
+  flex: 0 0 auto;
+}
+
+.form-row select {
+  font-size: 1em;    /* applies evenly to the closed box AND the option list */
+  padding: 0.3em;
+  min-width: 9em;      /* enough room so "Please select an option" fits on one line */
+  flex: 0 1 auto;
+  max-width: 100%;
+}

@@ -14,14 +14,6 @@ console.log(filtered)
 const appElement = document.querySelector<HTMLElement>('#app')!
 if (!appElement) throw new Error("Couldn't find element with id 'app'")
 
-// appElement.innerHTML = `
-//   <h1>Affordable Meal Planner</h1>
-//   <p>${filtered.length} meals found</p>
-//   <ul>
-//     ${filtered.map(m => `<li>${m.name}</li>`).join('')}
-//   </ul>
-// `
-
 function getLocalDateString() {
   const now = new Date();
   const year = now.getFullYear();
@@ -34,15 +26,22 @@ type DietType = "Vegan" | "Vegetarian" | "Gluten-Free" | "Dairy-Free" | "Pescata
 const dietTypes: DietType[] = ["Dairy-Free", "Gluten-Free", "Pescatarian", "Vegan", "Vegetarian"]
 
 type Cuisines = "Mexican" | "Chinese" | "Soul Food" | "Mediterranean";
-const cuisines: Cuisines[] = ["Mexican", "Chinese" , "Soul Food" , "Mediterranean"] 
+const cuisines: Cuisines[] = ["Mexican", "Chinese", "Soul Food", "Mediterranean"]
+
+type ShoppingFrequency = "weekly" | "biweekly" | "monthly";
+const shoppingFrequencyDays: Record<ShoppingFrequency, number> = {
+  weekly: 7,
+  biweekly: 14,
+  monthly: 30,
+};
 
 type MealPlanInfo = {
   dietType: string;
   cuisines: string[];
   familySize: number;
   budget: number;
-  startDate: string;
-  timeframe: string;
+  shoppingDate: string;
+  shoppingFrequency: ShoppingFrequency;
 };
 
 type MealSlotType = 'breakfast' | 'lunch' | 'dinner'
@@ -57,9 +56,9 @@ let popupMode: 'menu' | 'swap' | null = null; // 'menu' = View/Swap/Remove butto
 let swapRejectionMessage: string | null = null; // set when a chosen swap doesn't fit the budget
 let selectedMeal: Meal | null = null;    // the meal currently shown on the recipe detail page
 
-
-type Page = "info-form" | "meal-plan" | "recipe-detail";
+type Page = "info-form" | "meal-plan" | "recipe-detail" | "shopping-list";
 let currentPage: Page = (localStorage.getItem("currentPage") as Page) ?? "info-form";
+
 function getSlotMeal(date: string, mealType: MealSlotType): Meal | null {
   const day = generatedPlan?.find(d => d.date === date);
   return day ? day[mealType] : null;
@@ -71,9 +70,10 @@ function setSlotMeal(date: string, mealType: MealSlotType, meal: Meal | null) {
 }
 
 function getMaxBudget(): number {
-  if (!generatedPlan || !mealPlanInfo) return 0;
-  const numWeeks = Math.ceil(generatedPlan.length / 7);
-  return mealPlanInfo.budget * numWeeks;
+  if (!mealPlanInfo) return 0;
+  // The plan always covers exactly one shopping cycle now, so the budget
+  // ceiling is just the per-trip budget itself — no multiplication needed.
+  return mealPlanInfo.budget;
 }
 
 function recalculateShoppingList() {
@@ -137,9 +137,7 @@ function renderPopup() {
       ${swapRejectionMessage ? `<p style="color:#b00020; font-weight:bold;">${swapRejectionMessage}</p>` : ''}
       ${validAlternatives.length === 0 ? '<p>No other matching recipes found for this slot.</p>' : ''}
       <div style="display:flex; flex-direction:column; gap:6px; margin:12px 0;">
-        ${validAlternatives.map(m => {
-          return `<button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left;">${m.name}</button>`;
-        }).join('')}
+        ${validAlternatives.map(m => `<button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left;">${m.name}</button>`).join('')}
       </div>
       <button id="popup-close">Cancel</button>
     `;
@@ -178,7 +176,6 @@ function renderPopup() {
         const candidateMeal = meals.find(m => m.recipeId === recipeId) ?? null;
         if (!candidateMeal || !generatedPlan || !mealPlanInfo) return;
 
-        // Build a TRIAL plan with the swap applied, without touching the real one yet
         const trialPlan: DayPlan[] = generatedPlan.map(day =>
           day.date === activeSlot!.date ? { ...day, [activeSlot!.mealType]: candidateMeal } : day
         );
@@ -189,7 +186,6 @@ function renderPopup() {
         const maxBudget = getMaxBudget();
 
         if (trialTotal <= maxBudget) {
-          // Fits — commit it for real, reusing the trial results directly
           generatedPlan = trialPlan;
           generatedShoppingList = trialShoppingList;
           generatedTotalSpend = trialTotal;
@@ -197,8 +193,6 @@ function renderPopup() {
           closePopup();
           render();
         } else {
-          // Doesn't fit — reject the swap, leave the real plan untouched,
-          // and show why so the person can pick something else
           const overBy = trialTotal - maxBudget;
           swapRejectionMessage = `${candidateMeal.name} would put your plan $${overBy.toFixed(2)} over budget — try a different option.`;
           renderPopup();
@@ -210,58 +204,59 @@ function renderPopup() {
 
 function render() {
 switch (currentPage) {
-  case "info-form":
+  case "info-form": {
     const todayStr = getLocalDateString();
 
     appElement.innerHTML = `
       <h1>Affordable Meal Planner</h1>
       <form id="info-form">
-       
+
         <fieldset>
           <legend>Diet Type</legend>
-        ${dietTypes.map(type => {
-          return `
+        ${dietTypes.map(type => `
             <div>
             <input type="radio" id="${type}" name="dietType" value="${type}" />
             <label for="${type}">${type}</label>
             </div>
-          `;
-        }).join("")}
+          `).join("")}
         </fieldset>
         <fieldset>
           <legend>Cuisines</legend>
-           ${cuisines.map(type => {
-          return `
+           ${cuisines.map(type => `
             <div>
             <input type="checkbox" id="${type}" name="cuisine" value="${type}" />
             <label for="${type}">${type}</label>
             </div>
-          `;
-        }).join("")}
+          `).join("")}
         </fieldset>
-        <div>
+        <div class="form-row">
         <label for="familySize">Family Size</label>
         <input id="familySize" name="familySize" type="number" required />
-        
-        <label for="budget">Weekly Grocery Budget: $</label>
-        <input type="number" id="budget" name="budget" step="0.01" min="0.00"/>
         </div>
 
-        <div>
-        <label for="timeframe">Choose a timeframe:</label>
-        <select name="timeframes" id="timeframe">
-          <option value="">Please select an option</option>
-          <option value="one week">One Week</option>
-          <option value="two weeks">Two Weeks</option>
-          <option value="three week">Three Weeks</option>
-          <option value="one month">One Month</option>
+        <div class="form-row">
+        <label for="budget">Grocery Budget per Shopping Trip</label>
+        <span>$</span><input type="number" id="budget" name="budget" step="0.01" min="0.00"/>
+        </div>
+
+        <div class="form-row">
+        <label for="shoppingFrequency">How often do you grocery shop?</label>
+        <select name="shoppingFrequency" id="shoppingFrequency">
+          <option value="">Select Interval</option>
+          <option value="weekly">Weekly</option>
+          <option value="biweekly">Biweekly (every 2 weeks)</option>
+          <option value="monthly">Monthly</option>
         </select>
-
-        <label for="startDate">Choose a Start Date: </label>
-        <input type="date" id="startDate" name="startDate" value="${todayStr}" min="${todayStr}" required />
         </div>
+
+        <div class="form-row">
+        <label for="shoppingDate">Grocery Shopping Date</label>
+        <input type="date" id="shoppingDate" name="shoppingDate" value="${todayStr}" min="${todayStr}" required />
+        </div>
+        <p style="font-size:0.85em; color:#666;">Pick any upcoming date that falls on your regular shopping day — this sets the pattern going forward (e.g. if you shop weekly, every future trip lands on this same day of the week; biweekly, every 2 weeks on this day; monthly, this same date each month). Your meal plan starts the day after each trip.</p>
 
         <input type="submit" value="Submit Form" />
+      </form>
     `
     const infoForm = document.getElementById('info-form') as HTMLFormElement | null;
     if (!infoForm) { throw new Error("bad"); }
@@ -276,8 +271,8 @@ switch (currentPage) {
         cuisines: formData.getAll('cuisine') as string[],
         familySize: Number(formData.get('familySize')),
         budget: Number(formData.get('budget')),
-        startDate: formData.get('startDate') as string,
-        timeframe: formData.get('timeframes') as string,
+        shoppingDate: formData.get('shoppingDate') as string,
+        shoppingFrequency: formData.get('shoppingFrequency') as ShoppingFrequency,
       };
 
       const { plan, pantry, totalSpend } = generateMealPlan(
@@ -285,8 +280,8 @@ switch (currentPage) {
         mealPlanInfo.cuisines,
         mealPlanInfo.dietType,
         mealPlanInfo.familySize,
-        mealPlanInfo.startDate,
-        mealPlanInfo.timeframe,
+        mealPlanInfo.shoppingDate,
+        shoppingFrequencyDays[mealPlanInfo.shoppingFrequency],
         ingredients,
         mealPlanInfo.budget
       );
@@ -299,37 +294,49 @@ switch (currentPage) {
       localStorage.setItem("currentPage", currentPage);
       render();
     })
-    break; 
+    break;
+  }
 
-    case "meal-plan": {
-      if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
-        appElement.innerHTML = `
-          <h1>No meal plan yet</h1>
-          <p>Please fill out the form first.</p>
-          <button id="back-to-form">Back to form</button>
-        `;
-        document.getElementById('back-to-form')?.addEventListener('click', () => {
-          currentPage = "info-form";
-          localStorage.setItem("currentPage", currentPage);
-          render();
-        });
-        break;
-      }
-
-      const numWeeks = Math.ceil(generatedPlan.length / 7);
-      const maxBudget = mealPlanInfo.budget * numWeeks;
-      const withinBudget = generatedTotalSpend <= maxBudget;
-
+  case "meal-plan": {
+    if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
       appElement.innerHTML = `
-        <h1>Your Meal Plan</h1>
-        <p>${mealPlanInfo.cuisines.join(', ')} · ${mealPlanInfo.dietType} · Family of ${mealPlanInfo.familySize}</p>
+        <h1>No meal plan yet</h1>
+        <p>Please fill out the form first.</p>
+        <button id="back-to-form">Back to form</button>
+      `;
+      document.getElementById('back-to-form')?.addEventListener('click', () => {
+        currentPage = "info-form";
+        localStorage.setItem("currentPage", currentPage);
+        render();
+      });
+      break;
+    }
 
+    const maxBudget = getMaxBudget();
+    const withinBudget = generatedTotalSpend <= maxBudget;
+
+    // Break the calendar into 7-day chunks purely for readability — this is
+    // unrelated to shopping frequency (even a monthly shopper's full plan
+    // shows here broken into weeks), and every single day still renders,
+    // nothing is hidden or paginated away.
+    const weekChunks: DayPlan[][] = [];
+    for (let i = 0; i < generatedPlan.length; i += 7) {
+      weekChunks.push(generatedPlan.slice(i, i + 7));
+    }
+
+    appElement.innerHTML = `
+      <h1>Your Meal Plan</h1>
+      <p>${mealPlanInfo.cuisines.join(', ')} · ${mealPlanInfo.dietType} · Family of ${mealPlanInfo.familySize}</p>
+      <p>Plan runs ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date}</p>
+
+      ${weekChunks.map(chunk => `
+        <h2>${chunk[0].date} – ${chunk[chunk.length - 1].date}</h2>
         <table border="1" cellpadding="6" style="border-collapse: collapse; width: 100%;">
           <thead>
             <tr><th>Date</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>
           </thead>
           <tbody>
-            ${generatedPlan.map(day => `
+            ${chunk.map(day => `
               <tr>
                 <td>${day.date}</td>
                 <td class="meal-cell" data-date="${day.date}" data-mealtype="breakfast" style="cursor:pointer;">${day.breakfast?.name ?? '—'}</td>
@@ -339,73 +346,41 @@ switch (currentPage) {
             `).join('')}
           </tbody>
         </table>
+      `).join('')}
 
-        <h2>Shopping List</h2>
-        <ul>
-          ${generatedShoppingList.map(item => `
-            <li>${item.name}: ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}</li>
-          `).join('')}
-        </ul>
+      <p><strong>Total Cost:</strong> $${getTotalCost(generatedShoppingList).toFixed(2)}
+         (Budget: $${maxBudget.toFixed(2)} for this shopping trip)
+         — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
 
-        <p><strong>Total Cost:</strong> $${getTotalCost(generatedShoppingList).toFixed(2)}
-           (Budget: $${maxBudget.toFixed(2)} for ${numWeeks} week${numWeeks > 1 ? 's' : ''})
-           — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
+      <button id="view-shopping-list">View Shopping List</button>
+      <button id="back-to-form">Start over</button>
+    `;
 
-        <button id="back-to-form">Start over</button>
-      `;
+    document.getElementById('view-shopping-list')?.addEventListener('click', () => {
+      currentPage = "shopping-list";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
 
-      document.getElementById('back-to-form')?.addEventListener('click', () => {
-        currentPage = "info-form";
-        localStorage.setItem("currentPage", currentPage);
-        render();
+    document.getElementById('back-to-form')?.addEventListener('click', () => {
+      currentPage = "info-form";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
+
+    document.querySelectorAll<HTMLElement>('.meal-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const date = cell.dataset.date!;
+        const mealType = cell.dataset.mealtype as MealSlotType;
+        openMealMenu(date, mealType);
       });
+    });
+    break;
+  }
 
-      document.querySelectorAll<HTMLElement>('.meal-cell').forEach(cell => {
-        cell.addEventListener('click', () => {
-          const date = cell.dataset.date!;
-          const mealType = cell.dataset.mealtype as MealSlotType;
-          openMealMenu(date, mealType);
-        });
-      });
-      break;
-    }
-
-    case "recipe-detail": {
-      if (!selectedMeal || !mealPlanInfo) {
-        appElement.innerHTML = `<h1>No recipe selected</h1><button id="back-to-plan">Back to plan</button>`;
-        document.getElementById('back-to-plan')?.addEventListener('click', () => {
-          currentPage = "meal-plan";
-          localStorage.setItem("currentPage", currentPage);
-          render();
-        });
-        break;
-      }
-
-      const meal = selectedMeal;
-      const originalServings = meal.recipeServings ?? 1;
-      const scaleFactor = mealPlanInfo.familySize / originalServings;
-
-      appElement.innerHTML = `
-        <button id="back-to-plan">← Back to plan</button>
-        <h1>${meal.name}</h1>
-        ${meal.culturalName ? `<p><em>${meal.culturalName}</em></p>` : ''}
-        <p>Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
-           (original recipe serves ${originalServings})</p>
-
-        <h2>Ingredients</h2>
-        <ul>
-          ${meal.ingredients.map(ing => {
-            const scaledSize = ing.amountInfo.size * scaleFactor;
-            return `<li>${scaledSize.toFixed(2)} ${ing.amountInfo.unit} ${ing.name}</li>`;
-          }).join('')}
-        </ul>
-
-        <h2>Steps</h2>
-        <ol>
-          ${meal.steps.map(step => `<li>${step}</li>`).join('')}
-        </ol>
-      `;
-
+  case "recipe-detail": {
+    if (!selectedMeal || !mealPlanInfo) {
+      appElement.innerHTML = `<h1>No recipe selected</h1><button id="back-to-plan">Back to plan</button>`;
       document.getElementById('back-to-plan')?.addEventListener('click', () => {
         currentPage = "meal-plan";
         localStorage.setItem("currentPage", currentPage);
@@ -413,25 +388,88 @@ switch (currentPage) {
       });
       break;
     }
+
+    const meal = selectedMeal;
+    const originalServings = meal.recipeServings ?? 1;
+    const scaleFactor = mealPlanInfo.familySize / originalServings;
+
+    appElement.innerHTML = `
+      <button id="back-to-plan">← Back to plan</button>
+      <h1>${meal.name}</h1>
+      ${meal.culturalName ? `<p><em>${meal.culturalName}</em></p>` : ''}
+      <p>Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
+         (original recipe serves ${originalServings})</p>
+
+      <h2>Ingredients</h2>
+      <ul>
+        ${meal.ingredients.map(ing => {
+          const scaledSize = ing.amountInfo.size * scaleFactor;
+          return `<li>${scaledSize.toFixed(2)} ${ing.amountInfo.unit} ${ing.name}</li>`;
+        }).join('')}
+      </ul>
+
+      <h2>Steps</h2>
+      <ol>
+        ${meal.steps.map(step => `<li>${step}</li>`).join('')}
+      </ol>
+    `;
+
+    document.getElementById('back-to-plan')?.addEventListener('click', () => {
+      currentPage = "meal-plan";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
+    break;
+  }
+
+  case "shopping-list": {
+    if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
+      appElement.innerHTML = `<h1>No shopping list yet</h1><button id="back-to-plan">Back to plan</button>`;
+      document.getElementById('back-to-plan')?.addEventListener('click', () => {
+        currentPage = "meal-plan";
+        localStorage.setItem("currentPage", currentPage);
+        render();
+      });
+      break;
+    }
+
+    appElement.innerHTML = `
+      <button id="back-to-plan">← Back to plan</button>
+      <h1>Shopping List</h1>
+      <p>For your ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date} shopping trip</p>
+
+      <ul>
+        ${generatedShoppingList.map(item => `<li>${item.name}: ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}</li>`).join('')}
+      </ul>
+
+      <p><strong>Total: $${getTotalCost(generatedShoppingList).toFixed(2)}</strong></p>
+    `;
+
+    document.getElementById('back-to-plan')?.addEventListener('click', () => {
+      currentPage = "meal-plan";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
+    break;
+  }
 }
 }
 
 render();
 
-// insert CRUD logic here 
+// insert CRUD logic here
 
-//function for user adding a custom meal 
+//function for user adding a custom meal
 function saveCustomMeal(newMeal: Meal) {
-  const mealList = JSON.parse(localStorage.getItem("custom-meals") ?? "[]"); //if left side is null, use empty arr (right side)
+  const mealList = JSON.parse(localStorage.getItem("custom-meals") ?? "[]");
   mealList.push(newMeal);
-  localStorage.setItem("custom-meals", JSON.stringify(mealList)); //Saves the whole array back to localStorage
+  localStorage.setItem("custom-meals", JSON.stringify(mealList));
 };
 
 function getCustomMeals() {
-  // 1. Fetch the raw JSON string
   const customMealsString = localStorage.getItem("custom-meals");
 
-  if (customMealsString != null) { //
+  if (customMealsString != null) {
     const customMealsObj = JSON.parse(customMealsString);
     console.log(customMealsObj);
     return customMealsObj;
@@ -441,9 +479,4 @@ function getCustomMeals() {
   }
 };
 
-
-// testMeal removed — no longer used for testing (real Mexican recipe data is used instead)
-// const testMeal: Meal = { ... }
-// saveCustomMeal(testMeal);
 console.log(getCustomMeals());
-// console.log(getMealCost(meals[3])); // old cost model, replaced by the pantry-aware generator

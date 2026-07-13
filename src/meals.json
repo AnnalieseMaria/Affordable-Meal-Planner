@@ -119,7 +119,7 @@
       {
         "name": "Frozen Pepper & Onion Blend",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 3341,
         "amountInfo": {
           "size": 0.5,
           "unit": "cup"
@@ -656,7 +656,7 @@
         "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "tomato"
         }
       },
       {
@@ -941,7 +941,7 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
+          "size": 2,
           "unit": "egg"
         }
       },
@@ -964,9 +964,9 @@
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -987,7 +987,7 @@
       "Scramble eggs in oiled pan until just set, set aside.",
       "Stir-fry frozen vegetables in same pan over high heat 3-4 minutes.",
       "Add rice, push everything to the sides, add eggs back in and mix together.",
-      "Add a small splash of low-sodium soy sauce, toss and serve."
+      "Add the soy sauce and toss until evenly coated."
     ],
     "mealPrep": false,
     "region": "China, popularized in Chinese-American restaurants"
@@ -1031,7 +1031,7 @@
       {
         "name": "White Rice",
         "aldiProduct": true,
-        "ingredientId": 4,
+        "ingredientId": 2344,
         "amountInfo": {
           "size": 0.5,
           "unit": "cup"
@@ -1067,7 +1067,7 @@
       {
         "name": "Fresh Ginger, grated",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 1050,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1076,7 +1076,7 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 0.25,
           "unit": "tsp"
@@ -1173,7 +1173,7 @@
         }
       },
       {
-        "name": "Low Sodium Soy Sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": true,
         "ingredientId": 2339,
         "amountInfo": {
@@ -1246,7 +1246,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -1259,7 +1259,7 @@
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": true,
         "ingredientId": 2339,
         "amountInfo": {
@@ -1317,7 +1317,7 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "China, eaten across all regions",
-      "context": "Youtiao are one of China's oldest breakfast foods with records dating back to the Song Dynasty (960\u20131279 AD). Traditionally deep-fried and eaten alongside congee or warm soy milk for dipping, they are sold by street vendors every morning across China. The name literally means 'oil strip.' This baked version captures the shape and flavor while significantly reducing fat."
+      "context": "Youtiao are one of China's oldest breakfast foods with records dating back to the Song Dynasty (960\u20131279 AD). Traditionally deep-fried and eaten alongside congee or warm soy milk for dipping, they are sold by street vendors every morning across China. The name literally means 'oil strip.' This baked version captures the shape and flavor while using significantly less oil."
     },
     "ingredients": [
       {
@@ -1344,15 +1344,15 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
-        "name": "Milk",
+        "name": "Unsweetend Soymilk",
         "aldiProduct": true,
-        "ingredientId": 51,
+        "ingredientId": 307,
         "amountInfo": {
-          "size": 0.25,
+          "size": 1,
           "unit": "cup"
         }
       },
@@ -1362,13 +1362,13 @@
         "ingredientId": 2442,
         "amountInfo": {
           "size": 1,
-          "unit": "tbsp"
+          "unit": "tsp"
         }
       },
       {
         "name": "Salt",
         "aldiProduct": true,
-        "ingredientId": 22,
+        "ingredientId": 2270,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1376,120 +1376,21 @@
       }
     ],
     "steps": [
-      "Preheat oven to 400\u00b0F, line baking sheet with parchment.",
-      "Mix flour, baking powder, and salt in a bowl.",
-      "Whisk egg, milk, and olive oil together, add to dry ingredients and mix into a soft dough.",
-      "Rest dough 15 minutes covered.",
-      "Roll into long sticks about \u00be inch wide, place on baking sheet.",
-      "Brush lightly with olive oil, bake 15-18 minutes until golden and puffed.",
-      "Serve immediately alongside congee or warm soy milk for dipping."
+      "Preheat oven to 400\u00b0F and line a baking sheet with parchment paper.",
+      "In a large bowl, whisk together the flour, baking powder, and salt.",
+      "In a separate bowl, whisk together the egg, 1/4 cup water, and olive oil until combined.",
+      "Pour the wet ingredients into the dry ingredients and mix until a soft dough forms. Cover and let the dough rest for 15 minutes.",
+      "Divide the dough into 8 long strips about 3/4 inch wide and place them on the prepared baking sheet.",
+      "Lightly brush the tops with a small amount of olive oil, if desired, to encourage browning.",
+      "Bake for 15\u201318 minutes, or until puffed and lightly golden.",
+      "Warm the unsweetened soy milk while the youtiao bakes.",
+      "Serve the baked youtiao immediately with the warm unsweetened soy milk for dipping."
     ],
     "mealPrep": false,
     "region": "China \u2014 nationwide"
   },
   {
     "recipeId": 16,
-    "name": "Scallion Pancakes",
-    "recipeServings": 4,
-    "culturalName": "\u8471\u6cb9\u997c \u00b7 C\u014dngy\u00f3ub\u01d0ng",
-    "cuisine": "Chinese",
-    "mealType": [
-      "Breakfast",
-      "Lunch"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 25,
-    "dietType": [
-      "Vegetarian",
-      "Vegan",
-      "Dairy-Free"
-    ],
-    "nutritionHighlights": [
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 280,
-      "protein": 8,
-      "carbs": 42,
-      "fat": 9,
-      "fiber": 4,
-      "sugar": 1,
-      "sodium": 180
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "Northern China and Taiwan",
-      "context": "Scallion pancakes (cong you bing) are a beloved staple of northern Chinese and Taiwanese street food culture, sold at night markets and breakfast stalls. Unlike Western pancakes they are made from dough rather than batter, rolled in layers with scallions and a small amount of fat to create the characteristic flaky texture. They have been eaten in China for centuries and remain one of the most recognized Chinese street foods internationally."
-    },
-    "ingredients": [
-      {
-        "name": "All-Purpose Flour",
-        "aldiProduct": true,
-        "ingredientId": 2387,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Fresh Scallions",
-        "aldiProduct": true,
-        "ingredientId": 1032,
-        "amountInfo": {
-          "size": 4,
-          "unit": "stalk"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Sesame Oil",
-        "aldiProduct": true,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Low-sodium soy sauce",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Rice Vinegar",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      }
-    ],
-    "steps": [
-      "Mix flour with \u00bd cup boiling water, knead into smooth dough, rest 20 minutes covered.",
-      "Divide into 4 balls, roll each out thin.",
-      "Brush with a tiny amount of sesame oil, scatter chopped scallions across surface.",
-      "Roll dough up like a scroll, then coil into a spiral, flatten again with rolling pin.",
-      "Pan fry in light olive oil over medium heat 2-3 minutes per side until golden and crispy.",
-      "Mix soy sauce and rice vinegar for dipping sauce and serve alongside."
-    ],
-    "mealPrep": false,
-    "region": "Northern China and Taiwan"
-  },
-  {
-    "recipeId": 17,
     "name": "Scallion Pancakes with Sesame-Ginger Tofu",
     "recipeServings": 4,
     "culturalName": "Cong You Bing with Tofu Dip",
@@ -1523,7 +1424,7 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "China",
-      "context": "Scallion pancakes are a beloved Chinese street food. This version is adapted with a high-protein sesame-ginger tofu dipping sauce in place of the traditional plain dip."
+      "context": "Scallion pancakes are a beloved Chinese street food known for their crisp, flaky layers and savory scallion flavor. They are often enjoyed on their own or with a simple soy-based dipping sauce. This version pairs the pancakes with a high-protein sesame-ginger tofu dip, creating a nutritious adaptation while preserving the traditional pancake-making technique."
     },
     "ingredients": [
       {
@@ -1536,7 +1437,7 @@
         }
       },
       {
-        "name": "Scallions",
+        "name": "Fresh Scallions",
         "aldiProduct": true,
         "ingredientId": 1032,
         "amountInfo": {
@@ -1547,7 +1448,7 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 2,
           "unit": "tsp"
@@ -1556,34 +1457,25 @@
       {
         "name": "Firm Tofu",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 1138,
         "amountInfo": {
           "size": 14,
           "unit": "oz"
         }
       },
       {
-        "name": "Soy Sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 2339,
         "amountInfo": {
           "size": 2,
           "unit": "tbsp"
         }
       },
       {
-        "name": "Fresh Ginger",
+        "name": "Fresh Ginger, grated",
         "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Rice Vinegar",
-        "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 1050,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -1592,16 +1484,16 @@
       {
         "name": "Garlic",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 1070,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "clove"
         }
       },
       {
         "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 2280,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -1610,7 +1502,7 @@
       {
         "name": "Salt",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 2270,
         "amountInfo": {
           "size": 0.25,
           "unit": "tsp"
@@ -1618,16 +1510,16 @@
       }
     ],
     "steps": [
-      "Mix flour with 3/4 cup boiling water and knead into a smooth dough. Rest 20 minutes.",
-      "Crumble tofu and blend with soy sauce, sesame oil, ginger, garlic, and rice vinegar to make the dipping sauce.",
-      "Divide dough into 4 portions. Roll each into a thin circle, brush with sesame oil, scatter scallions, roll into a log then coil and flatten.",
-      "Heat vegetable oil in a pan over medium heat. Cook each pancake 2-3 minutes per side until golden and crispy.",
-      "Serve hot with sesame-ginger tofu dip on the side."
+      "Mix the flour with 3/4 cup boiling water and the salt until a shaggy dough forms. Knead until smooth, then cover and let rest for 20 minutes.",
+      "Blend the tofu, soy sauce, sesame oil, grated ginger, and minced garlic with 1\u20132 tablespoons of water until smooth and creamy. Add more water as needed to reach your desired consistency. If available, add 1 tablespoon rice vinegar for a brighter, more traditional flavor.",
+      "Divide the dough into 4 equal portions. Roll each into a thin circle, brush lightly with sesame oil, sprinkle evenly with the scallions, roll into a log, coil into a spiral, and flatten into a pancake.",
+      "Heat the vegetable oil in a skillet over medium heat. Cook each pancake for 2\u20133 minutes per side until golden brown and crispy, adding more vegetable oil as needed between batches.",
+      "Serve the scallion pancakes immediately with the sesame-ginger tofu dip.."
     ],
     "mealPrep": false
   },
   {
-    "recipeId": 18,
+    "recipeId": 17,
     "name": "Vegetable Congee Bowl",
     "recipeServings": 2,
     "culturalName": "\u852c\u83dc\u7ca5 \u00b7 Sh\u016bc\u00e0i Zh\u014du",
@@ -1664,9 +1556,9 @@
     },
     "ingredients": [
       {
-        "name": "Instant Brown Rice",
+        "name": "Instant White Rice",
         "aldiProduct": true,
-        "ingredientId": 3,
+        "ingredientId": 2344,
         "amountInfo": {
           "size": 0.5,
           "unit": "cup"
@@ -1696,7 +1588,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -1720,7 +1612,7 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1728,18 +1620,18 @@
       }
     ],
     "steps": [
-      "Simmer brown rice (1/2 cup dry) in broth 35-40 minutes until creamy, stirring occasionally.",
-      "Soft boil egg separately: 6-7 minutes in boiling water, transfer to ice bath, peel and halve.",
-      "Saut\u00e9 frozen vegetables in olive oil 3 minutes with a pinch of grated ginger.",
+      "Simmer 1/2 cup dry white rice in the vegetable broth for 35-40 minutes until creamy, stirring occasionally.",
+      "Soft boil egg separately: 7 minutes in boiling water, transfer to ice bath, peel and halve.",
+      "Saut\u00e9 frozen vegetables for 3-4 minutes with the grated ginger until heated through.",
       "Ladle congee into bowls, arrange egg halves and vegetables on top.",
-      "Garnish with scallions (sliced) and a drizzle of sesame oil."
+      "Garnish with scallions (sliced) and drizzle Drizzle with the sesame oil just before serving."
     ],
     "mealPrep": false,
     "region": "Southern China \u2014 Guangdong and Fujian provinces"
   },
   {
-    "recipeId": 19,
-    "name": "Egg & Vegetable Stir Fry",
+    "recipeId": 18,
+    "name": "Tomato & Egg Stir Fry",
     "recipeServings": 2,
     "culturalName": "\u852c\u83dc\u7092\u86cb \u00b7 Sh\u016bc\u00e0i Ch\u01ceo D\u00e0n",
     "cuisine": "Chinese",
@@ -1778,16 +1670,16 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
-          "size": 1,
-          "unit": "unit"
+          "size": 2,
+          "unit": "tomato"
         }
       },
       {
@@ -1800,9 +1692,9 @@
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -1818,9 +1710,9 @@
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2339,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1829,26 +1721,34 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
+          "unit": "tsp"
+        }
+      },
+      {
+        "name": "Sugar",
+        "aldiProduct": true,
+        "ingredientId": 2408,
+        "amountInfo": {
+          "size": 0.5,
           "unit": "tsp"
         }
       }
     ],
     "steps": [
-      "Cook brown rice per package directions, set aside.",
-      "Whisk eggs with a pinch of salt, scramble in hot oiled pan until just set, set aside.",
-      "In same pan over high heat, cook chopped tomatoes 3-4 minutes until softened and juicy.",
-      "Return eggs to pan, toss everything together quickly.",
-      "Add scallions and a splash of soy sauce, toss off heat.",
-      "Serve over rice with a drizzle of sesame oil."
+      "Cook the white or brown rice according to the package directions and set aside.",
+      "Whisk the eggs with a pinch of salt. Heat the vegetable oil in a skillet over medium-high heat and cook the eggs until just set. Transfer to a plate.",
+      "Add the chopped tomatoes and sugar to the same skillet. Cook for 3-5 minutes, gently pressing the tomatoes until they release their juices and form a light sauce.",
+      "Return the eggs to the skillet and gently fold them into the tomatoes. Stir in the soy sauce and cook for 30 seconds.",
+      "Sprinkle with the sliced scallions and serve over the cooked rice. Drizzle with the sesame oil just before serving."
     ],
     "mealPrep": false,
     "region": "China \u2014 nationwide"
   },
   {
-    "recipeId": 20,
+    "recipeId": 19,
     "name": "Brown Rice Congee with Toppings",
     "recipeServings": 2,
     "culturalName": "\u7cd9\u7c73\u7ca5 \u00b7 C\u0101om\u01d0 Zh\u014du",
@@ -1906,12 +1806,12 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "unit"
+          "size": 2,
+          "unit": "egg"
         }
       },
       {
-        "name": "Frozen Spinach or Broccoli",
+        "name": "Frozen Spinach",
         "aldiProduct": true,
         "ingredientId": 1508,
         "amountInfo": {
@@ -1931,7 +1831,7 @@
       {
         "name": "Fresh Ginger, grated",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 1050,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1940,7 +1840,7 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -1958,7 +1858,7 @@
     "region": "Southern China \u2014 Guangdong and Fujian provinces"
   },
   {
-    "recipeId": 21,
+    "recipeId": 20,
     "name": "Marbled Tea Eggs",
     "recipeServings": 3,
     "culturalName": "\u8336\u53f6\u86cb \u00b7 Ch\u00e1 Y\u00e8 D\u00e0n",
@@ -1992,7 +1892,7 @@
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "China \u2014 sold at convenience stores, street stalls, and train stations nationwide",
-      "context": "Tea eggs are one of the most iconic Chinese snack foods, recognizable by their beautiful cracked marble pattern from the tea-and-spice braising liquid seeping through cracked shells. They are sold warm from large pots at virtually every 7-Eleven in Taiwan and at train station vendors across mainland China. The marbling pattern is both decorative and functional \u2014 it means the flavor has fully penetrated the egg."
+      "context": "Tea eggs are one of the most iconic Chinese snack foods, recognized by their beautiful cracked marble pattern created as the tea-and-spice braising liquid seeps through the shell. They are commonly sold at convenience stores, street stalls, and train stations throughout China and Taiwan. The marbling is both decorative and a sign that the flavorful braising liquid has fully infused the egg."
     },
     "ingredients": [
       {
@@ -2001,7 +1901,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 6,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -2010,11 +1910,11 @@
         "ingredientId": 2752,
         "amountInfo": {
           "size": 2,
-          "unit": "bag"
+          "unit": "tea bag"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
         "ingredientId": 2339,
         "amountInfo": {
@@ -2028,7 +1928,7 @@
         "ingredientId": 2596,
         "amountInfo": {
           "size": 1,
-          "unit": "tsp"
+          "unit": "stick"
         }
       },
       {
@@ -2044,15 +1944,15 @@
     "steps": [
       "Hard boil eggs 8 minutes, transfer to ice bath to cool.",
       "Gently tap each egg all over with the back of a spoon to create cracks \u2014 do not peel.",
-      "Combine 3 cups water, soy sauce, tea bags, cinnamon, and pepper in a pot, bring to boil.",
+      "Combine 3 cups water, soy sauce, tea bags, cinnamon stick, and black pepper in a pot and bring to a boil.",
       "Add cracked eggs to the braising liquid, simmer on low 30 minutes.",
-      "Turn off heat, let eggs sit in liquid at least 2 hours (overnight is better).",
+      "Turn off the heat and let the eggs cool in the braising liquid for at least 2 hours, or refrigerate overnight for the best flavor..",
       "Peel to reveal the marble pattern. Store in braising liquid in fridge up to 5 days."
     ]
   },
   {
-    "recipeId": 22,
-    "name": "Egg & Cabbage Dumplings (Vegetarian)",
+    "recipeId": 21,
+    "name": "Egg & Spinach Dumplings",
     "recipeServings": 4,
     "culturalName": "\u7d20\u997a\u5b50 \u00b7 S\u00f9 Ji\u01ceozi",
     "cuisine": "Chinese",
@@ -2084,7 +1984,7 @@
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "Northern China \u2014 vegetarian dumpling fillings are common in Buddhist and everyday cooking",
-      "context": "Vegetarian dumplings with egg and vegetable fillings are a staple of Chinese Buddhist cuisine and widely eaten during religious observances when meat is avoided. Egg and chive (\u97ed\u83dc\u9e21\u86cb) is one of the most classic and beloved vegetarian dumpling combinations across all of China."
+      "context": "Vegetarian dumplings with egg and vegetable fillings are a staple of Chinese Buddhist cuisine and widely eaten during religious observances when meat is avoided."
     },
     "ingredients": [
       {
@@ -2101,16 +2001,16 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 2,
-          "unit": "unit"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
-        "name": "Frozen Spinach or Cabbage",
+        "name": "Frozen Spinach",
         "aldiProduct": true,
         "ingredientId": 1508,
         "amountInfo": {
-          "size": 1,
+          "size": 1.5,
           "unit": "cup"
         }
       },
@@ -2119,23 +2019,23 @@
         "aldiProduct": true,
         "ingredientId": 1032,
         "amountInfo": {
-          "size": 3,
+          "size": 4,
           "unit": "stalk"
         }
       },
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2339,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -2144,27 +2044,26 @@
       {
         "name": "Fresh Ginger, grated",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 1050,
         "amountInfo": {
-          "size": 0.5,
+          "size": 1,
           "unit": "tsp"
         }
       }
     ],
     "steps": [
-      "Mix flour with \u00bd cup warm water, knead into smooth dough, rest covered 30 minutes.",
-      "Scramble eggs, chop finely once cooled. Squeeze all moisture from spinach or cabbage.",
-      "Combine eggs, greens, minced scallions, sesame oil, soy sauce, and ginger for filling.",
-      "Roll dough into a log, cut into 20 pieces, roll each into a thin circle.",
-      "Place 1 tsp filling in center, fold and pleat edges to seal.",
-      "Boil 6-8 minutes until they float and skins are translucent.",
-      "Freeze uncooked dumplings flat on a tray for easy meal prep \u2014 cook from frozen."
+      "Mix the flour with the yeast and 3/4 cup warm water until a soft dough forms. Knead until smooth, then cover and let rise for about 30 minutes, or until slightly puffed.",
+      "Lightly scramble the eggs until just set, then let them cool slightly and chop into small pieces. Squeeze all excess moisture from the thawed spinach and combine it with the eggs, scallions, sesame oil, soy sauce, and grated ginger to make the filling.",
+      "Divide the dough into 20 equal pieces and roll each into a small circle.",
+      "Place about 1 tablespoon of filling in the center of each wrapper. Gather the edges, pinch tightly to seal, and gently flatten the dumpling slightly.",
+      "Bring a large pot of water to a boil. Add the dumplings and cook for 6-8 minutes, or until they float and the filling is heated through.",
+      "Serve immediately, or freeze the uncooked dumplings in a single layer before transferring them to a freezer-safe container. Cook directly from frozen when ready to eat."
     ]
   },
   {
-    "recipeId": 23,
+    "recipeId": 22,
     "name": "Scallion Oil Noodles",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u8471\u6cb9\u62cc\u9762 \u00b7 C\u014dngy\u00f3u B\u00e0nmi\u00e0n",
     "cuisine": "Chinese",
     "region": "Shanghai",
@@ -2189,20 +2088,20 @@
       "fat": 14,
       "fiber": 3,
       "sugar": 4,
-      "sodium": 490
+      "sodium": 1000
     },
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "Shanghai",
-      "context": "Scallion oil noodles are one of Shanghai's most beloved everyday dishes \u2014 deceptively simple, using only a handful of ingredients, but deeply flavorful from the slow-cooked scallion oil. In Shanghai households this is considered comfort food at its purest. The key is patience \u2014 the scallions must be cooked slowly in oil until deeply golden and slightly crispy before the sauce is made."
+      "context": "Scallion oil noodles are one of Shanghai's most beloved everyday dishes\u2014deceptively simple, using only a handful of ingredients but deeply flavorful from the slow-cooked scallion oil. In Shanghai households this is considered comfort food at its purest. The key is patience\u2014the scallions must be cooked slowly in oil until deeply golden and slightly crispy before the sauce is made. Traditional versions use both light and dark soy sauce; this ALDI-friendly adaptation uses soy sauce while preserving the signature scallion oil flavor."
     },
     "ingredients": [
       {
-        "name": "Whole Wheat Pasta or Chinese Noodles",
+        "name": "Whole Wheat Spaghetti",
         "aldiProduct": true,
-        "ingredientId": 1594,
+        "ingredientId": 2165,
         "amountInfo": {
-          "size": 4,
+          "size": 8,
           "unit": "oz"
         }
       },
@@ -2216,36 +2115,27 @@
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
-          "size": 3,
+          "size": 2.5,
           "unit": "tbsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2339,
         "amountInfo": {
-          "size": 2,
+          "size": 2.5,
           "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Dark soy sauce",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
         }
       },
       {
         "name": "Sugar",
         "aldiProduct": true,
-        "ingredientId": 370,
+        "ingredientId": 2408,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -2253,16 +2143,17 @@
       }
     ],
     "steps": [
-      "Cook scallion pieces in olive oil over medium-low heat 15 minutes, stirring occasionally, until deep golden and fragrant \u2014 do not rush this step.",
-      "Remove scallions, add soy sauce, dark soy sauce, and sugar to the scallion oil in the pan, stir to combine.",
-      "Cook noodles per package directions, drain well.",
-      "Toss hot noodles in the scallion sauce until fully coated.",
-      "Top with the crispy scallion pieces and serve immediately."
+      "Cook the whole wheat spaghetti according to the package directions until al dente. Reserve 2 tablespoons of the pasta cooking water, then drain.",
+      "Cut the scallions into 2- to 3-inch pieces, keeping the white and green parts separate if possible.",
+      "Heat the vegetable oil over medium-low heat. Add the white parts of the scallions and cook for about 5 minutes. Add the green parts and continue cooking for another 8-10 minutes until all of the scallions are deeply golden and lightly crispy.",
+      "Reduce the heat to low and stir in the soy sauce and sugar until the sugar dissolves. If available, add 1 teaspoon dark soy sauce for a more traditional color and deeper flavor.",
+      "Add the cooked noodles and the reserved pasta water to the pan, tossing until evenly coated.",
+      "Top with the crispy scallions and serve immediately."
     ]
   },
   {
-    "recipeId": 24,
-    "name": "Stuffed Flatbread",
+    "recipeId": 23,
+    "name": "Beef Stuffed Flatbread",
     "recipeServings": 4,
     "culturalName": "\u9985\u997c \u00b7 Xi\u00e0nb\u01d0ng",
     "cuisine": "Chinese",
@@ -2318,32 +2209,32 @@
         "aldiProduct": true,
         "ingredientId": 1032,
         "amountInfo": {
-          "size": 3,
+          "size": 4,
           "unit": "stalk"
         }
       },
       {
-        "name": "Frozen Cabbage or Spinach",
+        "name": "Cabbage, per lb",
         "aldiProduct": true,
-        "ingredientId": 1508,
+        "ingredientId": 1085,
         "amountInfo": {
-          "size": 0.5,
+          "size": 2,
           "unit": "cup"
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
-          "size": 2,
+          "size": 1,
           "unit": "tbsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2339,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -2352,7 +2243,7 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -2363,22 +2254,22 @@
         "aldiProduct": false,
         "ingredientId": 1050,
         "amountInfo": {
-          "size": 0.5,
+          "size": 1,
           "unit": "tsp"
         }
       }
     ],
     "steps": [
-      "Mix flour with \u00bd cup boiling water, knead into smooth soft dough, rest 20 minutes covered.",
-      "Combine ground meat, scallions, cabbage, soy sauce, sesame oil, and ginger for filling.",
-      "Divide dough into 8 pieces, roll each into a thin circle.",
-      "Place 1-2 tbsp filling in center, gather dough edges and pinch to seal, then flatten gently into a disc.",
-      "Pan fry in olive oil over medium heat 3-4 minutes per side until golden brown and cooked through.",
-      "Cooked flatbreads reheat well in a pan or oven \u2014 good for meal prep."
+      "Mix the flour with 3/4 cup boiling water until a shaggy dough forms. Knead until smooth, then cover and let rest for 20 minutes.",
+      "Lightly salt the finely chopped cabbage and let it sit for 10 minutes. Squeeze out as much excess moisture as possible, then combine it with the ground beef, scallions, soy sauce, sesame oil, and grated ginger until well mixed.",
+      "Divide the dough into 8 equal pieces and roll each into a thin circle.",
+      "Place about 2 tablespoons of filling in the center of each dough round. Gather the edges over the filling, pinch tightly to seal, then gently flatten into a disc.",
+      "Heat the vegetable oil in a large skillet over medium heat. Cook the flatbreads for 3-4 minutes per side until golden brown and the beef is fully cooked.",
+      "Serve warm, or refrigerate in an airtight container for up to 3 days and reheat in a skillet until warmed through."
     ]
   },
   {
-    "recipeId": 25,
+    "recipeId": 24,
     "name": "Stuffed Flatbread (Vegetarian)",
     "recipeServings": 4,
     "culturalName": "\u7d20\u9985\u997c \u00b7 S\u00f9 Xi\u00e0nb\u01d0ng",
@@ -2428,16 +2319,16 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 2,
-          "unit": "unit"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
-        "name": "Frozen Spinach or Cabbage",
+        "name": "Cabbage, per lb",
         "aldiProduct": true,
-        "ingredientId": 1508,
+        "ingredientId": 1085,
         "amountInfo": {
-          "size": 0.5,
+          "size": 2,
           "unit": "cup"
         }
       },
@@ -2446,32 +2337,41 @@
         "aldiProduct": true,
         "ingredientId": 1032,
         "amountInfo": {
-          "size": 3,
+          "size": 4,
           "unit": "stalk"
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
         "ingredientId": 2442,
         "amountInfo": {
-          "size": 2,
+          "size": 1,
           "unit": "tbsp"
         }
       },
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2339,
+        "amountInfo": {
+          "size": 1,
+          "unit": "tbsp"
+        }
+      },
+      {
+        "name": "Fresh Ginger, grated",
+        "aldiProduct": false,
+        "ingredientId": 1050,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -2479,16 +2379,17 @@
       }
     ],
     "steps": [
-      "Mix flour with \u00bd cup boiling water, knead into smooth dough, rest 20 minutes.",
-      "Combine chopped scrambled eggs, squeezed greens, scallions, sesame oil, and soy sauce.",
-      "Divide dough into 8 pieces, roll each thin.",
-      "Fill, seal, and flatten each into a disc.",
-      "Pan fry in olive oil 3-4 minutes per side until golden.",
-      "Reheat in a dry pan or oven \u2014 good for meal prep."
+      "Mix the flour with 3/4 cup boiling water until a shaggy dough forms. Knead until smooth, then cover and let rest for 20 minutes.",
+      "Lightly scramble the eggs until just set, then let cool slightly and chop into small pieces.",
+      "Lightly salt the finely chopped cabbage and let it sit for 10 minutes. Squeeze out as much excess moisture as possible, then combine it with the eggs, cabbage, scallions, grated ginger, soy sauce, and sesame oil until well mixed.",
+      "Divide the dough into 8 equal pieces and roll each into a thin circle.",
+      "Place about 2 tablespoons of filling in the center of each dough round. Gather the edges over the filling, pinch tightly to seal, then gently flatten into a disc.",
+      "Heat the vegetable oil in a large skillet over medium heat. Cook the flatbreads for 3-4 minutes per side until golden brown and crispy, adding a little more oil only if the skillet becomes dry.",
+      "Serve warm, or refrigerate in an airtight container for up to 3 days and reheat in a skillet until warmed through."
     ]
   },
   {
-    "recipeId": 26,
+    "recipeId": 25,
     "name": "Pan-Fried Vegetable Pies",
     "recipeServings": 4,
     "culturalName": "\u7d20\u714e\u5305 \u00b7 S\u00f9 Ji\u0101nb\u0101o",
@@ -2521,7 +2422,7 @@
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "Shanghai and northern China",
-      "context": "Vegetarian pan-fried buns are common in Chinese Buddhist cuisine and at vegetarian restaurants across China. The filling typically uses a combination of egg, glass noodles, and finely chopped vegetables to create a savory, satisfying interior without meat."
+      "context": "Vegetarian pan-fried buns (S\u00f9 Ji\u0101nb\u0101o) are enjoyed in Chinese Buddhist cuisine, vegetarian restaurants, and home kitchens across China. While Shanghai is best known for pork-filled sh\u0113ngji\u0101nb\u0101o, vegetarian versions commonly feature eggs, tofu, leafy vegetables, mushrooms, or glass noodles. This ALDI-friendly adaptation uses eggs, spinach, and scallions while preserving the traditional pan-frying and steaming technique."
     },
     "ingredients": [
       {
@@ -2538,16 +2439,16 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 2,
-          "unit": "unit"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
-        "name": "Frozen Cabbage or Spinach",
+        "name": "Frozen Spinach",
         "aldiProduct": true,
         "ingredientId": 1508,
         "amountInfo": {
-          "size": 0.5,
+          "size": 1.5,
           "unit": "cup"
         }
       },
@@ -2556,14 +2457,14 @@
         "aldiProduct": true,
         "ingredientId": 1032,
         "amountInfo": {
-          "size": 3,
+          "size": 4,
           "unit": "stalk"
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
           "size": 2,
           "unit": "tbsp"
@@ -2581,14 +2482,14 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
         "ingredientId": 2339,
         "amountInfo": {
@@ -2598,16 +2499,17 @@
       }
     ],
     "steps": [
-      "Mix flour with yeast and \u00bd cup warm water, rest 30 minutes until slightly risen.",
-      "Combine eggs, squeezed greens, scallions, sesame oil, and soy sauce for filling.",
-      "Divide dough into 12 pieces, fill and seal each.",
-      "Place sealed side down in oiled pan, cook 3 minutes until golden on bottom.",
-      "Add \u00bc cup water, cover and steam 8 minutes.",
-      "Uncover and crisp for 1-2 more minutes. Refrigerate up to 3 days."
+      "Mix the flour, yeast, and 3/4 cup warm water until a soft dough forms. Knead until smooth, then cover and let rise for about 30 minutes, or until slightly puffed.",
+      "Lightly scramble the eggs until just set. Let cool slightly, then combine with the thawed, squeezed dry spinach, chopped scallions, sesame oil, and soy sauce to make the filling.",
+      "Divide the dough into 12 equal pieces. Roll each into a small circle, add a spoonful of filling, and pinch the edges tightly to seal.",
+      "Heat 1 tablespoon vegetable oil in a large skillet over medium heat. Arrange the buns sealed-side down and cook for about 3 minutes, or until the bottoms are golden brown.",
+      "Carefully add 1/4 cup water to the skillet, cover immediately, and steam for 8 minutes.",
+      "Remove the lid and continue cooking for 1-2 minutes, adding the remaining 1 tablespoon vegetable oil if needed, until the bottoms are crisp again.",
+      "Serve warm, or refrigerate in an airtight container for up to 3 days and reheat in a skillet before serving."
     ]
   },
   {
-    "recipeId": 27,
+    "recipeId": 26,
     "name": "Shrimp & Vegetable Stir Fry",
     "recipeServings": 2,
     "culturalName": "\u867e\u4ec1\u7092\u852c\u83dc \u00b7 Xi\u0101r\u00e9n Ch\u01ceo Sh\u016bc\u00e0i",
@@ -2661,9 +2563,9 @@
         }
       },
       {
-        "name": "Instant Brown Rice",
+        "name": "Instant White Rice",
         "aldiProduct": true,
-        "ingredientId": 3,
+        "ingredientId": 2344,
         "amountInfo": {
           "size": 1,
           "unit": "cup"
@@ -2672,14 +2574,14 @@
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
         "ingredientId": 2339,
         "amountInfo": {
@@ -2688,18 +2590,18 @@
         }
       },
       {
-        "name": "Garlic Powder",
+        "name": "Fresh Ginger, grated",
         "aldiProduct": true,
-        "ingredientId": 2164,
+        "ingredientId": 1050,
         "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
+          "size": 1,
+          "unit": "tbsp"
         }
       },
       {
-        "name": "Olive Oil",
+        "name": "Vegetable Oil",
         "aldiProduct": true,
-        "ingredientId": 2442,
+        "ingredientId": 2280,
         "amountInfo": {
           "size": 1,
           "unit": "tbsp"
@@ -2707,17 +2609,16 @@
       }
     ],
     "steps": [
-      "Thaw shrimp under cold running water, pat dry.",
-      "Heat olive oil in a pan over high heat until very hot.",
-      "Add shrimp, cook 1-2 minutes per side until pink. Remove and set aside.",
-      "Add frozen vegetables to the same pan, stir fry 4-5 minutes.",
-      "Return shrimp to pan, add soy sauce, sesame oil, and garlic powder. Toss for 1 minute.",
-      "Serve over brown rice."
+      "Cook the instant white rice according to the package directions and set aside.",
+      "Heat the vegetable oil in a large skillet or wok over medium-high heat. Add the shrimp and cook for 1-2 minutes per side until just pink. Transfer to a plate.",
+      "Add the stir-fry vegetables and grated ginger to the skillet. Stir-fry for 3-4 minutes until the vegetables are crisp-tender.",
+      "Return the shrimp to the skillet and stir in the soy sauce. Toss everything together and cook for 30 seconds, just until the shrimp are heated through.",
+      "Serve over the cooked rice and drizzle with the sesame oil just before serving."
     ],
     "mealPrep": false
   },
   {
-    "recipeId": 28,
+    "recipeId": 27,
     "name": "Fish Congee",
     "recipeServings": 2,
     "culturalName": "\u9c7c\u7ca5 \u00b7 Y\u00fa Zh\u014du",
@@ -2755,11 +2656,11 @@
     },
     "ingredients": [
       {
-        "name": "Instant Brown Rice",
+        "name": "Instant White Rice",
         "aldiProduct": true,
-        "ingredientId": 3,
+        "ingredientId": 2344,
         "amountInfo": {
-          "size": 0.5,
+          "size": 1,
           "unit": "cup"
         }
       },
@@ -2777,35 +2678,35 @@
         "aldiProduct": true,
         "ingredientId": 2179,
         "amountInfo": {
-          "size": 3,
+          "size": 4,
           "unit": "cup"
         }
       },
       {
-        "name": "Fresh Ginger",
+        "name": "Fresh Ginger, grated",
         "aldiProduct": true,
         "ingredientId": 1050,
         "amountInfo": {
           "size": 1,
-          "unit": "tsp"
+          "unit": "tbsp"
         }
       },
       {
         "name": "Sesame Oil",
         "aldiProduct": true,
-        "ingredientId": null,
+        "ingredientId": 3340,
         "amountInfo": {
           "size": 0.5,
           "unit": "tsp"
         }
       },
       {
-        "name": "Low-sodium soy sauce",
+        "name": "Reduced Sodium Soy Sauce",
         "aldiProduct": false,
         "ingredientId": 2339,
         "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
+          "size": 2,
+          "unit": "tsp"
         }
       },
       {
@@ -2819,17 +2720,17 @@
       }
     ],
     "steps": [
-      "Bring broth to a boil, add rice and ginger. Reduce heat to low.",
-      "Simmer 20 minutes, stirring occasionally, until rice breaks down into a thick porridge.",
-      "Slice thawed tilapia into bite-sized pieces, add to congee.",
-      "Cook 3-4 minutes until fish is opaque and flakes easily.",
-      "Season with soy sauce and sesame oil.",
-      "Top with sliced scallions and serve hot."
+      "Bring the chicken broth to a boil. Add the white rice and grated ginger, then reduce the heat to low.",
+      "Simmer for 35-40 minutes, stirring occasionally, until the rice breaks down into a thick, creamy porridge.",
+      "Cut the thawed tilapia into bite-sized pieces and gently stir them into the hot congee.",
+      "Cook for 3-4 minutes, or until the fish is opaque and flakes easily with a fork.",
+      "Stir in the soy sauce and sesame oil.",
+      "Garnish with the sliced scallions and serve immediately."
     ],
     "mealPrep": false
   },
   {
-    "recipeId": 29,
+    "recipeId": 28,
     "name": "Chicken Tostadas",
     "recipeServings": 2,
     "culturalName": "Tostadas de Pollo",
@@ -2937,7 +2838,7 @@
     ]
   },
   {
-    "recipeId": 30,
+    "recipeId": 29,
     "name": "Black Bean Tostadas",
     "recipeServings": 2,
     "culturalName": "Tostadas de Frijol Negro",
@@ -3031,7 +2932,7 @@
     ]
   },
   {
-    "recipeId": 31,
+    "recipeId": 30,
     "name": "Atole",
     "recipeServings": 2,
     "culturalName": "Atole de Vainilla",
@@ -3122,7 +3023,7 @@
     ]
   },
   {
-    "recipeId": 32,
+    "recipeId": 31,
     "name": "Vegan Atole",
     "recipeServings": 2,
     "culturalName": "Atole de Vainilla (Vegano)",
@@ -3215,7 +3116,7 @@
     ]
   },
   {
-    "recipeId": 33,
+    "recipeId": 32,
     "name": "Mexican Breakfast Tacos",
     "recipeServings": 1,
     "culturalName": "Tacos de Desayuno",
@@ -3322,7 +3223,7 @@
     ]
   },
   {
-    "recipeId": 34,
+    "recipeId": 33,
     "name": " Migas with Cheese",
     "recipeServings": 2,
     "culturalName": "Migas con Huevo",
@@ -3422,7 +3323,7 @@
     ]
   },
   {
-    "recipeId": 35,
+    "recipeId": 34,
     "name": "Migas",
     "recipeServings": 2,
     "culturalName": "Migas con Huevo",
@@ -3513,7 +3414,7 @@
     ]
   },
   {
-    "recipeId": 36,
+    "recipeId": 35,
     "name": "Migas with Low-Carb Tortilla (Lower Calorie)",
     "recipeServings": 1,
     "culturalName": "Migas Ligeras",
@@ -3613,7 +3514,7 @@
     ]
   },
   {
-    "recipeId": 37,
+    "recipeId": 36,
     "name": "Chicken Quesadillas",
     "recipeServings": 2,
     "culturalName": "Quesadillas de Pollo",
@@ -3702,7 +3603,7 @@
     ]
   },
   {
-    "recipeId": 38,
+    "recipeId": 37,
     "name": "Black Bean & Cheese Quesadillas (Vegetarian)",
     "recipeServings": 1,
     "culturalName": "Quesadillas de Frijol Negro",
@@ -3803,7 +3704,7 @@
     ]
   },
   {
-    "recipeId": 39,
+    "recipeId": 38,
     "name": "Chicken Fajitas & Spanish Rice",
     "recipeServings": 2,
     "culturalName": "Fajitas de Pollo",
@@ -3895,7 +3796,7 @@
     ]
   },
   {
-    "recipeId": 40,
+    "recipeId": 39,
     "name": "Vegetable Fajitas",
     "recipeServings": 2,
     "culturalName": "Fajitas de Verduras",
@@ -3946,7 +3847,7 @@
       },
       {
         "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
+        "aldiProduct": true,
         "ingredientId": 3341,
         "amountInfo": {
           "size": 14,
@@ -3990,7 +3891,7 @@
     ]
   },
   {
-    "recipeId": 41,
+    "recipeId": 40,
     "name": "Chicken Tortilla Soup",
     "recipeServings": 4,
     "culturalName": "Sopa Azteca",
@@ -4137,7 +4038,7 @@
     ]
   },
   {
-    "recipeId": 42,
+    "recipeId": 41,
     "name": "Vegetable Tortilla Soup",
     "recipeServings": 4,
     "culturalName": "Sopa Azteca Vegetariana",
@@ -4259,7 +4160,7 @@
     ]
   },
   {
-    "recipeId": 43,
+    "recipeId": 42,
     "name": "Gluten-Free Chicken Fajita Bowl",
     "recipeServings": 4,
     "culturalName": "Bowl de Fajita Sin Gluten",
@@ -4361,7 +4262,7 @@
     ]
   },
   {
-    "recipeId": 44,
+    "recipeId": 43,
     "name": "Baja Fish Tacos",
     "recipeServings": 4,
     "culturalName": "Tacos de Pescado Estilo Baja",
@@ -4499,7 +4400,7 @@
     ]
   },
   {
-    "recipeId": 45,
+    "recipeId": 44,
     "name": "Shrimp Tacos",
     "recipeServings": 3,
     "culturalName": "Tacos de Camar\u00f3n",
@@ -4610,7 +4511,7 @@
     ]
   },
   {
-    "recipeId": 46,
+    "recipeId": 45,
     "name": "Caldo de Camar\u00f3n",
     "recipeServings": 4,
     "culturalName": "Caldo de Camar\u00f3n",
@@ -4703,7 +4604,7 @@
         }
       },
       {
-        "name": "White Corn Tortillas, 100 count",
+        "name": "Corn Tortillas",
         "aldiProduct": true,
         "ingredientId": 1633,
         "amountInfo": {
@@ -4750,7 +4651,7 @@
     ]
   },
   {
-    "recipeId": 47,
+    "recipeId": 46,
     "name": "Tilapia Tostadas",
     "recipeServings": 2,
     "culturalName": "Tostadas de Tilapia",
@@ -4890,282 +4791,7 @@
     ]
   },
   {
-    "recipeId": 48,
-    "name": "Shrimp and Grits",
-    "recipeServings": null,
-    "culturalName": "Shrimp and Grits",
-    "cuisine": "Soul Food",
-    "region": "Lowcountry South Carolina and coastal Georgia",
-    "mealType": [
-      "Breakfast",
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 25,
-    "mealPrep": false,
-    "dietType": [
-      "Pescatarian",
-      "Gluten-Free"
-    ],
-    "nutritionHighlights": [
-      "High Protein",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 420,
-      "protein": 30,
-      "carbs": 38,
-      "fat": 14,
-      "fiber": 2,
-      "sugar": 3,
-      "sodium": 520
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "Lowcountry South Carolina and coastal Georgia",
-      "context": "Shrimp and grits originated among the Gullah Geechee people of the South Carolina and Georgia coastline \u2014 descendants of enslaved West Africans who maintained distinct cultural and culinary traditions. It was originally a simple fisherman's breakfast eaten before heading out on the water. The dish gained national recognition in the 1980s when chef Bill Neal served it at his Chapel Hill restaurant, but its roots go back centuries as everyday Gullah home cooking."
-    },
-    "ingredients": [
-      {
-        "name": "Medium EZ Peel Raw Shrimp, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 29,
-        "amountInfo": {
-          "size": 12,
-          "unit": "oz"
-        }
-      },
-      {
-        "name": "Stone ground or quick grits",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Low Fat Small Curd Cottage Cheese, 24 oz",
-        "aldiProduct": true,
-        "ingredientId": 798,
-        "amountInfo": {
-          "size": 0.25,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Shredded Sharp Cheddar Cheese, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 810,
-        "amountInfo": {
-          "size": 0.25,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Low Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2179,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Black pepper",
-        "aldiProduct": true,
-        "ingredientId": 2267,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      }
-    ],
-    "steps": [
-      "Cook grits in chicken broth per package directions \u2014 using broth instead of water adds depth without extra sodium.",
-      "Stir cottage cheese into finished grits \u2014 it melts in smoothly and adds protein without changing the texture. Stir in cheddar.",
-      "Season shrimp with smoked paprika, garlic powder, and black pepper.",
-      "Saut\u00e9 peppers and onions in olive oil 3 minutes, push to the side.",
-      "Add shrimp to the same pan, cook 2-3 minutes per side until pink.",
-      "Spoon grits into bowl, top with shrimp and peppers.",
-      "Finish with hot sauce to taste."
-    ]
-  },
-  {
-    "recipeId": 49,
-    "name": "Grits Bowl with Saut\u00e9ed Greens and Fried Egg",
-    "recipeServings": null,
-    "culturalName": "Grits Bowl",
-    "cuisine": "Soul Food",
-    "region": "American South \u2014 Georgia, South Carolina, North Carolina",
-    "mealType": [
-      "Breakfast"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 15,
-    "mealPrep": false,
-    "dietType": [
-      "Vegetarian",
-      "Gluten-Free"
-    ],
-    "nutritionHighlights": [
-      "High Protein",
-      "High Fiber",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 360,
-      "protein": 18,
-      "carbs": 38,
-      "fat": 14,
-      "fiber": 5,
-      "sugar": 2,
-      "sodium": 340
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "American South \u2014 particularly Georgia, South Carolina, and North Carolina",
-      "context": "Grits are ground hominy corn and have been a staple of Southern cooking since Native Americans introduced corn to European settlers. They became deeply embedded in African American Southern food culture as an affordable, filling, and versatile base for meals. A bowl of grits with greens and eggs is the kind of simple, nourishing breakfast that sustained generations of Southern families."
-    },
-    "ingredients": [
-      {
-        "name": "Stone ground or quick grits",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 0.75,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Pasture Raised Large Brown Eggs, 12 count",
-        "aldiProduct": true,
-        "ingredientId": 134,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Organic Low Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2179,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Shredded Sharp Cheddar Cheese, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 810,
-        "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Black pepper",
-        "aldiProduct": true,
-        "ingredientId": 2267,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      }
-    ],
-    "steps": [
-      "Cook grits in chicken broth per package directions. Stir in a small pinch of cheddar at the end.",
-      "Saut\u00e9 kale in olive oil with garlic powder 3-4 minutes until wilted and slightly crispy at edges.",
-      "Fry eggs to preference in the same pan.",
-      "Spoon grits into bowl, top with kale and fried eggs.",
-      "Finish with hot sauce."
-    ]
-  },
-  {
-    "recipeId": 50,
+    "recipeId": 47,
     "name": "Sweet Potato Hash with Turkey Sausage",
     "recipeServings": 1,
     "culturalName": "Sweet Potato Hash",
@@ -5216,16 +4842,16 @@
         "ingredientId": 1119,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "link"
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
+        "name": "Asparagus, Pepper, and Onion BBQ Grilling Tray, 14 oz",
+        "aldiProduct": true,
         "ingredientId": 3341,
         "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
+          "size": 4,
+          "unit": "oz"
         }
       },
       {
@@ -5234,7 +4860,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -5294,279 +4920,7 @@
     ]
   },
   {
-    "recipeId": 51,
-    "name": "Baked Black Eyed Pea Fritters",
-    "recipeServings": null,
-    "culturalName": "Baked Akara-Style Fritters",
-    "cuisine": "Soul Food",
-    "region": "American South \u2014 with roots in West African akara",
-    "mealType": [
-      "Breakfast",
-      "Lunch"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 30,
-    "mealPrep": true,
-    "dietType": [
-      "Vegetarian",
-      "Vegan",
-      "Gluten-Free",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Protein",
-      "High Fiber",
-      "Low Fat"
-    ],
-    "estimatedNutrition": {
-      "calories": 220,
-      "protein": 14,
-      "carbs": 32,
-      "fat": 4,
-      "fiber": 8,
-      "sugar": 2,
-      "sodium": 280
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "West African akara adapted into American soul food tradition",
-      "context": "These fritters connect directly to akara \u2014 a West African black eyed pea fritter that traveled with enslaved Africans across the Atlantic and became embedded in Southern Black foodways. In Brazil they are called acaraj\u00e9 and are sacred to the Candombl\u00e9 religion. In the American South they evolved into hoppin John patties and black eyed pea cakes. Baking instead of frying cuts fat by roughly 70% while keeping the crispy exterior."
-    },
-    "ingredients": [
-      {
-        "name": "Dry Black Beans, 32 fl oz (or black eyed peas)",
-        "aldiProduct": true,
-        "ingredientId": 2190,
-        "amountInfo": {
-          "size": 1.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Instant Corn Masa Mix, 4.4 lb",
-        "aldiProduct": true,
-        "ingredientId": 14,
-        "amountInfo": {
-          "size": 3,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": 3341,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Cumin",
-        "aldiProduct": true,
-        "ingredientId": 2193,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Olive Oil spray",
-        "aldiProduct": true,
-        "ingredientId": 2626,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Preheat oven to 400\u00b0F, line baking sheet with parchment.",
-      "Mash beans until mostly smooth with some chunks remaining for texture.",
-      "Mix in masa mix, peppers & onions, kale, hot sauce, and spices.",
-      "Form into 8-10 small patties about \u00bd inch thick.",
-      "Spray lightly with olive oil on both sides.",
-      "Bake 20-22 minutes, flipping halfway, until golden and crispy on both sides.",
-      "Serve with hot sauce. Refrigerate up to 4 days or freeze up to 1 month."
-    ]
-  },
-  {
-    "recipeId": 52,
-    "name": "Black Eyed Pea and Collard Green Soup",
-    "recipeServings": null,
-    "culturalName": "Black Eyed Pea and Greens Soup",
-    "cuisine": "Soul Food",
-    "region": "American South \u2014 nationwide tradition",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 35,
-    "mealPrep": true,
-    "dietType": [
-      "Gluten-Free",
-      "Dairy-Free"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 290,
-      "protein": 18,
-      "carbs": 38,
-      "fat": 5,
-      "fiber": 10,
-      "sugar": 4,
-      "sodium": 420
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "American South \u2014 eaten nationwide on New Year's Day for good luck",
-      "context": "Black eyed peas are one of the most culturally significant foods in African American tradition. Eating them on New Year's Day for good luck is a tradition that traces directly to West African beliefs brought by enslaved people. Paired with collard greens (representing money) and cornbread (representing gold), this combination is eaten by millions of Black families across America on January 1st. It is also one of the most nutritionally complete and inexpensive meals in soul food."
-    },
-    "ingredients": [
-      {
-        "name": "Dry Black Beans, 32 fl oz (sub for black eyed peas)",
-        "aldiProduct": true,
-        "ingredientId": 2190,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Collard greens, fresh",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Hickory Smoked Turkey Breast, 1 lb",
-        "aldiProduct": true,
-        "ingredientId": 384,
-        "amountInfo": {
-          "size": 2,
-          "unit": "oz"
-        }
-      },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 4,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Red pepper flakes",
-        "aldiProduct": true,
-        "ingredientId": 2481,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "If using dry beans: soak overnight, drain, and cook in fresh water 45 minutes until tender. Or use 1 can black eyed peas or black beans, drained and rinsed.",
-      "In a large pot heat olive oil, add diced smoked turkey and cook 2 minutes to render smokiness.",
-      "Add broth, beans, tomatoes, and spices. Bring to simmer.",
-      "Add chopped collard greens, stir in. Simmer 20-25 minutes until greens are tender.",
-      "Taste and adjust seasoning. Add hot sauce to taste.",
-      "Improves significantly overnight \u2014 excellent for meal prep. Freezes up to 3 months."
-    ]
-  },
-  {
-    "recipeId": 53,
+    "recipeId": 48,
     "name": "Smothered Chicken over Brown Rice",
     "recipeServings": 2,
     "culturalName": "Smothered Chicken",
@@ -5631,12 +4985,12 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Asparagus, Pepper, and Onion BBQ Grilling Tray, 14 oz",
+        "aldiProduct": true,
+        "ingredientId": 3341,
         "amountInfo": {
-          "size": 1,
-          "unit": "cup"
+          "size": 8,
+          "unit": "oz"
         }
       },
       {
@@ -5705,7 +5059,7 @@
     ]
   },
   {
-    "recipeId": 54,
+    "recipeId": 49,
     "name": "Red Beans and Rice with Turkey Sausage",
     "recipeServings": 4,
     "culturalName": "Red Beans and Rice",
@@ -5757,7 +5111,7 @@
         "ingredientId": 1119,
         "amountInfo": {
           "size": 6,
-          "unit": "unit"
+          "unit": "link"
         }
       },
       {
@@ -5770,12 +5124,12 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Asparagus, Pepper, and Onion BBQ Grilling Tray, 14 oz",
+        "aldiProduct": true,
+        "ingredientId": 3341,
         "amountInfo": {
-          "size": 1,
-          "unit": "cup"
+          "size": 14,
+          "unit": "oz"
         }
       },
       {
@@ -5816,146 +5170,7 @@
     ]
   },
   {
-    "recipeId": 55,
-    "name": "Hoppin John Bowl",
-    "recipeServings": null,
-    "culturalName": "Hoppin' John",
-    "cuisine": "Soul Food",
-    "region": "South Carolina Lowcountry and the Deep South",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 20,
-    "mealPrep": true,
-    "dietType": [
-      "Gluten-Free",
-      "Dairy-Free"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 380,
-      "protein": 20,
-      "carbs": 54,
-      "fat": 6,
-      "fiber": 11,
-      "sugar": 3,
-      "sodium": 380
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "South Carolina Lowcountry \u2014 Gullah Geechee tradition",
-      "context": "Hoppin John is one of the most direct culinary links between West African and American soul food traditions. The dish \u2014 black eyed peas cooked with rice and smoked pork \u2014 almost certainly traces to thi\u00e9boudienne and other West African rice and bean dishes. The Gullah Geechee people of the South Carolina coast are credited with preserving and transmitting the recipe. Like red beans and rice in New Orleans, Hoppin John is eaten on New Year's Day for good luck throughout the South."
-    },
-    "ingredients": [
-      {
-        "name": "Dry Black Beans, 32 fl oz (sub for black eyed peas)",
-        "aldiProduct": true,
-        "ingredientId": 2190,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Instant Brown Rice, 28oz",
-        "aldiProduct": true,
-        "ingredientId": 3,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Hickory Smoked Turkey Breast, 1 lb",
-        "aldiProduct": true,
-        "ingredientId": 384,
-        "amountInfo": {
-          "size": 2,
-          "unit": "oz"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Thyme",
-        "aldiProduct": true,
-        "ingredientId": 1105,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      }
-    ],
-    "steps": [
-      "Cook brown rice per package directions.",
-      "In a pot combine beans, diced smoked turkey, broth, peppers & onions, and spices.",
-      "Simmer 15 minutes until flavors meld and liquid reduces slightly.",
-      "Braise kale separately in a splash of broth until tender, about 8 minutes.",
-      "Serve beans over rice with braised kale on the side.",
-      "Top with hot sauce. Classic soul food combination."
-    ]
-  },
-  {
-    "recipeId": 56,
+    "recipeId": 50,
     "name": "Lentil and Sweet Potato Stew",
     "recipeServings": null,
     "culturalName": "Lentil Sweet Potato Stew",
@@ -6010,8 +5225,8 @@
         "aldiProduct": true,
         "ingredientId": 1044,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 15,
+          "unit": "oz"
         }
       },
       {
@@ -6092,7 +5307,7 @@
         "ingredientId": 2436,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tsp"
         }
       }
     ],
@@ -6106,9 +5321,9 @@
     ]
   },
   {
-    "recipeId": 57,
+    "recipeId": 51,
     "name": "Baked Fried Chicken",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "Oven Fried Chicken",
     "cuisine": "Soul Food",
     "region": "American South \u2014 nationwide soul food staple",
@@ -6146,8 +5361,8 @@
         "aldiProduct": true,
         "ingredientId": 1180,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 16,
+          "unit": "oz"
         }
       },
       {
@@ -6214,9 +5429,9 @@
         }
       },
       {
-        "name": "Black pepper",
+        "name": "Black pepper grinder",
         "aldiProduct": true,
-        "ingredientId": 2267,
+        "ingredientId": 2284,
         "amountInfo": {
           "size": 1,
           "unit": "tsp"
@@ -6227,8 +5442,8 @@
         "aldiProduct": true,
         "ingredientId": 2626,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 1.25,
+          "unit": "g"
         }
       }
     ],
@@ -6244,9 +5459,9 @@
     ]
   },
   {
-    "recipeId": 58,
+    "recipeId": 52,
     "name": "Smothered Pork Chops with Collard Greens",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "Smothered Pork Chops",
     "cuisine": "Soul Food",
     "region": "American South and Louisiana",
@@ -6284,17 +5499,17 @@
         "aldiProduct": true,
         "ingredientId": 1171,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 16,
+          "unit": "oz"
         }
       },
       {
-        "name": "Collard greens, fresh",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Cabbage, per lb",
+        "aldiProduct": true,
+        "ingredientId": 1085,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
@@ -6316,9 +5531,9 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
+        "name": "Asparagus, Pepper, and Onion BBQ Grilling Tray, 14 oz",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 3341,
         "amountInfo": {
           "size": 1.5,
           "unit": "cup"
@@ -6390,158 +5605,7 @@
     ]
   },
   {
-    "recipeId": 59,
-    "name": "Sweet Potato and Black Eyed Pea Stew (Vegan)",
-    "recipeServings": null,
-    "culturalName": "Sweet Potato and Black Eyed Pea Stew",
-    "cuisine": "Soul Food",
-    "region": "American South \u2014 plant-based soul food tradition",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 30,
-    "mealPrep": true,
-    "dietType": [
-      "Vegetarian",
-      "Vegan",
-      "Gluten-Free",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 320,
-      "protein": 14,
-      "carbs": 58,
-      "fat": 4,
-      "fiber": 12,
-      "sugar": 10,
-      "sodium": 320
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "American South \u2014 plant-based soul food tradition",
-      "context": "Plant-based soul food has deep roots \u2014 much of traditional soul food was already vegetable-forward out of necessity. This stew honors the two most symbolically significant foods in African American culinary culture: sweet potatoes and black eyed peas. Both were grown by enslaved people in kitchen gardens and have sustained Black communities for centuries. This version is 100% plant-based, deeply flavorful, and one of the most nutritionally complete dishes in this collection."
-    },
-    "ingredients": [
-      {
-        "name": "Sweet Potatoes, 3 lb",
-        "aldiProduct": true,
-        "ingredientId": 1044,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Dry Black Beans, 32 fl oz (sub for black eyed peas)",
-        "aldiProduct": true,
-        "ingredientId": 2190,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 3,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Cumin",
-        "aldiProduct": true,
-        "ingredientId": 2193,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Thyme",
-        "aldiProduct": true,
-        "ingredientId": 1105,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Heat olive oil in a large pot, add spices and toast 30 seconds.",
-      "Add sweet potatoes and cook 3 minutes, stirring.",
-      "Add beans, tomatoes, and broth. Bring to boil.",
-      "Reduce heat, simmer 20 minutes until sweet potatoes are tender.",
-      "Stir in kale, cook 5 more minutes.",
-      "Season with hot sauce. Serve as is or over brown rice."
-    ]
-  },
-  {
-    "recipeId": 60,
+    "recipeId": 53,
     "name": "Turkey Neck and White Bean Soup",
     "recipeServings": null,
     "culturalName": "Turkey and White Bean Soup",
@@ -6689,173 +5753,7 @@
     ]
   },
   {
-    "recipeId": 61,
-    "name": "Oxtail-Style Braised Chicken Thighs",
-    "recipeServings": null,
-    "culturalName": "Braised Chicken Thighs",
-    "cuisine": "Soul Food",
-    "region": "American South and Caribbean-American soul food tradition",
-    "mealType": [
-      "Dinner"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 60,
-    "mealPrep": true,
-    "dietType": [
-      "Gluten-Free",
-      "Dairy-Free"
-    ],
-    "nutritionHighlights": [
-      "High Protein",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 440,
-      "protein": 42,
-      "carbs": 30,
-      "fat": 14,
-      "fiber": 4,
-      "sugar": 5,
-      "sodium": 520
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "American South and Caribbean-American soul food tradition",
-      "context": "Oxtail stew is deeply beloved in Jamaican and African American cooking \u2014 slow braised until fall-apart tender in a rich, deeply spiced gravy. Oxtail is difficult to find at Aldi and is high in saturated fat. Bone-in chicken thighs braised using the exact same technique produce a remarkably similar result \u2014 rich, sticky, deeply flavored gravy and very tender meat. Note: if you can source oxtail from a Caribbean or specialty butcher, use it in place of chicken with the same method, extending braise time to 2.5-3 hours."
-    },
-    "ingredients": [
-      {
-        "name": "Family Pack Chicken Thighs",
-        "aldiProduct": true,
-        "ingredientId": 1180,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Instant Brown Rice, 28oz",
-        "aldiProduct": true,
-        "ingredientId": 3,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Low Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2179,
-        "amountInfo": {
-          "size": 1.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Allspice",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Thyme",
-        "aldiProduct": true,
-        "ingredientId": 1105,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Black pepper",
-        "aldiProduct": true,
-        "ingredientId": 2267,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Season chicken thighs generously with all spices.",
-      "Sear skin-side down in olive oil over high heat 4-5 minutes until deep golden brown. Flip and sear 2 minutes. Remove.",
-      "Cook peppers & onions in same pan 5 minutes until softened.",
-      "Add tomatoes and broth, scrape up all browned bits \u2014 this is the soul of the gravy.",
-      "Return chicken to pan skin-side up, reduce to low, cover and braise 40-45 minutes until meat is falling off the bone.",
-      "Uncover last 10 minutes to let gravy reduce and thicken.",
-      "Braise kale separately in a splash of broth as a side.",
-      "Serve over brown rice with kale and hot sauce.",
-      "Note: for authentic oxtail stew, substitute 2 lbs oxtail from a Caribbean or specialty butcher \u2014 use the exact same method but extend braise time to 2.5-3 hours."
-    ]
-  },
-  {
-    "recipeId": 62,
+    "recipeId": 54,
     "name": "High Protein Baked Mac and Cheese",
     "recipeServings": null,
     "culturalName": "Baked Mac and Cheese",
@@ -6942,7 +5840,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "egg"
         }
       },
       {
@@ -7003,7 +5901,7 @@
     ]
   },
   {
-    "recipeId": 63,
+    "recipeId": 55,
     "name": "Shakshuka",
     "recipeServings": null,
     "culturalName": "\u0634\u0643\u0634\u0648\u0643\u0629 \u00b7 Shakshuka",
@@ -7142,7 +6040,7 @@
     ]
   },
   {
-    "recipeId": 64,
+    "recipeId": 56,
     "name": "Turkish Menemen",
     "recipeServings": null,
     "culturalName": "Menemen",
@@ -7192,10 +6090,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       },
       {
@@ -7262,7 +6160,7 @@
     ]
   },
   {
-    "recipeId": 65,
+    "recipeId": 57,
     "name": "Eggs with Tomatoes, Olives and Feta",
     "recipeServings": null,
     "culturalName": "\u0391\u03c5\u03b3\u03ac \u03bc\u03b5 \u039d\u03c4\u03bf\u03bc\u03ac\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03a6\u03ad\u03c4\u03b1",
@@ -7310,10 +6208,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       },
       {
@@ -7361,7 +6259,7 @@
     ]
   },
   {
-    "recipeId": 66,
+    "recipeId": 58,
     "name": "Avocado Toast with Smoked Salmon, Dill and Capers",
     "recipeServings": null,
     "culturalName": "Avocado Toast con Salmone Affumicato",
@@ -7469,7 +6367,7 @@
     ]
   },
   {
-    "recipeId": 67,
+    "recipeId": 59,
     "name": "Spinach and Ricotta Frittata",
     "recipeServings": null,
     "culturalName": "Frittata di Spinaci e Ricotta",
@@ -7591,7 +6489,7 @@
     ]
   },
   {
-    "recipeId": 68,
+    "recipeId": 60,
     "name": "Spinach and Goat Cheese Quiche",
     "recipeServings": null,
     "culturalName": "Quiche aux \u00c9pinards et Ch\u00e8vre",
@@ -7720,7 +6618,7 @@
     ]
   },
   {
-    "recipeId": 69,
+    "recipeId": 61,
     "name": "Ful Medames",
     "recipeServings": null,
     "culturalName": "\u0641\u0648\u0644 \u0645\u062f\u0645\u0633 \u00b7 Ful Medames",
@@ -7818,10 +6716,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       }
     ],
@@ -7836,7 +6734,7 @@
     ]
   },
   {
-    "recipeId": 70,
+    "recipeId": 62,
     "name": "Lebanese Breakfast Bulgur with Fruits and Nuts",
     "recipeServings": null,
     "culturalName": "Burghul bil Fawakeh \u00b7 \u0628\u0631\u063a\u0644 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647",
@@ -7937,7 +6835,7 @@
     ]
   },
   {
-    "recipeId": 71,
+    "recipeId": 63,
     "name": "High Protein Cappuccino Muffins",
     "recipeServings": null,
     "culturalName": "Muffin al Cappuccino",
@@ -8075,7 +6973,7 @@
     ]
   },
   {
-    "recipeId": 72,
+    "recipeId": 64,
     "name": "Harcha",
     "recipeServings": null,
     "culturalName": "\u0647\u0631\u0634\u0629 \u00b7 Harcha",
@@ -8166,7 +7064,7 @@
     ]
   },
   {
-    "recipeId": 73,
+    "recipeId": 65,
     "name": "Tuscan Tuna and White Bean Salad",
     "recipeServings": null,
     "culturalName": "Tonno e Fagioli",
@@ -8286,7 +7184,7 @@
     ]
   },
   {
-    "recipeId": 74,
+    "recipeId": 66,
     "name": "Greek Horiatiki Village Salad",
     "recipeServings": null,
     "culturalName": "\u03a7\u03c9\u03c1\u03b9\u03ac\u03c4\u03b9\u03ba\u03b7 \u03a3\u03b1\u03bb\u03ac\u03c4\u03b1 \u00b7 Horiatiki",
@@ -8325,10 +7223,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       },
       {
@@ -8396,7 +7294,7 @@
     ]
   },
   {
-    "recipeId": 75,
+    "recipeId": 67,
     "name": "Ni\u00e7oise Salad",
     "recipeServings": null,
     "culturalName": "Salade Ni\u00e7oise",
@@ -8454,10 +7352,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       },
       {
@@ -8525,7 +7423,7 @@
     ]
   },
   {
-    "recipeId": 76,
+    "recipeId": 68,
     "name": "Lebanese Fattoush Salad",
     "recipeServings": null,
     "culturalName": "\u0641\u062a\u0648\u0634 \u00b7 Fattoush",
@@ -8575,10 +7473,10 @@
       {
         "name": "Vine Tomatoes",
         "aldiProduct": true,
-        "ingredientId": 26,
+        "ingredientId": 1023,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "tomato"
         }
       },
       {
@@ -8646,7 +7544,7 @@
     ]
   },
   {
-    "recipeId": 77,
+    "recipeId": 69,
     "name": "Mujaddara",
     "recipeServings": null,
     "culturalName": "\u0645\u062c\u062f\u0631\u0629 \u00b7 Mujaddara",
@@ -8752,7 +7650,7 @@
     ]
   },
   {
-    "recipeId": 78,
+    "recipeId": 70,
     "name": "Moroccan Harira Soup",
     "recipeServings": null,
     "culturalName": "\u062d\u0631\u064a\u0631\u0629 \u00b7 Harira",
@@ -8894,7 +7792,7 @@
     ]
   },
   {
-    "recipeId": 79,
+    "recipeId": 71,
     "name": "Turkish Red Lentil Soup",
     "recipeServings": null,
     "culturalName": "Mercimek \u00c7orbas\u0131",
@@ -9019,7 +7917,7 @@
     ]
   },
   {
-    "recipeId": 80,
+    "recipeId": 72,
     "name": "Moroccan Chicken Tagine with Olives",
     "recipeServings": null,
     "culturalName": "\u0637\u0627\u062c\u064a\u0646 \u0627\u0644\u062f\u062c\u0627\u062c \u0628\u0627\u0644\u0632\u064a\u062a\u0648\u0646 \u00b7 Tagine Djaj bil Zaytoun",
@@ -9156,7 +8054,7 @@
     ]
   },
   {
-    "recipeId": 81,
+    "recipeId": 73,
     "name": "Greek Gigantes Plaki",
     "recipeServings": null,
     "culturalName": "\u0393\u03af\u03b3\u03b1\u03bd\u03c4\u03b5\u03c2 \u03a0\u03bb\u03b1\u03ba\u03af \u00b7 Gigantes Plaki",
@@ -9282,7 +8180,7 @@
     ]
   },
   {
-    "recipeId": 82,
+    "recipeId": 74,
     "name": "Lebanese Chicken Shawarma Bowl",
     "recipeServings": null,
     "culturalName": "\u0634\u0627\u0648\u0631\u0645\u0627 \u00b7 Shawarma Bowl",
@@ -9409,7 +8307,7 @@
     ]
   },
   {
-    "recipeId": 83,
+    "recipeId": 75,
     "name": "Algerian Couscous with Roasted Vegetables",
     "recipeServings": null,
     "culturalName": "\u0643\u0633\u0643\u0633\u064a \u0628\u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Couscous bil Khodar",
@@ -9539,7 +8437,7 @@
     ]
   },
   {
-    "recipeId": 84,
+    "recipeId": 76,
     "name": "Moroccan Lamb Kefta in Tomato Sauce",
     "recipeServings": null,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0628\u0627\u0644\u0637\u0645\u0627\u0637\u0645 \u00b7 Kefta bil Matisha",
@@ -9666,7 +8564,7 @@
     ]
   },
   {
-    "recipeId": 85,
+    "recipeId": 77,
     "name": "Moroccan Vegetable Kefta",
     "recipeServings": null,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Kefta bil Khodar",
@@ -9788,7 +8686,7 @@
     ]
   },
   {
-    "recipeId": 86,
+    "recipeId": 78,
     "name": "Israeli Baked Fish with Chermoula",
     "recipeServings": null,
     "culturalName": "\u05d3\u05d2 \u05d1\u05d7\u05e8\u05de\u05d5\u05dc\u05d4 \u00b7 Dag b'Chermoula",
@@ -9908,7 +8806,7 @@
     ]
   },
   {
-    "recipeId": 87,
+    "recipeId": 79,
     "name": "Spanish Lentejas",
     "recipeServings": null,
     "culturalName": "Lentejas",
@@ -10033,7 +8931,7 @@
     ]
   },
   {
-    "recipeId": 88,
+    "recipeId": 80,
     "name": "Ribollita",
     "recipeServings": null,
     "culturalName": "Ribollita",
