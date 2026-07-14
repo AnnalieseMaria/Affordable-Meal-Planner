@@ -256,12 +256,74 @@ function cheapestPossibleCostExcluding(
   const filtered = pool.filter(m => !excludeToday.has(m.recipeId))
   return cheapestPossibleCost(filtered.length > 0 ? filtered : pool, familySize, pantry, ingredients)
 }
+export type SpecialDietMember = {
+  name: string
+  dietType: string
+}
+
+type SpecialDietGroup = {
+  dietType: string
+  names: string[]
+}
+
+// Groups individual family members by diet — so 2 people who are both
+// vegan share ONE alt dish (scaled for 2), rather than generating two
+// separate single-portion dishes.
+function groupSpecialDietMembers(members: SpecialDietMember[]): SpecialDietGroup[] {
+  const groups = new Map<string, string[]>()
+  for (const member of members) {
+    const existing = groups.get(member.dietType) ?? []
+    existing.push(member.name)
+    groups.set(member.dietType, existing)
+  }
+  return [...groups.entries()].map(([dietType, names]) => ({ dietType, names }))
+}
+
+export type AltDish = {
+  meal: Meal | null
+  forNames: string[]
+  dietType: string
+  groupSize: number
+}
+
+export type MealSlotResult = {
+  meal: Meal | null
+  mainGroupSize: number
+  altDishes: AltDish[]
+}
 
 export type DayPlan = {
   date: string
-  breakfast: Meal | null
-  lunch: Meal | null
-  dinner: Meal | null
+  breakfast: MealSlotResult
+  lunch: MealSlotResult
+  dinner: MealSlotResult
+}
+
+// Every dish being cooked for a given day, each tagged with how many people
+// it actually serves — used by cost/pantry calculations, which don't need
+// to know anything about the diet-splitting logic, just "this meal, for
+// this many people."
+function getAllDishesForDay(day: DayPlan): { meal: Meal; groupSize: number }[] {
+  const dishes: { meal: Meal; groupSize: number }[] = []
+  for (const slot of [day.breakfast, day.lunch, day.dinner]) {
+    if (slot.meal) dishes.push({ meal: slot.meal, groupSize: slot.mainGroupSize })
+    for (const alt of slot.altDishes) {
+      if (alt.meal) dishes.push({ meal: alt.meal, groupSize: alt.groupSize })
+    }
+  }
+  return dishes
+}
+
+// "No Diet" isn't a real diet tag any recipe has — it's a sentinel meaning
+// "don't filter by diet at all, this person/household can eat anything."
+// Every diet check should go through this function rather than checking
+// meal.dietType.includes(...) directly, so NO_DIET is handled consistently
+// everywhere instead of needing a special case at every call site.
+export const NO_DIET = 'No Diet' as const
+
+export function matchesDiet(meal: Meal, dietType: string): boolean {
+  if (dietType === NO_DIET) return true
+  return meal.dietType.includes(dietType)
 }
 
 export function filterMealsForSlot(
@@ -272,14 +334,22 @@ export function filterMealsForSlot(
 ): Meal[] {
   return meals.filter(m =>
     cuisines.includes(m.cuisine) &&
-    m.dietType.includes(dietType) &&
+    matchesDiet(m, dietType) &&
     m.mealType.includes(slot)
   )
 }
 
+// Same idea, but doesn't filter by diet at all — used internally when we
+// need to re-filter the SAME base pool by several different diets (main
+// household diet, plus each special-diet group) without re-querying the
+// full recipe list each time.
+function filterMealsBySlotAndCuisine(meals: Meal[], cuisines: string[], slot: string): Meal[] {
+  return meals.filter(m => cuisines.includes(m.cuisine) && m.mealType.includes(slot))
+}
+
 function pickAffordableVariedMeal(
   pool: Meal[],
-  familySize: number,
+  groupSize: number,
   pantry: Pantry,
   ingredients: Record<string, Ingredient>,
   usedIds: Set<number>,
@@ -297,7 +367,7 @@ function pickAffordableVariedMeal(
 
   const scoreMeals = (mealList: Meal[]) =>
     mealList.map(meal => {
-      const scaleFactor = getScaleFactor(meal, familySize)
+      const scaleFactor = getScaleFactor(meal, groupSize)
       const cost = marginalCost(meal, pantry, ingredients, scaleFactor)
       return { meal, scaleFactor, cost }
     })
@@ -330,17 +400,97 @@ function pickAffordableVariedMeal(
   return { meal: chosen.meal, cost: chosen.cost }
 }
 
+// Tries to find ONE meal that satisfies the main diet AND every special
+// diet at once (shared, no extra cost). If nothing like that exists (or
+// nothing affordable does), falls back to a separate main dish for the
+// main group plus one alt dish per special-diet group.
+function fillMealSlot(
+  allDietPool: Meal[], // already filtered by cuisine + mealType, NOT yet by diet
+  mainDietType: string,
+  specialDietGroups: SpecialDietGroup[],
+  mainGroupSize: number,
+  pantry: Pantry,
+  ingredients: Record<string, Ingredient>,
+  usedIds: Set<number>,
+  remainingBudget: number,
+  reserveForRest: number,
+  excludeToday: Set<number>,
+  fairShareCeiling: number,
+  dayIndex: number
+): { result: MealSlotResult; cost: number } {
+  const familySize = mainGroupSize + specialDietGroups.reduce((sum, g) => sum + g.names.length, 0)
+  const allRequiredDiets = [mainDietType, ...specialDietGroups.map(g => g.dietType)]
+  const sharedPool = allDietPool.filter(m => allRequiredDiets.every(d => matchesDiet(m, d)))
+
+  if (sharedPool.length > 0) {
+    const { meal, cost } = pickAffordableVariedMeal(
+      sharedPool, familySize, pantry, ingredients, usedIds,
+      remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+    )
+    if (meal) {
+      return { result: { meal, mainGroupSize: familySize, altDishes: [] }, cost }
+    }
+  }
+
+  // No shared meal worked — split into a main dish + alt dish(es)
+  const mainPool = allDietPool.filter(m => matchesDiet(m, mainDietType))
+  const { meal: mainMeal, cost: mainCost } = pickAffordableVariedMeal(
+    mainPool, mainGroupSize, pantry, ingredients, usedIds,
+    remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+  )
+
+  let totalCost = mainCost
+  let runningBudget = remainingBudget - mainCost
+  const altDishes: AltDish[] = []
+
+  for (const group of specialDietGroups) {
+    const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType))
+    const { meal: altMeal, cost: altCost } = pickAffordableVariedMeal(
+      altPool, group.names.length, pantry, ingredients, usedIds,
+      runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+    )
+    if (altMeal) {
+      altDishes.push({ meal: altMeal, forNames: group.names, dietType: group.dietType, groupSize: group.names.length })
+      totalCost += altCost
+      runningBudget -= altCost
+    }
+  }
+
+  return { result: { meal: mainMeal, mainGroupSize, altDishes }, cost: totalCost }
+}
+
+// Cheapest possible cost for an ENTIRE slot, accounting for the fact that
+// a split (main dish + alt dishes) might be needed — this is what the
+// reserve/budget-safety math uses, so it must never underestimate. If we
+// only checked the shared-pool cost, an empty shared pool would wrongly
+// look "free" (cheapestPossibleCost returns 0 for an empty pool), when in
+// reality a split still costs real money.
+function cheapestPossibleSlotCost(
+  allDietPool: Meal[],
+  mainDietType: string,
+  specialDietGroups: SpecialDietGroup[],
+  mainGroupSize: number,
+  pantry: Pantry,
+  ingredients: Record<string, Ingredient>
+): number {
+  const mainPool = allDietPool.filter(m => matchesDiet(m, mainDietType))
+  let cost = cheapestPossibleCost(mainPool, mainGroupSize, pantry, ingredients)
+  for (const group of specialDietGroups) {
+    const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType))
+    cost += cheapestPossibleCost(altPool, group.names.length, pantry, ingredients)
+  }
+  return cost
+}
+
 export function buildPantryFromPlan(
   plan: DayPlan[],
-  familySize: number,
   ingredients: Record<string, Ingredient>
 ) {
   const pantry: Pantry = new Map()
   plan.forEach((day, dayIndex) => {
     agePerishables(pantry, dayIndex)
-    const dayMeals = [day.breakfast, day.lunch, day.dinner].filter((m): m is Meal => m !== null)
-    for (const meal of dayMeals) {
-      const scaleFactor = getScaleFactor(meal, familySize)
+    for (const { meal, groupSize } of getAllDishesForDay(day)) {
+      const scaleFactor = getScaleFactor(meal, groupSize)
       for (const ing of meal.ingredients) {
         usePantryIngredient(pantry, ing, ingredients, scaleFactor, dayIndex)
       }
@@ -357,30 +507,28 @@ export function generateMealPlan(
   shoppingDate: string,
   shoppingIntervalDays: number,
   ingredients: Record<string, Ingredient>,
-  budgetPerTrip: number
+  budgetPerTrip: number,
+  specialDietMembers: SpecialDietMember[] = []
 ): { plan: DayPlan[]; pantry: Pantry; totalSpend: number } {
   const usableMeals = getUsableMeals(allMeals, ingredients)
 
+  const specialDietGroups = groupSpecialDietMembers(specialDietMembers)
+  const specialCount = specialDietGroups.reduce((sum, g) => sum + g.names.length, 0)
+  const mainGroupSize = familySize - specialCount
+
   // The meal plan always starts the day AFTER your shopping day — you shop
-  // Saturday, the plan covers Sunday onward. This is a fixed, predictable
-  // rule rather than a separately-chosen start date, which avoids any
-  // possibility of the two dates contradicting each other (e.g. "start
-  // Sunday but shop Wednesday" — the app has no way to know what you'd eat
-  // in that gap).
-  //
-  // The plan always covers exactly ONE shopping cycle (however long that is
-  // — a week, two weeks, a month) — the app is meant to be revisited once
-  // that cycle is about to run out (e.g. via a reminder before the next
-  // shopping trip), rather than generating multiple trips' worth up front.
+  // Saturday, the plan covers Sunday onward. The plan always covers exactly
+  // ONE shopping cycle — the app is meant to be revisited once that cycle
+  // is about to run out, rather than generating multiple trips' worth up front.
   const planStart = new Date(shoppingDate + 'T00:00:00')
   planStart.setDate(planStart.getDate() + 1)
   const planStartDate = planStart.toISOString().split('T')[0]
 
   const totalDays = shoppingIntervalDays
   const dates = getDateStrings(planStartDate, totalDays)
-  const breakfastPool = filterMealsForSlot(usableMeals, cuisines, dietType, 'Breakfast')
-  const lunchPool = filterMealsForSlot(usableMeals, cuisines, dietType, 'Lunch')
-  const dinnerPool = filterMealsForSlot(usableMeals, cuisines, dietType, 'Dinner')
+  const breakfastPool = filterMealsBySlotAndCuisine(usableMeals, cuisines, 'Breakfast')
+  const lunchPool = filterMealsBySlotAndCuisine(usableMeals, cuisines, 'Lunch')
+  const dinnerPool = filterMealsBySlotAndCuisine(usableMeals, cuisines, 'Dinner')
 
   const pantry: Pantry = new Map()
   const usedIds = { breakfast: new Set<number>(), lunch: new Set<number>(), dinner: new Set<number>() }
@@ -392,18 +540,11 @@ export function generateMealPlan(
   const GENEROSITY = 1.5
 
   dates.forEach((date, index) => {
-    // Simple, guaranteed-clean counter for budget/shopping-trip boundaries —
-    // since planStartDate is always exactly 1 day after a real shopping day,
-    // this can never land mid-cycle the way an independently-chosen start
-    // date could. Resets every shoppingIntervalDays, starting from day 0.
     const dayInBudgetCycle = index % shoppingIntervalDays
     if (dayInBudgetCycle === 0) {
       cycleSpend = 0
     }
 
-    // For PERISHABLE freshness specifically, the real shopping trip happened
-    // 1 day before the plan started — so day 0 of the plan is already "1 day
-    // post-shopping," not "day 0 fresh."
     const dayInCycle = dayInBudgetCycle + 1
 
     agePerishables(pantry, index)
@@ -419,39 +560,39 @@ export function generateMealPlan(
     const excludeToday = new Set<number>()
 
     const dailyMinCost =
-      cheapestPossibleCost(freshBreakfastPool, familySize, pantry, ingredients) +
-      cheapestPossibleCost(freshLunchPool, familySize, pantry, ingredients) +
-      cheapestPossibleCost(freshDinnerPool, familySize, pantry, ingredients)
+      cheapestPossibleSlotCost(freshBreakfastPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients) +
+      cheapestPossibleSlotCost(freshLunchPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients) +
+      cheapestPossibleSlotCost(freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients)
     const reserveForFutureDays = dailyMinCost * daysLeftInCycleAfterToday
 
     const mealsRemainingInCycle = daysRemainingInCycle * 3
 
     const breakfastReserve = reserveForFutureDays +
-      cheapestPossibleCostExcluding(freshLunchPool, excludeToday, familySize, pantry, ingredients) +
-      cheapestPossibleCostExcluding(freshDinnerPool, excludeToday, familySize, pantry, ingredients)
+      cheapestPossibleSlotCost(freshLunchPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients) +
+      cheapestPossibleSlotCost(freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients)
     const breakfastFairShare = (budgetPerTrip - cycleSpend) / mealsRemainingInCycle * GENEROSITY
-    const { meal: breakfast, cost: bCost } = pickAffordableVariedMeal(
-      freshBreakfastPool, familySize, pantry, ingredients,
+    const { result: breakfast, cost: bCost } = fillMealSlot(
+      freshBreakfastPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
       usedIds.breakfast, budgetPerTrip - cycleSpend, breakfastReserve, excludeToday, breakfastFairShare, index
     )
     cycleSpend += bCost
     totalSpend += bCost
-    if (breakfast) excludeToday.add(breakfast.recipeId)
+    if (breakfast.meal) excludeToday.add(breakfast.meal.recipeId)
 
     const lunchReserve = reserveForFutureDays +
-      cheapestPossibleCostExcluding(freshDinnerPool, excludeToday, familySize, pantry, ingredients)
+      cheapestPossibleSlotCost(freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients)
     const lunchFairShare = (budgetPerTrip - cycleSpend) / (mealsRemainingInCycle - 1) * GENEROSITY
-    const { meal: lunch, cost: lCost } = pickAffordableVariedMeal(
-      freshLunchPool, familySize, pantry, ingredients,
+    const { result: lunch, cost: lCost } = fillMealSlot(
+      freshLunchPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
       usedIds.lunch, budgetPerTrip - cycleSpend, lunchReserve, excludeToday, lunchFairShare, index
     )
     cycleSpend += lCost
     totalSpend += lCost
-    if (lunch) excludeToday.add(lunch.recipeId)
+    if (lunch.meal) excludeToday.add(lunch.meal.recipeId)
 
     const dinnerFairShare = (budgetPerTrip - cycleSpend) / (mealsRemainingInCycle - 2) * GENEROSITY
-    const { meal: dinner, cost: dCost } = pickAffordableVariedMeal(
-      freshDinnerPool, familySize, pantry, ingredients,
+    const { result: dinner, cost: dCost } = fillMealSlot(
+      freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
       usedIds.dinner, budgetPerTrip - cycleSpend, reserveForFutureDays, excludeToday, dinnerFairShare, index
     )
     cycleSpend += dCost
@@ -470,17 +611,9 @@ export type ShoppingListItem = {
   totalCost: number
 }
 
-// Breaks the shopping list down by SHOPPING TRIP, accounting for pantry
-// carryover between trips — e.g. if trip 1 buys a whole bag of rice but only
-// uses half, trip 2's list won't include another bag unless it actually
-// needs more than what's already sitting in the pantry. Each trip's list
-// only shows what's NEWLY purchased that trip, not a running cumulative total.
-// Since generateMealPlan always produces a plan that's an exact multiple of
-// intervalDays (no partial cycles), simple fixed-size chunking is safe here.
 export function generateShoppingListsByInterval(
   plan: DayPlan[],
   intervalDays: number,
-  familySize: number,
   ingredients: Record<string, Ingredient>
 ): ShoppingListItem[][] {
   const pantry: Pantry = new Map()
@@ -497,9 +630,8 @@ export function generateShoppingListsByInterval(
     tripDays.forEach((day, localIndex) => {
       const dayIndex = tripStart + localIndex
       agePerishables(pantry, dayIndex)
-      const dayMeals = [day.breakfast, day.lunch, day.dinner].filter((m): m is Meal => m !== null)
-      for (const meal of dayMeals) {
-        const scaleFactor = getScaleFactor(meal, familySize)
+      for (const { meal, groupSize } of getAllDishesForDay(day)) {
+        const scaleFactor = getScaleFactor(meal, groupSize)
         for (const ing of meal.ingredients) {
           usePantryIngredient(pantry, ing, ingredients, scaleFactor, dayIndex)
         }
