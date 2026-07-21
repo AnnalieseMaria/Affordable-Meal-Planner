@@ -1,10 +1,11 @@
+import './pico.pink.css'
 import './style.css'
 import mealsData from './meals.json' // loads meals.json into JavaScript
 import ingredientsData from './ingredients.json'
 import type { Meal, Ingredient } from './meals.ts'
 import { filterMeals } from './filters.ts'
 // import { getMealCost } from './filters.ts' // old per-package cost model — replaced by the pantry-aware generator below
-import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult } from './mealPlanGenerator.ts'
+import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
 
 const meals = mealsData as unknown as Meal[]
 const ingredients = ingredientsData as unknown as Record<string, Ingredient>
@@ -28,6 +29,34 @@ const dietTypes: DietType[] = ["Dairy-Free", "Gluten-Free", "Pescatarian", "Vega
 type Cuisines = "Mexican" | "Chinese" | "Soul Food" | "Mediterranean";
 const cuisines: Cuisines[] = ["Mexican", "Chinese", "Soul Food", "Mediterranean"]
 
+const AISLE_ORDER = [
+  "Fresh Produce",
+  "Bakery & Bread",
+  "Deli",
+  "Fresh Meat & Seafood",
+  "Dairy & Eggs",
+  "Frozen Foods",
+  "ALDI Finds",
+  "Pantry Essentials",
+  "Snacks",
+  "Breakfast & Cereals",
+  "Beverages",
+  "Alcohol",
+  "Baby Items",
+  "Personal Care",
+  "Pet Supplies",
+];
+
+// Example implementation:  if Produce (index 0) is compared against Frozen Foods (index 5), you get 0 - 5 = -5
+// (negative, so Produce correctly sorts first).
+function sortAislesByStoreOrder(aisleNames: string[]): string[] {
+  return [...aisleNames].sort((a, b) => { //aisleNames makes copy of the array before sorting
+    const indexA = AISLE_ORDER.indexOf(a); //converts aisle name into a number (position in list)
+    const indexB = AISLE_ORDER.indexOf(b);
+    return indexA - indexB; //produces negative, pos, or 0 result
+  });
+}
+
 type ShoppingFrequency = "weekly" | "biweekly" | "monthly";
 const shoppingFrequencyDays: Record<ShoppingFrequency, number> = {
   weekly: 7,
@@ -43,6 +72,7 @@ type MealPlanInfo = {
   shoppingDate: string;
   shoppingFrequency: ShoppingFrequency;
   specialDietMembers: SpecialDietMember[];
+  usesSnap: boolean;
 };
 
 //saves MealPlanInfo type to Local Storage --> data persists when user exits/returns to app 
@@ -63,25 +93,73 @@ function loadMealPlanInfo(): MealPlanInfo | null {
     }
 }
 
+function saveCheckedItems(checkedIds: Set<number>) {
+  localStorage.setItem('checkedGroceryItems', JSON.stringify(Array.from(checkedIds)));
+}
+
+function loadCheckedItems(): Set<number> {
+  const checkedItems = localStorage.getItem('checkedGroceryItems'); 
+  if(checkedItems == null){
+    return new Set(); 
+  }
+    try { 
+      return new Set(JSON.parse(checkedItems)); 
+    } catch {
+      return new Set(); 
+    }
+}
+
+// Same save/load pattern as above, applied to the actual generated plan —
+// without this, refreshing the page would lose the plan even though the
+// settings that built it are saved, since generatedPlan/etc. are just
+// regular variables that reset to null every time the script starts fresh.
+function savePlanState(plan: DayPlan[], shoppingList: ShoppingListItem[], totalSpend: number) {
+  localStorage.setItem('generatedPlanState', JSON.stringify({ plan, shoppingList, totalSpend }));
+}
+
+function loadPlanState(): { plan: DayPlan[]; shoppingList: ShoppingListItem[]; totalSpend: number } | null {
+  const raw = localStorage.getItem('generatedPlanState');
+  if (raw == null) {
+    return null;
+  }
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
 
 type MealSlotType = 'breakfast' | 'lunch' | 'dinner'
 type ActiveSlot = { date: string; mealType: MealSlotType } | null
 type DishTarget = { kind: 'main' } | { kind: 'alt'; altIndex: number }
 
 let mealPlanInfo: MealPlanInfo | null = loadMealPlanInfo(); // lets a returning user's saved data flow in immediately on load instead of always starting empty 
-console.log('Loaded on startup:', mealPlanInfo); 
 
 let generatedPlan: DayPlan[] | null = null;
 let generatedShoppingList: ShoppingListItem[] | null = null;
 let generatedTotalSpend: number = 0;
+
+let checkedGroceryItems: Set<number> = loadCheckedItems();
+
+const savedPlanState = loadPlanState();
+if (savedPlanState) {
+  generatedPlan = savedPlanState.plan;
+  generatedShoppingList = savedPlanState.shoppingList;
+  generatedTotalSpend = savedPlanState.totalSpend;
+}
+
 let activeSlot: ActiveSlot = null;       // which calendar cell the popup is currently acting on
 let activeDishTarget: DishTarget = { kind: 'main' }; // which dish WITHIN that slot (main, or a specific alt) is being acted on
 let popupMode: 'select-dish' | 'split-select' | 'menu' | 'swap' | null = null;
 let swapRejectionMessage: string | null = null; // set when a chosen swap doesn't fit the budget
 let selectedMeal: Meal | null = null;    // the meal currently shown on the recipe detail page
 
-type Page = "info-form" | "meal-plan" | "recipe-detail" | "shopping-list";
-let currentPage: Page = (localStorage.getItem("currentPage") as Page) ?? "info-form";
+type Page = "home" | "meal-plan" | "recipe-detail" | "groceries" | "profile";
+const VALID_PAGES: Page[] = ["home", "meal-plan", "recipe-detail", "groceries", "profile"];
+const storedPage = localStorage.getItem("currentPage");
+const defaultPage: Page = mealPlanInfo ? "home" : "profile";
+let currentPage: Page = (storedPage && VALID_PAGES.includes(storedPage as Page)) ? (storedPage as Page) : defaultPage;
+let profileViewMode: 'summary' | 'edit' = 'summary';
 
 // Returns a NEW day object with just the targeted dish (main, or a specific
 // alt dish) updated — used both for direct edits and for building a
@@ -177,6 +255,86 @@ function renderSlotCell(slot: MealSlotResult): string {
   return `${mainName}${altTags}`;
 }
 
+function renderNutritionDonut(nutrition: NutritionBreakdown): string {
+  const proteinCal = nutrition.protein * 4;
+  const carbsCal = nutrition.carbs * 4;
+  const fatCal = nutrition.fat * 9;
+  const totalMacroCal = proteinCal + carbsCal + fatCal;
+
+  const proteinPct = totalMacroCal > 0 ? (proteinCal / totalMacroCal) * 100 : 0;
+  const carbsPct = totalMacroCal > 0 ? (carbsCal / totalMacroCal) * 100 : 0;
+  const fatPct = totalMacroCal > 0 ? (fatCal / totalMacroCal) * 100 : 0;
+
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
+  const proteinLength = (proteinPct / 100) * circumference;
+  const carbsLength = (carbsPct / 100) * circumference;
+  const fatLength = (fatPct / 100) * circumference;
+
+  const proteinOffset = 0;
+  const carbsOffset = -proteinLength;
+  const fatOffset = -(proteinLength + carbsLength);
+
+  return `
+    <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+      <svg width="140" height="140" viewBox="0 0 100 100">
+        <g transform="rotate(-90 50 50)">
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#e0e0e0" stroke-width="10" />
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#4CAF50" stroke-width="10"
+            stroke-dasharray="${proteinLength} ${circumference - proteinLength}"
+            stroke-dashoffset="${proteinOffset}" />
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#2196F3" stroke-width="10"
+            stroke-dasharray="${carbsLength} ${circumference - carbsLength}"
+            stroke-dashoffset="${carbsOffset}" />
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#FF9800" stroke-width="10"
+            stroke-dasharray="${fatLength} ${circumference - fatLength}"
+            stroke-dashoffset="${fatOffset}" />
+        </g>
+        <text x="50" y="47" text-anchor="middle" font-size="16" font-weight="bold">${Math.round(nutrition.calories)}</text>
+        <text x="50" y="60" text-anchor="middle" font-size="8" fill="#666">kcal</text>
+      </svg>
+      <div>
+        <div style="color:#4CAF50; font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
+        <div style="color:#2196F3; font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
+        <div style="color:#FF9800; font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
+      </div>
+    </div>
+  `;
+}
+
+// Same idea as renderSlotCell, but every dish name is a clickable link
+// (tagged with the recipe's id) instead of plain text — used on Home,
+// where tapping a meal should jump straight to its recipe.
+function renderClickableSlot(slot: MealSlotResult): string {
+  const mainHtml = slot.meal
+    ? `<span class="recipe-link" data-recipe-id="${slot.meal.recipeId}" style="cursor:pointer; text-decoration:underline; color:#0645AD;">${slot.meal.name}</span>`
+    : '—';
+  const altHtml = slot.altDishes.map(alt => {
+    const dishHtml = alt.meal
+      ? `<span class="recipe-link" data-recipe-id="${alt.meal.recipeId}" style="cursor:pointer; text-decoration:underline; color:#0645AD;">${alt.meal.name}</span>`
+      : '—';
+    return `<div style="font-size:0.8em; color:#666;">+ ${alt.forNames.join(', ')}: ${dishHtml}</div>`;
+  }).join('');
+  return `${mainHtml}${altHtml}`;
+}
+
+// Wires up click handling for every .recipe-link on the current page —
+// call this after setting innerHTML anywhere renderClickableSlot is used.
+function attachRecipeLinkHandlers() {
+  document.querySelectorAll<HTMLElement>('.recipe-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const recipeId = Number(link.dataset.recipeId);
+      const meal = meals.find(m => m.recipeId === recipeId);
+      if (meal) {
+        selectedMeal = meal;
+        currentPage = "recipe-detail";
+        localStorage.setItem("currentPage", currentPage);
+        render();
+      }
+    });
+  });
+}
+
 function getMaxBudget(): number {
   if (!mealPlanInfo) return 0;
   // The plan always covers exactly one shopping cycle now, so the budget
@@ -189,6 +347,48 @@ function recalculateShoppingList() {
   const pantry = buildPantryFromPlan(generatedPlan, ingredients);
   generatedShoppingList = generateShoppingList(pantry, ingredients);
   generatedTotalSpend = getTotalCost(generatedShoppingList);
+  savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
+}
+
+// Rolls the shopping date forward by exactly one interval and rebuilds a
+// fresh plan from the SAME saved settings — no re-entering anything.
+// Deliberately placed only on Profile (not Home), and gated behind a
+// confirmation, since regenerating can change costs/recipes and shouldn't
+// be triggerable by an accidental tap on a casually-visited page.
+function generateNextPlan() {
+  if (!mealPlanInfo) return;
+
+  const confirmed = window.confirm("This will build a new plan for your next shopping cycle, using your saved settings. Continue?");
+  if (!confirmed) return;
+
+  const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
+  const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
+  nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
+  const nextShoppingDateStr = nextShoppingDate.toISOString().split('T')[0];
+
+  mealPlanInfo = { ...mealPlanInfo, shoppingDate: nextShoppingDateStr };
+  saveMealPlanInfo(mealPlanInfo);
+
+  const { plan, pantry, totalSpend } = generateMealPlan(
+    meals,
+    mealPlanInfo.cuisines,
+    mealPlanInfo.dietType,
+    mealPlanInfo.familySize,
+    mealPlanInfo.shoppingDate,
+    intervalDays,
+    ingredients,
+    mealPlanInfo.budget,
+    mealPlanInfo.specialDietMembers
+  );
+
+  generatedPlan = plan;
+  generatedShoppingList = generateShoppingList(pantry, ingredients);
+  generatedTotalSpend = totalSpend;
+  savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
+
+  currentPage = "meal-plan";
+  localStorage.setItem("currentPage", currentPage);
+  render();
 }
 
 function closePopup() {
@@ -387,6 +587,7 @@ function renderPopup() {
           generatedPlan = trialPlan;
           generatedShoppingList = trialShoppingList;
           generatedTotalSpend = trialTotal;
+          savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
           swapRejectionMessage = null;
           closePopup();
           render();
@@ -404,12 +605,49 @@ function renderBottomNav() {
   document.getElementById('bottom-nav')?.remove(); //
   const nav = document.createElement('div'); //creates empty div that doesn't exist on the page yet 
   nav.id = 'bottom-nav'; //assigns id to the nav element 
-  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:white; border-top:1px solid #ccc; padding:8px 0; z-index:500;';
+  // nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:white; border-top:1px solid #ccc; padding:8px 0; z-index:500;';
+  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:white; border-top:1px solid #ddd; padding:10px 0; z-index:500;';
 
-  const pages: Page[] = ['info-form', 'meal-plan', 'shopping-list']; 
-  const buttonsHtml = pages.map(page => `
-     <button class="nav-tab" data-page="${page}">${page}</button>
-  `).join('');
+  const pageIcons: Record<string, string> = {
+  'home': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.75299 13.944v8.25h6v-6c0 -0.3979 0.15804 -0.7794 0.43931 -1.0607 0.2813 -0.2813 0.6629 -0.4393 1.0607 -0.4393h1.5c0.3978 0 0.7793 0.158 1.0607 0.4393 0.2813 0.2813 0.4393 0.6628 0.4393 1.0607v6h6v-8.25" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M0.752991 12.444 10.942 2.25499c0.1393 -0.13939 0.3047 -0.24997 0.4867 -0.32541 0.1821 -0.07544 0.3772 -0.11427 0.5743 -0.11427 0.1971 0 0.3922 0.03883 0.5742 0.11427 0.1821 0.07544 0.3475 0.18602 0.4868 0.32541L23.253 12.444" stroke-width="1.5"></path>
+  </svg>`,
+  'meal-plan': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M22.63 14.786 15 22.416l-3.75 0.75 0.75 -3.75 7.63 -7.63c0.3968 -0.3967 0.9349 -0.6195 1.496 -0.6195s1.0992 0.2228 1.496 0.6195l0.008 0.008c0.1967 0.1964 0.3527 0.4296 0.4591 0.6863 0.1065 0.2567 0.1613 0.5318 0.1613 0.8097 0 0.2779 -0.0548 0.5531 -0.1613 0.8098 -0.1064 0.2567 -0.2624 0.4899 -0.4591 0.6862Z" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M9 17.25H2.25c-0.39782 0 -0.77936 -0.158 -1.06066 -0.4393C0.908035 16.5294 0.75 16.1478 0.75 15.75V3.76501c0 -0.39782 0.158035 -0.77935 0.43934 -1.06066 0.2813 -0.2813 0.66284 -0.43934 1.06066 -0.43934h13.5c0.3978 0 0.7794 0.15804 1.0607 0.43934 0.2813 0.28131 0.4393 0.66284 0.4393 1.06066v4.485" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linejoin="round" d="M0.75 6.75h16.5" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5.24298 3.75v-3" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M12.743 3.75v-3" stroke-width="1.5"></path>
+  </svg>`,
+  'groceries': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M4.5 8.625 9 3.375" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.625 15 3.375" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M18.936 20.625H5.064c-0.32478 -0.0059 -0.63806 -0.1213 -0.88907 -0.3275 -0.25101 -0.2062 -0.42505 -0.4911 -0.49393 -0.8085l-2.138 -9c-0.05724 -0.2155 -0.06516 -0.4412 -0.02318 -0.66025 0.04198 -0.21903 0.13279 -0.42578 0.26568 -0.60489 0.13288 -0.1791 0.30443 -0.32595 0.50188 -0.42963 0.19745 -0.10368 0.41573 -0.16152 0.63862 -0.16923h18.148c0.2229 0.00771 0.4412 0.06555 0.6386 0.16923 0.1975 0.10368 0.369 0.25053 0.5019 0.42963 0.1329 0.17911 0.2237 0.38586 0.2657 0.60489 0.042 0.21905 0.034 0.44475 -0.0232 0.66025l-2.138 9c-0.0689 0.3174 -0.2429 0.6023 -0.4939 0.8085 -0.251 0.2062 -0.5643 0.3216 -0.8891 0.3275Z" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M7.5 11.625v6" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M12 11.625v6" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M16.5 11.625v6" stroke-width="1.5"></path>
+  </svg>`,
+  'profile': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.375 7.875c0 1.09402 0.4346 2.1432 1.20818 2.9168C5.35677 11.5654 6.40598 12 7.5 12s2.14323 -0.4346 2.9168 -1.2082c0.7736 -0.7736 1.2082 -1.82278 1.2082 -2.9168 0 -1.09402 -0.4346 -2.14323 -1.2082 -2.91682C9.64323 4.1846 8.59402 3.75 7.5 3.75c-1.09402 0 -2.14323 0.4346 -2.91682 1.20818C3.8096 5.73177 3.375 6.78098 3.375 7.875Z" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M0.75 20.25c0 -1.7902 0.71116 -3.5071 1.97703 -4.773C3.9929 14.2112 5.70979 13.5 7.5 13.5s3.5071 0.7112 4.773 1.977c1.2658 1.2659 1.977 2.9828 1.977 4.773" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M14.3521 10.125c0 0.8951 0.3555 1.7535 0.9885 2.3865 0.6329 0.6329 1.4913 0.9885 2.3864 0.9885 0.8952 0 1.7536 -0.3556 2.3865 -0.9885 0.633 -0.633 0.9885 -1.4914 0.9885 -2.3865 0 -0.89511 -0.3555 -1.75355 -0.9885 -2.38649 -0.6329 -0.63293 -1.4913 -0.98851 -2.3865 -0.98851 -0.8951 0 -1.7535 0.35558 -2.3864 0.98851 -0.633 0.63294 -0.9885 1.49138 -0.9885 2.38649Z" stroke-width="1.5"></path>
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M15.813 15.068c0.8351 -0.3078 1.7321 -0.4093 2.6149 -0.2959 0.8827 0.1133 1.725 0.4382 2.4553 0.947 0.7302 0.5088 1.3267 1.1865 1.7388 1.9753 0.412 0.7889 0.6275 1.6656 0.628 2.5556" stroke-width="1.5"></path>
+  </svg>`,
+};
+
+  const pages: Page[] = ['home', 'meal-plan', 'groceries', 'profile']; 
+  
+  const buttonsHtml = pages.map(page => {
+    const isActive = page === currentPage;
+    const color = isActive ? '#FF77A8' : '#8b93a1';
+    return `
+    <button class="nav-tab" data-page="${page}" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; color:${color};">
+      ${pageIcons[page]}
+      <div style="font-size:0.7em;">${page}</div>
+    </button>
+  `;
+}).join('');
   nav.innerHTML = buttonsHtml; 
   document.body.appendChild(nav); //makes nav a child of whatever element method is called on (document.body meaning nav is sibling to app)
 
@@ -424,10 +662,62 @@ function renderBottomNav() {
 
 function render() {
 switch (currentPage) {
-  case "info-form": {
+  case "home": {
+    if (!mealPlanInfo || !generatedPlan || !generatedShoppingList) {
+      appElement.innerHTML = `
+        <h1>Welcome!</h1>
+        <p>Let's get your household set up so we can build your first meal plan.</p>
+        <button id="go-to-profile">Set Up Profile</button>
+      `;
+      document.getElementById('go-to-profile')?.addEventListener('click', () => {
+        currentPage = "profile";
+        localStorage.setItem("currentPage", currentPage);
+        render();
+      });
+      break;
+    }
+
     const todayStr = getLocalDateString();
+    const today = generatedPlan.find(d => d.date === todayStr);
+
+    let todaySectionHtml: string;
+    if (today) {
+      todaySectionHtml = `
+        <h2>Today's Meals</h2>
+        <ul>
+          <li><strong>Breakfast:</strong> ${renderClickableSlot(today.breakfast)}</li>
+          <li><strong>Lunch:</strong> ${renderClickableSlot(today.lunch)}</li>
+          <li><strong>Dinner:</strong> ${renderClickableSlot(today.dinner)}</li>
+        </ul>
+      `;
+    } else if (todayStr < generatedPlan[0].date) {
+      todaySectionHtml = `<p>Your current plan starts ${generatedPlan[0].date}.</p>`;
+    } else {
+      todaySectionHtml = `<p>Your current plan has ended — head to Profile to generate your next one when you're ready.</p>`;
+    }
 
     appElement.innerHTML = `
+      <h1>Home</h1>
+      ${todaySectionHtml}
+
+      <button id="go-to-meal-plan">View Full Meal Plan</button>
+    `;
+
+    attachRecipeLinkHandlers();
+
+    document.getElementById('go-to-meal-plan')?.addEventListener('click', () => {
+      currentPage = "meal-plan";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
+    break;
+  }
+
+  case "profile": {
+    const todayStr = getLocalDateString();
+  if(!mealPlanInfo || profileViewMode === 'edit'){
+    appElement.innerHTML = `
+
       <h1>Affordable Meal Planner</h1>
       <form id="info-form">
 
@@ -456,7 +746,14 @@ switch (currentPage) {
 
         <div class="form-row">
         <label for="budget">Grocery Budget per Shopping Trip</label>
-        <span>$</span><input type="number" id="budget" name="budget" step="0.01" min="0.00"/>
+        <span class='currency-field'>
+        <input type="number" id="budget" name="budget" step="0.01" min="0.00"/>
+        </span>
+        </div>
+
+        <div class="form-row">
+        <label for="usesSnap">I use SNAP/EBT benefits</label>
+        <input type="checkbox" id="usesSnap" name="usesSnap" />
         </div>
 
         <div class="form-row">
@@ -482,8 +779,7 @@ switch (currentPage) {
         </div>
 
         <input type="submit" value="Submit Form" />
-      </form>
-    `
+      </form>`;
 
     let specialDietMemberCount = 0;
 
@@ -534,6 +830,7 @@ switch (currentPage) {
         shoppingDate: formData.get('shoppingDate') as string,
         shoppingFrequency: formData.get('shoppingFrequency') as ShoppingFrequency,
         specialDietMembers,
+        usesSnap: formData.get('usesSnap') === 'on',
       };
       saveMealPlanInfo(mealPlanInfo);
 
@@ -552,23 +849,54 @@ switch (currentPage) {
       generatedPlan = plan;
       generatedShoppingList = generateShoppingList(pantry, ingredients);
       generatedTotalSpend = totalSpend;
+      savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
 
       currentPage = "meal-plan";
       localStorage.setItem("currentPage", currentPage);
       render();
     })
-    break;
+  } else {
+    const info = mealPlanInfo;
+    appElement.innerHTML = `
+      <h1>Profile</h1>
+      <p><strong>Diet:</strong> ${info.dietType}</p>
+      <p><strong>Cuisines:</strong> ${info.cuisines.join(', ')}</p>
+      <p><strong>Family Size:</strong> ${info.familySize}</p>
+      <p><strong>Budget per Trip:</strong> $${info.budget}</p>
+      <p><strong>Shopping Frequency:</strong> ${info.shoppingFrequency}</p>
+      <p><strong>Shopping Day:</strong> ${info.shoppingDate}</p>
+      <p><strong>SNAP/EBT:</strong> ${info.usesSnap ? 'Yes' : 'No'}</p>
+      ${info.specialDietMembers.length > 0 ? `<p><strong>Family members with different diets:</strong> ${info.specialDietMembers.map(m => `${m.name} (${m.dietType})`).join(', ')}</p>` : ''}
+
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+        <button id="edit-settings" style="width:100%; display:block;">Edit Settings</button>
+        <button id="add-own-meal" style="width:100%; display:block;">Add Your Own Meal</button>
+        <button id="generate-next-plan" style="width:100%; display:block;">Generate Next Plan (using current settings)</button>
+      </div>
+    `;
+
+    document.getElementById('edit-settings')?.addEventListener('click', () => {
+      profileViewMode = 'edit';
+      render();
+    });
+    document.getElementById('add-own-meal')?.addEventListener('click', () => {
+      // placeholder for now — we'll design this feature together next
+      alert('Coming soon!');
+    });
+    document.getElementById('generate-next-plan')?.addEventListener('click', generateNextPlan);
   }
+  break;
+}
 
   case "meal-plan": {
     if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
       appElement.innerHTML = `
         <h1>No meal plan yet</h1>
-        <p>Please fill out the form first.</p>
-        <button id="back-to-form">Back to form</button>
+        <p>Please set up your profile first.</p>
+        <button id="back-to-form">Go to Profile</button>
       `;
       document.getElementById('back-to-form')?.addEventListener('click', () => {
-        currentPage = "info-form";
+        currentPage = "profile";
         localStorage.setItem("currentPage", currentPage);
         render();
       });
@@ -594,6 +922,7 @@ switch (currentPage) {
 
       ${weekChunks.map(chunk => `
         <h2>${chunk[0].date} – ${chunk[chunk.length - 1].date}</h2>
+       <div class="table-scroll-wrapper">
         <table border="1" cellpadding="6" style="border-collapse: collapse; width: 100%;">
           <thead>
             <tr><th>Date</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>
@@ -609,27 +938,15 @@ switch (currentPage) {
             `).join('')}
           </tbody>
         </table>
+        </div>
       `).join('')}
 
       <p><strong>Total Cost:</strong> $${getTotalCost(generatedShoppingList).toFixed(2)}
          (Budget: $${maxBudget.toFixed(2)} for this shopping trip)
          — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
-
-      <button id="view-shopping-list">View Shopping List</button>
-      <button id="back-to-form">Start over</button>
     `;
 
-    document.getElementById('view-shopping-list')?.addEventListener('click', () => {
-      currentPage = "shopping-list";
-      localStorage.setItem("currentPage", currentPage);
-      render();
-    });
-
-    document.getElementById('back-to-form')?.addEventListener('click', () => {
-      currentPage = "info-form";
-      localStorage.setItem("currentPage", currentPage);
-      render();
-    });
+  
 
     document.querySelectorAll<HTMLElement>('.meal-cell').forEach(cell => {
       cell.addEventListener('click', () => {
@@ -655,6 +972,7 @@ switch (currentPage) {
     const meal = selectedMeal;
     const originalServings = meal.recipeServings ?? 1;
     const scaleFactor = mealPlanInfo.familySize / originalServings;
+    const perPersonNutrition = calculateMealNutrition(meal, 1, ingredients);
 
     appElement.innerHTML = `
       <button id="back-to-plan">← Back to plan</button>
@@ -663,6 +981,8 @@ switch (currentPage) {
       <p>Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
          (original recipe serves ${originalServings})</p>
 
+      <h2>Nutrition (per person)</h2>
+      ${renderNutritionDonut(perPersonNutrition)}
       <h2>Ingredients</h2>
       <ul>
         ${meal.ingredients.map(ing => {
@@ -685,25 +1005,83 @@ switch (currentPage) {
     break;
   }
 
-  case "shopping-list": {
+  case "groceries": {
     if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
-      appElement.innerHTML = `<h1>No shopping list yet</h1><button id="back-to-plan">Back to plan</button>`;
-      document.getElementById('back-to-plan')?.addEventListener('click', () => {
-        currentPage = "meal-plan";
-        localStorage.setItem("currentPage", currentPage);
-        render();
-      });
+    
+     
+      appElement.innerHTML = `
+      <h1>No shopping list yet</h1>
+      <p>Please set up your profile first.</p>
+      <button id="go-to-profile">Go to Profile</button>
+    `;
+    document.getElementById('go-to-profile')?.addEventListener('click', () => {
+      currentPage = "profile";
+      localStorage.setItem("currentPage", currentPage);
+      render();
+    });
       break;
     }
 
+    const maxBudget = getMaxBudget();
+    const withinBudget = generatedTotalSpend <= maxBudget;
+
+    const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
+    const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
+    nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
+    const nextShoppingDateStr = nextShoppingDate.toISOString().split('T')[0];
+
+    const itemsByAisle: Record<string, ShoppingListItem[]> = {};
+
+    for (const item of generatedShoppingList) {
+      const aisle = ingredients[item.ingredientId.toString()].mainCategoryName;
+      if (!itemsByAisle[aisle]) {
+        itemsByAisle[aisle] = [];
+      }
+        itemsByAisle[aisle].push(item);
+    }
+
+    let snapEligibleTotal = 0;
+    let notEligibleTotal = 0;
+    for (const item of generatedShoppingList) {
+      const isEligible = ingredients[item.ingredientId.toString()].usaSnapEligible;
+      if (isEligible) {
+        snapEligibleTotal += item.totalCost;
+      } else {
+        notEligibleTotal += item.totalCost;
+      }
+    }
+
+
+
     appElement.innerHTML = `
-      <button id="back-to-plan">← Back to plan</button>
+      
       <h1>Shopping List</h1>
       <p>For your ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date} shopping trip</p>
 
-      <ul>
-        ${generatedShoppingList.map(item => `<li>${item.name}: ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}</li>`).join('')}
-      </ul>
+      <h2>Budget Status</h2>
+      <p>$${generatedTotalSpend.toFixed(2)} of $${maxBudget.toFixed(2)} spent this trip
+         — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
+
+      <h2>Next Shopping Trip</h2>
+      <p>${nextShoppingDateStr}</p>
+
+      ${mealPlanInfo.usesSnap ? `
+      <h3>SNAP Breakdown</h3>
+      <p>$${snapEligibleTotal.toFixed(2)} SNAP-eligible · $${notEligibleTotal.toFixed(2)} not eligible (needs another payment method)</p>
+      ` : ''}
+
+     ${sortAislesByStoreOrder(Object.keys(itemsByAisle)).map(aisle => `
+      <h3>${aisle}</h3>
+        <div class="groceries-list">
+        ${itemsByAisle[aisle].map(item => {
+          const isChecked = checkedGroceryItems.has(item.ingredientId);
+          return `<div class="grocery-item-row" style="${isChecked ? 'text-decoration: line-through; color: #999;' : ''}">
+          <input type="checkbox" class="grocery-check" data-id="${item.ingredientId}" ${isChecked ? 'checked' : ''} />
+          ${item.name}: : ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}
+        </div>`;
+        }).join('')}
+      </div>
+      `).join('')}
 
       <p><strong>Total: $${getTotalCost(generatedShoppingList).toFixed(2)}</strong></p>
     `;
@@ -713,13 +1091,69 @@ switch (currentPage) {
       localStorage.setItem("currentPage", currentPage);
       render();
     });
+
+  document.querySelectorAll<HTMLInputElement>('.grocery-check').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      const id = Number(checkbox.dataset.id);
+      if (checkbox.checked) {
+        checkedGroceryItems.add(id);
+      } else {
+        checkedGroceryItems.delete(id);
+      }
+        saveCheckedItems(checkedGroceryItems);
+
+      const row = checkbox.closest('.grocery-item-row') as HTMLElement | null;
+      if (row) {
+        row.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+        row.style.color = checkbox.checked ? '#999' : '';
+      }
+      });
+    });
     break;
   }
 }
 renderBottomNav(); 
 }
 
+// TODO: build this yourself — check how many days away the next shopping
+// trip is, and if it's coming up soon, show a real OS-level notification
+// (the Notification API, not just an in-page message) prompting a review.
+function checkShoppingReminder() {
+  if(!mealPlanInfo) { 
+    return; //stops running function when theres no meal plan info to work with --> prevents error for shopingdate being nonexistent on app startup for first time user 
+  }
+  const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
+  const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
+  nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
+  const nextShoppingDateStr = nextShoppingDate.toISOString().split('T')[0];
+
+  const today = new Date(getLocalDateString() + 'T00:00:00');
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const daysUntil = Math.round((nextShoppingDate.getTime() - today.getTime()) / msPerDay); 
+  if (daysUntil != 1) {
+    return; 
+  }
+
+    if (Notification.permission === 'granted'){
+      const notification =  new Notification('Upcoming Grocery Shopping Trip', {
+        body: "Tommorow is a grocery shopping day! Don't forget to generate a new meal plan :)",
+        requireInteraction: true,
+      })
+      notification.onclick = () => {
+        currentPage = "profile"; 
+        localStorage.setItem("currentPage", currentPage);
+        render();
+        window.focus();
+      }
+  }
+}
+
 render();
+
+ Notification.requestPermission().then(permission => {
+    console.log('Permission result:', permission); 
+    checkShoppingReminder(); //only applicable when user has enabled notifications so put inside function 
+  })
 
 // insert CRUD logic here
 

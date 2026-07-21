@@ -22,8 +22,8 @@ function convertVolume(amount: number, fromUnit: string, toUnit: string): number
   return (amount * VOLUME_TO_ML[fromUnit]) / VOLUME_TO_ML[toUnit]
 }
 
-const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'link'])
-const WHOLE_PACKAGE_UNITS = new Set(['can', 'bag'])
+const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'mini avocado', 'link', 'slice', 'naan', "spear", 'stalk', 'pepper', 'medium onion', 'slice'])
+const WHOLE_PACKAGE_UNITS = new Set(['can', 'bag', "package"])
 
 type ManualConversion = {
   fromUnit: string
@@ -205,6 +205,47 @@ export function estimateMealCost(
     cost += packagesToBuy * parsePrice(price.formattedPrice)
   }
   return cost
+}
+
+export type NutritionBreakdown = {
+  calories: number
+  protein: number
+  carbs: number
+  fat: number
+  fiber: number
+  sugar: number
+  sodium: number
+}
+
+export function calculateMealNutrition(
+  meal: Meal,
+  familySize: number,
+  ingredients: Record<string, Ingredient>
+): NutritionBreakdown {
+  const scaleFactor = getScaleFactor(meal, familySize)
+  const totals: NutritionBreakdown = { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sugar: 0, sodium: 0 }
+
+  for (const ing of meal.ingredients) {
+    if (ing.ingredientId === null) continue
+    const price = ingredients[ing.ingredientId.toString()]
+    if (!price) continue
+
+    const needed = getNeededAmountInPriceUnits(ing, price, scaleFactor)
+    if (needed === null) continue
+
+    const servingSize = price.servingSize ?? 1
+    const servingsUsed = needed / servingSize
+
+    totals.calories += servingsUsed * (price.calories ?? 0)
+    totals.protein += servingsUsed * (price.protein ?? 0)
+    totals.carbs += servingsUsed * (price.carbs ?? 0)
+    totals.fat += servingsUsed * (price.fat ?? 0)
+    totals.fiber += servingsUsed * (price.fiber ?? 0)
+    totals.sugar += servingsUsed * (price.sugar ?? 0)
+    totals.sodium += servingsUsed * (price.sodium ?? 0)
+  }
+
+  return totals
 }
 
 function marginalCost(
@@ -605,6 +646,7 @@ export function generateMealPlan(
 }
 
 export type ShoppingListItem = {
+  ingredientId: number
   name: string
   packagesNeeded: number
   costPerPackage: number
@@ -639,7 +681,7 @@ export function generateShoppingListsByInterval(
     })
 
     const tripList: ShoppingListItem[] = []
-    for (const [id, entry] of pantry) {
+    for (const [id, entry] of pantry) { // entry is one PantryEntry obejct (id, name, amt left over, packages you've bought, last date purchased)
       const before = purchasedBefore.get(id) ?? 0
       const newThisTrip = entry.packagesPurchased - before
       if (newThisTrip > 0) {
@@ -647,6 +689,7 @@ export function generateShoppingListsByInterval(
         if (!price) continue
         const costPerPackage = parsePrice(price.formattedPrice)
         tripList.push({
+          ingredientId: id,
           name: entry.name,
           packagesNeeded: newThisTrip,
           costPerPackage,
@@ -667,6 +710,7 @@ export function generateShoppingList(pantry: Pantry, ingredients: Record<string,
     if (!price) continue
     const costPerPackage = parsePrice(price.formattedPrice)
     list.push({
+      ingredientId: entry.ingredientId,
       name: entry.name,
       packagesNeeded: entry.packagesPurchased,
       costPerPackage,

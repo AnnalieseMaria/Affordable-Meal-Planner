@@ -5606,156 +5606,8 @@
   },
   {
     "recipeId": 53,
-    "name": "Turkey Neck and White Bean Soup",
-    "recipeServings": null,
-    "culturalName": "Turkey and White Bean Soup",
-    "cuisine": "Soul Food",
-    "region": "American South",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 60,
-    "mealPrep": true,
-    "dietType": [
-      "Gluten-Free",
-      "Dairy-Free"
-    ],
-    "nutritionHighlights": [
-      "High Protein",
-      "High Fiber",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 310,
-      "protein": 26,
-      "carbs": 34,
-      "fat": 6,
-      "fiber": 9,
-      "sugar": 3,
-      "sodium": 480
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "American South",
-      "context": "Using every part of the animal \u2014 including necks, feet, and offal \u2014 is a defining feature of soul food born from necessity during slavery and its aftermath. Turkey necks simmered low and slow release deep collagen-rich broth and tender meat that falls off the bone. This is one of the most economical and deeply flavorful soups in soul food. White beans make it hearty and add significant fiber and protein."
-    },
-    "ingredients": [
-      {
-        "name": "Hickory Smoked Turkey Breast, 1 lb",
-        "aldiProduct": true,
-        "ingredientId": 384,
-        "amountInfo": {
-          "size": 8,
-          "unit": "oz"
-        }
-      },
-      {
-        "name": "Great Northern Beans, 15.5 oz Can",
-        "aldiProduct": true,
-        "ingredientId": 2260,
-        "amountInfo": {
-          "size": 2,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 4,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Hot Sauce, 12 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2436,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Thyme",
-        "aldiProduct": true,
-        "ingredientId": 1105,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Smoked paprika",
-        "aldiProduct": true,
-        "ingredientId": 2430,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Garlic powder",
-        "aldiProduct": true,
-        "ingredientId": 2164,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Bay leaf",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      }
-    ],
-    "steps": [
-      "Combine turkey, broth, peppers & onions, tomatoes, and all spices in a large pot.",
-      "Bring to boil, reduce to low and simmer 40 minutes until turkey is very tender.",
-      "Remove turkey, shred meat off any bones, return meat to pot.",
-      "Add white beans and kale, simmer 15 more minutes.",
-      "Remove bay leaf, taste and adjust seasoning with hot sauce.",
-      "This soup develops incredible depth overnight \u2014 ideal meal prep. Freeze up to 3 months."
-    ]
-  },
-  {
-    "recipeId": 54,
     "name": "High Protein Baked Mac and Cheese",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "Baked Mac and Cheese",
     "cuisine": "Soul Food",
     "region": "American South \u2014 the crown jewel of soul food side dishes",
@@ -5849,7 +5701,7 @@
         "ingredientId": 959,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "slice"
         }
       },
       {
@@ -5880,7 +5732,7 @@
         }
       },
       {
-        "name": "Mustard powder",
+        "name": "Yellow Mustard, 20 oz",
         "aldiProduct": true,
         "ingredientId": 42,
         "amountInfo": {
@@ -5892,7 +5744,7 @@
     "steps": [
       "Preheat oven to 375\u00b0F. Cook macaroni 2 minutes less than package directions \u2014 it finishes in the oven.",
       "Blend cottage cheese smooth in a blender or with an immersion blender \u2014 this is the protein secret. It disappears into the sauce completely.",
-      "Whisk blended cottage cheese, Greek yogurt, evaporated milk, eggs, and all spices until smooth.",
+      "Whisk blended cottage cheese, Greek yogurt, evaporated milk, eggs, mustard, and all spices until smooth.",
       "Stir in 1 cup of the cheddar.",
       "Combine drained pasta with cheese sauce, pour into a greased baking dish.",
       "Top with remaining cheddar and torn smoked gouda slices.",
@@ -5901,9 +5753,9 @@
     ]
   },
   {
-    "recipeId": 55,
+    "recipeId": 54,
     "name": "Shakshuka",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0634\u0643\u0634\u0648\u0643\u0629 \u00b7 Shakshuka",
     "cuisine": "Mediterranean",
     "region": "North Africa and Eastern Mediterranean \u2014 Tunisia, Israel, Libya, Egypt",
@@ -5945,8 +5797,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
@@ -5968,12 +5820,21 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Green Peppers, 3ct",
+        "aldiProduct": true,
+        "ingredientId": 1007,
         "amountInfo": {
           "size": 1,
-          "unit": "cup"
+          "unit": "pepper"
+        }
+      },
+      {
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
+        "amountInfo": {
+          "size": 1,
+          "unit": "medium onion"
         }
       },
       {
@@ -5981,7 +5842,7 @@
         "aldiProduct": true,
         "ingredientId": 788,
         "amountInfo": {
-          "size": 2,
+          "size": 4,
           "unit": "tbsp"
         }
       },
@@ -6022,17 +5883,17 @@
         }
       },
       {
-        "name": "Original Naan Bread, 17.6 oz",
+        "name": "Mini Naan Bread, 12.7 oz",
         "aldiProduct": true,
-        "ingredientId": 1589,
+        "ingredientId": 1592,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 4,
+          "unit": "naan"
         }
       }
     ],
     "steps": [
-      "Heat olive oil in a wide pan, cook peppers & onions 5 minutes.",
+      "Dice the green pepper and onion. Heat olive oil in a wide pan, cook diced pepper and onion 5 minutes until softened.",
       "Add spices, stir 30 seconds. Add tomatoes and salsa, simmer 8-10 minutes.",
       "Make 4 wells, crack one egg into each. Cover and cook 5-7 minutes until whites set.",
       "Top with feta and serve with warm naan.",
@@ -6040,9 +5901,9 @@
     ]
   },
   {
-    "recipeId": 56,
+    "recipeId": 55,
     "name": "Turkish Menemen",
-    "recipeServings": null,
+    "recipeServings": 1,
     "culturalName": "Menemen",
     "cuisine": "Mediterranean",
     "region": "Turkey \u2014 Aegean region near Izmir",
@@ -6084,7 +5945,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "egg"
         }
       },
       {
@@ -6097,12 +5958,21 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Green Peppers, 3ct",
+        "aldiProduct": true,
+        "ingredientId": 1007,
         "amountInfo": {
           "size": 0.5,
-          "unit": "cup"
+          "unit": "pepper"
+        }
+      },
+      {
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
+        "amountInfo": {
+          "size": 0.25,
+          "unit": "medium onion"
         }
       },
       {
@@ -6142,27 +6012,27 @@
         }
       },
       {
-        "name": "Original Naan Bread, 17.6 oz",
+        "name": "Mini Naan Bread, 12.7 oz",
         "aldiProduct": true,
-        "ingredientId": 1589,
+        "ingredientId": 1592,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "naan"
         }
       }
     ],
     "steps": [
-      "Heat olive oil, add peppers and cook 3 minutes.",
-      "Add diced tomatoes and spices, cook 5 minutes until tomatoes break down.",
-      "Whisk eggs and pour directly into tomato mixture.",
+      "Dice the green pepper and onion. Heat olive oil in a pan, add the pepper and onion, and cook 3 minutes.",
+      "Dice the tomato and add to the pan with the spices. Cook 5 minutes until the tomato breaks down.",
+      "Whisk the egg and pour directly into the tomato mixture.",
       "Stir gently and continuously \u2014 menemen should be soft and slightly runny, not fully set.",
       "Remove from heat while still slightly glossy. Serve with warm naan."
     ]
   },
   {
-    "recipeId": 57,
+    "recipeId": 56,
     "name": "Eggs with Tomatoes, Olives and Feta",
-    "recipeServings": null,
+    "recipeServings": 1,
     "culturalName": "\u0391\u03c5\u03b3\u03ac \u03bc\u03b5 \u039d\u03c4\u03bf\u03bc\u03ac\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03a6\u03ad\u03c4\u03b1",
     "cuisine": "Mediterranean",
     "region": "Greece",
@@ -6201,8 +6071,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "egg"
         }
       },
       {
@@ -6215,12 +6085,12 @@
         }
       },
       {
-        "name": "Kalamata Olives, 7 oz",
+        "name": "Kalamata Olives, 6 oz",
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 6,
+          "unit": "olive"
         }
       },
       {
@@ -6246,8 +6116,17 @@
         "aldiProduct": true,
         "ingredientId": 2192,
         "amountInfo": {
+          "size": 0.5,
+          "unit": "tsp"
+        }
+      },
+      {
+        "name": "Mini Naan Bread, 12.7 oz",
+        "aldiProduct": true,
+        "ingredientId": 1592,
+        "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "naan"
         }
       }
     ],
@@ -6255,13 +6134,13 @@
       "Heat olive oil, add diced tomatoes and cook 2 minutes.",
       "Crack eggs into pan, cook to preference.",
       "Top with kalamata olives, feta, and dried oregano.",
-      "Serve with crusty bread or naan for dipping."
+      "Serve with naan for dipping."
     ]
   },
   {
-    "recipeId": 58,
+    "recipeId": 57,
     "name": "Avocado Toast with Smoked Salmon, Dill and Capers",
-    "recipeServings": null,
+    "recipeServings": 1,
     "culturalName": "Avocado Toast con Salmone Affumicato",
     "cuisine": "Mediterranean",
     "region": "Italian-Scandinavian fusion \u2014 popular across Mediterranean caf\u00e9 culture",
@@ -6291,16 +6170,16 @@
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "Mediterranean caf\u00e9 culture \u2014 draws on Italian and Scandinavian ingredients",
-      "context": "Smoked salmon with capers and dill is a classic Scandinavian and Northern Italian combination ubiquitous in Mediterranean caf\u00e9 breakfast culture. Capers \u2014 the brined flower buds of the caper bush \u2014 grow wild across the Mediterranean and have been used since ancient Roman times."
+      "context": "Smoked salmon with fresh dill and a bright squeeze of lemon is a classic Scandinavian and Northern Italian combination, ubiquitous in Mediterranean caf\u00e9 breakfast culture. The pairing balances the richness of the salmon and avocado with dill's herbal brightness and lemon's acidity."
     },
     "ingredients": [
       {
-        "name": "Whole Grain Bread",
+        "name": "Sliced  Sourdough Round, 24 oz",
         "aldiProduct": true,
-        "ingredientId": 1635,
+        "ingredientId": 1611,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "slice"
         }
       },
       {
@@ -6313,63 +6192,45 @@
         }
       },
       {
-        "name": "Chunky Guacamole, 15 oz",
+        "name": "Mini Avocados, 6 count",
         "aldiProduct": true,
-        "ingredientId": 60,
+        "ingredientId": 1020,
         "amountInfo": {
-          "size": 4,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Capers",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
+          "size": 2,
+          "unit": "mini avocado"
         }
       },
       {
         "name": "Fresh Dill",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2330,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "spear"
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Reduced Fat Feta Cheese Crumbles, 4 oz",
-        "aldiProduct": true,
-        "ingredientId": 847,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
+          "size": 2,
+          "unit": "tsp"
         }
       }
     ],
     "steps": [
       "Toast bread until golden.",
-      "Spread guacamole generously on each slice.",
+      "Spread avocado generously on each slice.",
       "Layer smoked salmon over guacamole.",
-      "Top with capers, fresh dill, and a squeeze of lemon.",
-      "Add feta if desired. Serve immediately."
+      "Top with fresh dill and a squeeze of lemon.",
+      "Serve immediately."
     ]
   },
   {
-    "recipeId": 59,
+    "recipeId": 58,
     "name": "Spinach and Ricotta Frittata",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "Frittata di Spinaci e Ricotta",
     "cuisine": "Mediterranean",
     "region": "Italy \u2014 central and southern Italy",
@@ -6410,8 +6271,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 6,
+          "unit": "egg"
         }
       },
       {
@@ -6489,9 +6350,9 @@
     ]
   },
   {
-    "recipeId": 60,
+    "recipeId": 59,
     "name": "Spinach and Goat Cheese Quiche",
-    "recipeServings": null,
+    "recipeServings": 6,
     "culturalName": "Quiche aux \u00c9pinards et Ch\u00e8vre",
     "cuisine": "Mediterranean",
     "region": "Provence, southern France",
@@ -6529,8 +6390,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
@@ -6618,15 +6479,16 @@
     ]
   },
   {
-    "recipeId": 61,
+    "recipeId": 60,
     "name": "Ful Medames",
-    "recipeServings": null,
+    "recipeServings": 2,
     "culturalName": "\u0641\u0648\u0644 \u0645\u062f\u0645\u0633 \u00b7 Ful Medames",
     "cuisine": "Mediterranean",
     "region": "Egypt and the Levant \u2014 one of the oldest dishes in the world",
     "mealType": [
       "Breakfast",
-      "Lunch"
+      "Lunch",
+      "Dinner"
     ],
     "complexity": "Simple",
     "prepTimeMinutes": 15,
@@ -6634,7 +6496,6 @@
     "dietType": [
       "Vegan",
       "Vegetarian",
-      "Gluten-Free",
       "Dairy-Free",
       "Pescatarian"
     ],
@@ -6656,25 +6517,25 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "Egypt \u2014 one of the oldest continuously eaten dishes in human history",
-      "context": "Ful medames is Egypt's national dish and has been eaten there for at least 3,000 years \u2014 archaeologists have found fava beans in ancient Egyptian tombs. It is eaten for breakfast by millions of Egyptians every morning from street carts that open before dawn. Eaten across Egypt, Sudan, Lebanon, Syria, and Israel."
+      "context": "Ful medames is Egypt's national dish and has been eaten there for at least 3,000 years \u2014 archaeologists have found fava beans in ancient Egyptian tombs. It is eaten for breakfast by millions of Egyptians every morning from street carts that open before dawn. Eaten across Egypt, Sudan, Lebanon, Syria, and Israel. This version swaps in cannellini beans in place of traditional fava beans, which aren't available at Aldi \u2014 cannellini's size and creamy texture make it the closest widely available stand-in, though the flavor is milder than fava's distinctive earthy taste."
     },
     "ingredients": [
       {
-        "name": "Great Northern Beans, 15.5 oz Can",
+        "name": "Cannellini Beans, 15.5 oz Can",
         "aldiProduct": true,
-        "ingredientId": 2260,
+        "ingredientId": 3342,
         "amountInfo": {
           "size": 1,
           "unit": "can"
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "tbsp"
         }
       },
       {
@@ -6705,12 +6566,12 @@
         }
       },
       {
-        "name": "Original Naan Bread, 17.6 oz",
+        "name": "Mini Naan Bread, 12.7 oz",
         "aldiProduct": true,
         "ingredientId": 1589,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "naan"
         }
       },
       {
@@ -6734,110 +6595,9 @@
     ]
   },
   {
-    "recipeId": 62,
-    "name": "Lebanese Breakfast Bulgur with Fruits and Nuts",
-    "recipeServings": null,
-    "culturalName": "Burghul bil Fawakeh \u00b7 \u0628\u0631\u063a\u0644 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647",
-    "cuisine": "Mediterranean",
-    "region": "Lebanon and the Levant",
-    "mealType": [
-      "Breakfast"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 15,
-    "mealPrep": true,
-    "dietType": [
-      "Vegan",
-      "Vegetarian",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein"
-    ],
-    "estimatedNutrition": {
-      "calories": 320,
-      "protein": 10,
-      "carbs": 54,
-      "fat": 8,
-      "fiber": 9,
-      "sugar": 14,
-      "sodium": 40
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "Lebanon and the Levant \u2014 a traditional morning grain porridge",
-      "context": "Bulgur wheat has been a staple of Lebanese and Levantine cooking for thousands of years. Eaten as a morning porridge with honey, dried fruits, and nuts, it is a common village breakfast across Lebanon, Syria, and Palestine. It is one of the most fiber-rich and heart-healthy breakfast grains in the world."
-    },
-    "ingredients": [
-      {
-        "name": "Bulgur wheat, fine or medium grain",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Frozen Mixed Berries",
-        "aldiProduct": true,
-        "ingredientId": 1403,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Raw Cashews, Walnuts and Macadamia Nuts, 8 oz",
-        "aldiProduct": true,
-        "ingredientId": 305,
-        "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Honey",
-        "aldiProduct": true,
-        "ingredientId": 308,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Cinnamon Stick",
-        "aldiProduct": true,
-        "ingredientId": 2596,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Original Oatmilk, 0.5 gal",
-        "aldiProduct": true,
-        "ingredientId": 333,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      }
-    ],
-    "steps": [
-      "Combine bulgur, oat milk, and cinnamon stick in a small pot.",
-      "Bring to a boil, reduce heat, cover and simmer 10-12 minutes.",
-      "Remove cinnamon stick, fluff with a fork.",
-      "Top with thawed berries, chopped nuts, and honey.",
-      "Meal prep: cook bulgur ahead, refrigerate 5 days. Add toppings fresh."
-    ]
-  },
-  {
-    "recipeId": 63,
+    "recipeId": 61,
     "name": "High Protein Cappuccino Muffins",
-    "recipeServings": null,
+    "recipeServings": 6,
     "culturalName": "Muffin al Cappuccino",
     "cuisine": "Mediterranean",
     "region": "Italy \u2014 inspired by Italian caf\u00e9 culture",
@@ -6866,24 +6626,15 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "Italy \u2014 inspired by the cappuccino culture of Italian caf\u00e9 bars",
-      "context": "Cappuccino was invented in northern Italy and is the defining morning drink of Italian caf\u00e9 culture \u2014 always consumed before noon. This high-protein version uses vanilla protein powder, Greek yogurt, and espresso to create a muffin that fuels your morning without sacrificing flavor."
+      "context": "Cappuccino was invented in northern Italy and is the defining morning drink of Italian caf\u00e9 culture \u2014 always consumed before noon. This high-protein version uses a vanilla protein pancake mix, Greek yogurt, and espresso to create a muffin that fuels your morning without sacrificing flavor."
     },
     "ingredients": [
       {
-        "name": "All Purpose Flour, 5 lb",
+        "name": "Protein Pancake Mix, 20 oz",
         "aldiProduct": true,
-        "ingredientId": 2387,
+        "ingredientId": 2592,
         "amountInfo": {
-          "size": 0.75,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Vanilla Protein Powder, 2 lb",
-        "aldiProduct": true,
-        "ingredientId": 329,
-        "amountInfo": {
-          "size": 0.25,
+          "size": 1,
           "unit": "cup"
         }
       },
@@ -6902,7 +6653,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "egg"
         }
       },
       {
@@ -6937,16 +6688,16 @@
         "aldiProduct": true,
         "ingredientId": 2223,
         "amountInfo": {
-          "size": 1.5,
+          "size": 0.5,
           "unit": "tsp"
         }
       },
       {
-        "name": "Honey or sugar",
+        "name": "Honey Bear, 12oz",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 2261,
         "amountInfo": {
-          "size": 3,
+          "size": 2,
           "unit": "tbsp"
         }
       },
@@ -6955,8 +6706,8 @@
         "aldiProduct": true,
         "ingredientId": 1837,
         "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
+          "size": 100,
+          "unit": "g"
         }
       }
     ],
@@ -6964,109 +6715,18 @@
       "Preheat oven to 375\u00b0F. Line a muffin tin.",
       "Dissolve espresso in hot water and cool slightly.",
       "Whisk eggs, Greek yogurt, applesauce, espresso, and honey until smooth.",
-      "Combine flour, protein powder, chia seeds, baking powder, and a pinch of salt.",
+      "Combine protein pancake mix, chia seeds, baking powder, and a pinch of salt.",
       "Fold wet into dry \u2014 do not overmix.",
       "Fold in chopped dark chocolate.",
       "Fill muffin cups \u00be full. Bake 18-20 minutes until toothpick comes out clean.",
       "Cool 5 minutes before removing. Freeze up to 1 month.",
-      "Protein per muffin: Greek yogurt ~6g + protein powder ~8g + eggs ~6g + chia ~2g = ~11-12g total."
+      "Protein per muffin comes from the protein pancake mix, Greek yogurt, egg, and chia \u2014 check your pancake mix's label for its protein-per-serving to finalize the total per muffin."
     ]
   },
   {
-    "recipeId": 64,
-    "name": "Harcha",
-    "recipeServings": null,
-    "culturalName": "\u0647\u0631\u0634\u0629 \u00b7 Harcha",
-    "cuisine": "Mediterranean",
-    "region": "Morocco and North Africa",
-    "mealType": [
-      "Breakfast"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 20,
-    "mealPrep": true,
-    "dietType": [
-      "Vegetarian",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 280,
-      "protein": 8,
-      "carbs": 38,
-      "fat": 10,
-      "fiber": 2,
-      "sugar": 4,
-      "sodium": 180
-    },
-    "hasNonAldiIngredients": true,
-    "culturalContext": {
-      "origin": "Morocco \u2014 a staple Moroccan breakfast flatbread",
-      "context": "Harcha is a thick pan-fried Moroccan semolina flatbread with a grainy, slightly crispy exterior and soft interior. Eaten across Morocco every morning with butter, honey, or jam and mint tea. The semolina gives it a distinct sandy-outside, pillowy-inside texture unlike any other flatbread."
-    },
-    "ingredients": [
-      {
-        "name": "Semolina flour, fine",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Nonfat Plain Greek Yogurt, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 289,
-        "amountInfo": {
-          "size": 0.25,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Baking Powder",
-        "aldiProduct": true,
-        "ingredientId": 2223,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Honey",
-        "aldiProduct": true,
-        "ingredientId": 308,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Mix semolina, baking powder, and a pinch of salt.",
-      "Add olive oil and rub into semolina until it resembles wet sand.",
-      "Add Greek yogurt and mix, adding water 1 tbsp at a time until a soft sticky dough forms.",
-      "Shape into a round disc about \u00bd inch thick.",
-      "Cook in a dry pan over medium-low heat 6-8 minutes per side until golden.",
-      "Serve warm with honey and olive oil.",
-      "Meal prep: refrigerate up to 3 days, reheat in dry pan."
-    ]
-  },
-  {
-    "recipeId": 65,
-    "name": "Tuscan Tuna and White Bean Salad",
-    "recipeServings": null,
+    "recipeId": 62,
+    "name": "Tuscan Tuna and Bean Salad",
+    "recipeServings": 3,
     "culturalName": "Tonno e Fagioli",
     "cuisine": "Mediterranean",
     "region": "Tuscany, Italy",
@@ -7112,9 +6772,9 @@
         }
       },
       {
-        "name": "Great Northern Beans, 15.5 oz Can",
+        "name": "Cannellini Beans, 15.5 oz Can",
         "aldiProduct": true,
-        "ingredientId": 2260,
+        "ingredientId": 3342,
         "amountInfo": {
           "size": 1,
           "unit": "can"
@@ -7125,8 +6785,8 @@
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 12,
+          "unit": "olive"
         }
       },
       {
@@ -7148,12 +6808,12 @@
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
@@ -7170,8 +6830,8 @@
         "aldiProduct": true,
         "ingredientId": 1874,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 72,
+          "unit": "g"
         }
       }
     ],
@@ -7184,9 +6844,9 @@
     ]
   },
   {
-    "recipeId": 66,
+    "recipeId": 63,
     "name": "Greek Horiatiki Village Salad",
-    "recipeServings": null,
+    "recipeServings": 1,
     "culturalName": "\u03a7\u03c9\u03c1\u03b9\u03ac\u03c4\u03b9\u03ba\u03b7 \u03a3\u03b1\u03bb\u03ac\u03c4\u03b1 \u00b7 Horiatiki",
     "cuisine": "Mediterranean",
     "region": "Greece \u2014 eaten nationwide",
@@ -7243,17 +6903,35 @@
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 8,
+          "unit": "olive"
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Cucumber",
+        "aldiProduct": true,
+        "ingredientId": 999,
+        "amountInfo": {
+          "size": 0.333,
+          "unit": "cup"
+        }
+      },
+      {
+        "name": "Green Peppers, 3ct",
+        "aldiProduct": true,
+        "ingredientId": 1007,
         "amountInfo": {
           "size": 0.5,
-          "unit": "cup"
+          "unit": "pepper"
+        }
+      },
+      {
+        "name": "Red Onions ",
+        "aldiProduct": false,
+        "ingredientId": 1082,
+        "amountInfo": {
+          "size": 0.25,
+          "unit": "medium onion"
         }
       },
       {
@@ -7275,18 +6953,18 @@
         }
       },
       {
-        "name": "Original Naan Bread, 17.6 oz",
+        "name": "Mini Naan Bread, 12.7 oz",
         "aldiProduct": true,
-        "ingredientId": 1589,
+        "ingredientId": 1592,
         "amountInfo": {
           "size": 1,
-          "unit": "hello"
+          "unit": "naan"
         }
       }
     ],
     "steps": [
-      "Cut tomatoes into large wedges, place in a wide bowl.",
-      "Add olives and peppers.",
+      "Cut tomatoes and cucumber into large chunks, place in a wide bowl.",
+      "Add olives, sliced green pepper, and thinly sliced red onion.",
       "Place feta slab on top \u2014 do not crumble, the traditional presentation is a whole piece.",
       "Drizzle olive oil generously over everything.",
       "Sprinkle dried oregano. Do not toss \u2014 serve as is.",
@@ -7294,9 +6972,9 @@
     ]
   },
   {
-    "recipeId": 67,
+    "recipeId": 64,
     "name": "Ni\u00e7oise Salad",
-    "recipeServings": null,
+    "recipeServings": 2,
     "culturalName": "Salade Ni\u00e7oise",
     "cuisine": "Mediterranean",
     "region": "Nice, Provence, southern France",
@@ -7328,7 +7006,7 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "Nice, Provence, southern France",
-      "context": "Salade Ni\u00e7oise is one of the great dishes of Proven\u00e7al cuisine, named after the city of Nice on the French Riviera. The authentic version is a composed salad of raw vegetables with tuna, hard boiled eggs, and anchovies, dressed with olive oil. It became internationally famous and is one of the most nutritionally complete composed salads in existence."
+      "context": "Salade Ni\u00e7oise is one of the great dishes of Proven\u00e7al cuisine, named after the city of Nice on the French Riviera. The authentic version is a composed salad of raw vegetables with tuna, hard boiled eggs, and anchovies, dressed with olive oil \u2014 no potatoes, no green beans, and no vinegar, unlike the more Americanized versions. This version uses sardines in place of anchovies, which aren't readily available at Aldi \u2014 sardines are milder and less intensely salty than traditional anchovies, but still bring a classic Mediterranean cured-fish element to the plate."
     },
     "ingredients": [
       {
@@ -7345,8 +7023,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "egg"
         }
       },
       {
@@ -7363,8 +7041,8 @@
         "aldiProduct": true,
         "ingredientId": 1029,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 0.5,
+          "unit": "cup"
         }
       },
       {
@@ -7372,17 +7050,8 @@
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      },
-      {
-        "name": "Great Northern Beans, 15.5 oz Can",
-        "aldiProduct": true,
-        "ingredientId": 2260,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
+          "size": 10,
+          "unit": "olive"
         }
       },
       {
@@ -7395,12 +7064,12 @@
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
@@ -7416,16 +7085,16 @@
     "steps": [
       "Hard boil eggs 8 minutes, cool and halve.",
       "Arrange all components on a large plate \u2014 do not mix, compose separately.",
-      "Place tuna in center, arrange tomatoes, radishes, olives, beans, and eggs around it.",
-      "Add sardines if using.",
+      "Place tuna in center, arrange tomatoes, radishes, olives, and eggs around it.",
+      "Add sardines alongside the tuna.",
       "Dress with olive oil and lemon juice \u2014 no vinegar in the authentic version.",
       "Meal prep: keep components separate, assemble fresh."
     ]
   },
   {
-    "recipeId": 68,
+    "recipeId": 65,
     "name": "Lebanese Fattoush Salad",
-    "recipeServings": null,
+    "recipeServings": 1,
     "culturalName": "\u0641\u062a\u0648\u0634 \u00b7 Fattoush",
     "cuisine": "Mediterranean",
     "region": "Lebanon and the Levant",
@@ -7458,7 +7127,7 @@
     "hasNonAldiIngredients": true,
     "culturalContext": {
       "origin": "Lebanon and the Levant",
-      "context": "Fattoush is Lebanon's bread salad \u2014 pita toasted until crispy and broken into pieces, tossed with chopped vegetables and a tangy sumac dressing. Sumac is one of the defining flavors of Levantine cuisine."
+      "context": "Fattoush is Lebanon's bread salad \u2014 pita toasted until crispy and broken into pieces, tossed with chopped vegetables and a bright lemon dressing. Traditional versions rely on sumac, a tart red spice that's one of the defining flavors of Levantine cuisine, for the dish's signature tang \u2014 this version relies on lemon alone instead."
     },
     "ingredients": [
       {
@@ -7467,7 +7136,7 @@
         "ingredientId": 1772,
         "amountInfo": {
           "size": 1,
-          "unit": "cup"
+          "unit": "oz"
         }
       },
       {
@@ -7480,11 +7149,20 @@
         }
       },
       {
-        "name": "Organic Chopped Kale, 12 oz",
+        "name": "Romaine Lettuce Hearts, 3 count",
         "aldiProduct": true,
-        "ingredientId": 303,
+        "ingredientId": 995,
         "amountInfo": {
           "size": 2,
+          "unit": "cup"
+        }
+      },
+      {
+        "name": "Cucumber, each",
+        "aldiProduct": true,
+        "ingredientId": 999,
+        "amountInfo": {
+          "size": 0.333,
           "unit": "cup"
         }
       },
@@ -7493,17 +7171,17 @@
         "aldiProduct": true,
         "ingredientId": 1029,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 0.25,
+          "unit": "cup"
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
@@ -7511,17 +7189,8 @@
         "aldiProduct": true,
         "ingredientId": 2442,
         "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Sumac powder",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
           "size": 1,
-          "unit": "tsp"
+          "unit": "tbsp"
         }
       },
       {
@@ -7535,18 +7204,18 @@
       }
     ],
     "steps": [
-      "Combine kale, tomatoes, and radishes in a large bowl.",
-      "Whisk lemon juice, olive oil, sumac, and a pinch of salt for dressing.",
+      "Combine lettuce, tomatoes, and radishes in a large bowl.",
+      "Whisk lemon juice, olive oil, and a pinch of salt for dressing.",
       "Toss vegetables with dressing.",
       "Add pita chips just before serving \u2014 do not add early or they go soggy.",
       "Top with feta if using.",
-      "Note: sumac available at Middle Eastern grocery stores and many large supermarkets for ~$3."
+      "Note: can add sumac available at Middle Eastern grocery stores and many large supermarkets for ~$3."
     ]
   },
   {
-    "recipeId": 69,
+    "recipeId": 66,
     "name": "Mujaddara",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0645\u062c\u062f\u0631\u0629 \u00b7 Mujaddara",
     "cuisine": "Mediterranean",
     "region": "Lebanon, Syria, and across the Levant",
@@ -7561,7 +7230,6 @@
       "Vegan",
       "Vegetarian",
       "Gluten-Free",
-      "Dairy-Free",
       "Pescatarian"
     ],
     "nutritionHighlights": [
@@ -7604,12 +7272,12 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
+        "name": "Yellow Onions, Bag 3lb",
         "aldiProduct": false,
-        "ingredientId": null,
+        "ingredientId": 1043,
         "amountInfo": {
           "size": 2,
-          "unit": "cup"
+          "unit": "medium onion"
         }
       },
       {
@@ -7635,14 +7303,14 @@
         "aldiProduct": true,
         "ingredientId": 289,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 0.5,
+          "unit": "cup"
         }
       }
     ],
     "steps": [
       "Cook lentils in 3 cups water with cumin 20 minutes until soft. Add rice last 10 minutes.",
-      "Caramelize onion blend in olive oil over medium-low heat 20-25 minutes \u2014 patience is essential, they must be deep golden brown.",
+      "Caramelize onions in olive oil over medium-low heat 20-25 minutes \u2014 patience is essential, they must be deep golden brown.",
       "Season lentil and rice mixture with salt, pepper, and extra cumin.",
       "Serve topped generously with caramelized onions and a drizzle of olive oil.",
       "Serve with yogurt on the side if desired.",
@@ -7650,9 +7318,9 @@
     ]
   },
   {
-    "recipeId": 70,
+    "recipeId": 67,
     "name": "Moroccan Harira Soup",
-    "recipeServings": null,
+    "recipeServings": 3,
     "culturalName": "\u062d\u0631\u064a\u0631\u0629 \u00b7 Harira",
     "cuisine": "Mediterranean",
     "region": "Morocco \u2014 the national soup",
@@ -7701,9 +7369,9 @@
         }
       },
       {
-        "name": "Black Beans, 15 oz Can",
+        "name": "Garbanzo Beans, 15.5 oz Can",
         "aldiProduct": true,
-        "ingredientId": 9,
+        "ingredientId": 2459,
         "amountInfo": {
           "size": 1,
           "unit": "can"
@@ -7728,12 +7396,21 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Green Peppers, 3ct",
+        "aldiProduct": true,
+        "ingredientId": 1007,
         "amountInfo": {
-          "size": 1,
-          "unit": "cup"
+          "size": 0.5,
+          "unit": "pepper"
+        }
+      },
+      {
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
+        "amountInfo": {
+          "size": 0.5,
+          "unit": "medium onion"
         }
       },
       {
@@ -7764,12 +7441,12 @@
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
@@ -7792,9 +7469,9 @@
     ]
   },
   {
-    "recipeId": 71,
+    "recipeId": 68,
     "name": "Turkish Red Lentil Soup",
-    "recipeServings": null,
+    "recipeServings": 3,
     "culturalName": "Mercimek \u00c7orbas\u0131",
     "cuisine": "Mediterranean",
     "region": "Turkey \u2014 eaten nationwide at every meal",
@@ -7852,12 +7529,12 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
         "amountInfo": {
           "size": 1,
-          "unit": "cup"
+          "unit": "medium onion"
         }
       },
       {
@@ -7888,26 +7565,26 @@
         }
       },
       {
-        "name": "Lemons, 2 lb",
+        "name": "100% Lemon Juice, 32 fl oz",
         "aldiProduct": true,
-        "ingredientId": 1025,
+        "ingredientId": 2726,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
-        "name": "Original Naan Bread, 17.6 oz",
+        "name": "Mini Naan Bread, 12.7 oz",
         "aldiProduct": true,
-        "ingredientId": 1589,
+        "ingredientId": 1592,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "naan"
         }
       }
     ],
     "steps": [
-      "Heat olive oil, cook peppers & onions 4 minutes.",
+      "Heat olive oil, cook onion 4 minutes.",
       "Add rinsed lentils, broth, cumin, and turmeric. Bring to boil.",
       "Reduce heat, simmer 20 minutes until lentils completely dissolve.",
       "Blend until completely smooth with immersion blender.",
@@ -7917,9 +7594,9 @@
     ]
   },
   {
-    "recipeId": 72,
+    "recipeId": 69,
     "name": "Moroccan Chicken Tagine with Olives",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0637\u0627\u062c\u064a\u0646 \u0627\u0644\u062f\u062c\u0627\u062c \u0628\u0627\u0644\u0632\u064a\u062a\u0648\u0646 \u00b7 Tagine Djaj bil Zaytoun",
     "cuisine": "Mediterranean",
     "region": "Morocco \u2014 classic Moroccan home cooking",
@@ -7949,7 +7626,7 @@
     "hasNonAldiIngredients": false,
     "culturalContext": {
       "origin": "Morocco \u2014 one of the defining dishes of Moroccan cuisine",
-      "context": "Tagine refers both to the conical clay cooking vessel and the slow-braised stews made in it. Chicken tagine with preserved lemon and olives is considered Morocco's most iconic dish. Served over couscous it is one of the most complete and satisfying meals in North African cuisine."
+      "context": "Tagine refers both to the conical clay cooking vessel and the slow-braised stews made in it. Chicken tagine with preserved lemon and olives is considered Morocco's most iconic dish \u2014 preserved lemon's deep, salty-fermented flavor is what defines the dish's signature taste. This version uses fresh lemon juice instead, since preserved lemon isn't available at Aldi \u2014 it brings brightness rather than that same savory depth, but the dish still carries the chicken, olives, and warm spicing that make it recognizably Moroccan. Served over couscous it is one of the most complete and satisfying meals in North African cuisine."
     },
     "ingredients": [
       {
@@ -7957,8 +7634,8 @@
         "aldiProduct": true,
         "ingredientId": 1187,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 20,
+          "unit": "oz"
         }
       },
       {
@@ -7966,8 +7643,8 @@
         "aldiProduct": true,
         "ingredientId": 2357,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
@@ -7975,17 +7652,17 @@
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
+          "size": 15,
+          "unit": "olive"
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
         "amountInfo": {
-          "size": 1.5,
-          "unit": "cup"
+          "size": 1,
+          "unit": "medium onion"
         }
       },
       {
@@ -8029,8 +7706,8 @@
         "aldiProduct": true,
         "ingredientId": 1025,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 2,
+          "unit": "tbsp"
         }
       },
       {
@@ -8038,15 +7715,15 @@
         "aldiProduct": true,
         "ingredientId": 2442,
         "amountInfo": {
-          "size": 1,
+          "size": 1.66,
           "unit": "tbsp"
         }
       }
     ],
     "steps": [
       "Season chicken with turmeric, cumin, cinnamon, and black pepper.",
-      "Sear in olive oil over high heat 3 minutes per side. Remove.",
-      "Cook peppers & onions 5 minutes. Add tomatoes, lemon juice, and olives.",
+      "Sear in 1 tbsp olive oil over high heat 3 minutes per side. Remove.",
+      "Cook onions 5 minutes. Add tomatoes, lemon juice, and olives.",
       "Return chicken, cover and braise over low heat 25-30 minutes.",
       "Prepare couscous per package directions.",
       "Serve chicken and sauce over couscous.",
@@ -8054,135 +7731,9 @@
     ]
   },
   {
-    "recipeId": 73,
-    "name": "Greek Gigantes Plaki",
-    "recipeServings": null,
-    "culturalName": "\u0393\u03af\u03b3\u03b1\u03bd\u03c4\u03b5\u03c2 \u03a0\u03bb\u03b1\u03ba\u03af \u00b7 Gigantes Plaki",
-    "cuisine": "Mediterranean",
-    "region": "Greece \u2014 a classic meze and main course",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 35,
-    "mealPrep": true,
-    "dietType": [
-      "Vegan",
-      "Vegetarian",
-      "Gluten-Free",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 310,
-      "protein": 14,
-      "carbs": 46,
-      "fat": 8,
-      "fiber": 12,
-      "sugar": 8,
-      "sodium": 380
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "Greece \u2014 eaten as meze, side dish, and main course",
-      "context": "Gigantes plaki (baked giant beans) is one of the most beloved dishes in Greek cuisine \u2014 large white beans baked in a rich tomato sauce with olive oil and herbs until creamy inside. Eaten at room temperature as meze or warm as a main course with crusty bread."
-    },
-    "ingredients": [
-      {
-        "name": "Great Northern Beans, 15.5 oz Can",
-        "aldiProduct": true,
-        "ingredientId": 2260,
-        "amountInfo": {
-          "size": 2,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Quartered Marinated Artichoke Hearts, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 2320,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Extra Virgin Olive Oil, 16.9 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 3,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Oregano Leaves, 0.75 oz",
-        "aldiProduct": true,
-        "ingredientId": 2192,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Minced Garlic in Extra Virgin Olive Oil, 7 oz",
-        "aldiProduct": true,
-        "ingredientId": 2253,
-        "amountInfo": {
-          "size": 2,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Original Naan Bread, 17.6 oz",
-        "aldiProduct": true,
-        "ingredientId": 1589,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Preheat oven to 375\u00b0F.",
-      "Cook peppers & onions in olive oil 5 minutes. Add garlic 1 minute.",
-      "Add tomatoes, oregano, and artichoke hearts. Simmer 5 minutes.",
-      "Stir in beans gently, transfer to a baking dish.",
-      "Drizzle extra olive oil over top.",
-      "Bake 25-30 minutes until sauce is thick and slightly caramelized.",
-      "Serve warm or at room temperature with naan.",
-      "Improves overnight \u2014 excellent meal prep."
-    ]
-  },
-  {
-    "recipeId": 74,
+    "recipeId": 70,
     "name": "Lebanese Chicken Shawarma Bowl",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0634\u0627\u0648\u0631\u0645\u0627 \u00b7 Shawarma Bowl",
     "cuisine": "Mediterranean",
     "region": "Lebanon and the Levant",
@@ -8194,8 +7745,7 @@
     "prepTimeMinutes": 25,
     "mealPrep": true,
     "dietType": [
-      "Gluten-Free",
-      "Dairy-Free"
+      "Gluten-Free"
     ],
     "nutritionHighlights": [
       "High Protein",
@@ -8221,8 +7771,8 @@
         "aldiProduct": true,
         "ingredientId": 1187,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 20,
+          "unit": "oz"
         }
       },
       {
@@ -8230,7 +7780,7 @@
         "aldiProduct": true,
         "ingredientId": 3,
         "amountInfo": {
-          "size": 1,
+          "size": 1.5,
           "unit": "cup"
         }
       },
@@ -8257,8 +7807,8 @@
         "aldiProduct": true,
         "ingredientId": 2266,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 12,
+          "unit": "olive"
         }
       },
       {
@@ -8296,10 +7846,28 @@
           "size": 0.25,
           "unit": "tsp"
         }
-      }
+      },
+      {
+        "name": "Smoked Paprika",
+        "aldiProduct": true,
+        "ingredientId": 2430,
+        "amountInfo": { 
+          "size": 1.5, 
+          "unit": "tsp" 
+        }
+      },
+      {
+        "name": "Minced Garlic in Extra Virgin Olive Oil, 7 oz",
+        "aldiProduct": true,
+        "ingredientId": 2253,
+        "amountInfo": { 
+          "size": 2, 
+          "unit": "tsp" 
+        }
+}
     ],
     "steps": [
-      "Toss chicken with turmeric, cumin, cinnamon, and olive oil.",
+      "Toss chicken with turmeric, cumin, cinnamon, smoked paprika, garlic, and olive oil.",
       "Cook in a hot pan over high heat 4-5 minutes until slightly charred.",
       "Cook brown rice per package directions.",
       "Build bowl: rice base, chicken, olives, feta, and a generous dollop of tzatziki.",
@@ -8307,9 +7875,9 @@
     ]
   },
   {
-    "recipeId": 75,
+    "recipeId": 71,
     "name": "Algerian Couscous with Roasted Vegetables",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0643\u0633\u0643\u0633\u064a \u0628\u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Couscous bil Khodar",
     "cuisine": "Mediterranean",
     "region": "Algeria and North Africa",
@@ -8350,8 +7918,8 @@
         "aldiProduct": true,
         "ingredientId": 2357,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
@@ -8359,14 +7927,14 @@
         "aldiProduct": true,
         "ingredientId": 343,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
-        "name": "Black Beans, 15 oz Can",
+        "name": "Canned Garbanzo Beans, 15.5 oz",
         "aldiProduct": true,
-        "ingredientId": 9,
+        "ingredientId": 2459,
         "amountInfo": {
           "size": 1,
           "unit": "can"
@@ -8382,12 +7950,21 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
+        "name": "Green Peppers, 3ct",
+        "aldiProduct": true,
+        "ingredientId": 1007,
+        "amountInfo": { 
+          "size": 0.5, 
+          "unit": "pepper" 
+        }
+      },
+      {
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
+        "amountInfo": { 
+          "size": 0.5, 
+          "unit": "medium onion" 
         }
       },
       {
@@ -8429,7 +8006,7 @@
     ],
     "steps": [
       "Roast sweet potatoes at 400\u00b0F per package directions until caramelized.",
-      "Saut\u00e9 peppers & onions in olive oil 5 minutes. Add spices, cook 1 minute.",
+      "Saut\u00e9 onion and pepper in olive oil 5 minutes. Add spices, cook 1 minute.",
       "Add tomatoes and beans, simmer 10 minutes.",
       "Prepare couscous per package directions.",
       "Serve vegetable stew over couscous.",
@@ -8437,9 +8014,9 @@
     ]
   },
   {
-    "recipeId": 76,
+    "recipeId": 72,
     "name": "Moroccan Lamb Kefta in Tomato Sauce",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0628\u0627\u0644\u0637\u0645\u0627\u0637\u0645 \u00b7 Kefta bil Matisha",
     "cuisine": "Mediterranean",
     "region": "Morocco \u2014 a classic Moroccan family dish",
@@ -8476,8 +8053,8 @@
         "aldiProduct": true,
         "ingredientId": 388,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 16,
+          "unit": "oz"
         }
       },
       {
@@ -8485,8 +8062,8 @@
         "aldiProduct": true,
         "ingredientId": 2357,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
@@ -8539,8 +8116,8 @@
         "aldiProduct": true,
         "ingredientId": 134,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 4,
+          "unit": "egg"
         }
       },
       {
@@ -8564,9 +8141,9 @@
     ]
   },
   {
-    "recipeId": 77,
+    "recipeId": 73,
     "name": "Moroccan Vegetable Kefta",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u0643\u0641\u062a\u0629 \u0627\u0644\u062e\u0636\u0627\u0631 \u00b7 Kefta bil Khodar",
     "cuisine": "Mediterranean",
     "region": "Morocco",
@@ -8613,11 +8190,11 @@
         }
       },
       {
-        "name": "Instant Corn Masa Mix, 4.4 lb",
+        "name": "Panko Breadcrumbs, 8 oz",
         "aldiProduct": true,
-        "ingredientId": 14,
+        "ingredientId": 2440,
         "amountInfo": {
-          "size": 3,
+          "size": 6,
           "unit": "tbsp"
         }
       },
@@ -8626,8 +8203,8 @@
         "aldiProduct": true,
         "ingredientId": 2357,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       },
       {
@@ -8686,9 +8263,9 @@
     ]
   },
   {
-    "recipeId": 78,
+    "recipeId": 74,
     "name": "Israeli Baked Fish with Chermoula",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "\u05d3\u05d2 \u05d1\u05d7\u05e8\u05de\u05d5\u05dc\u05d4 \u00b7 Dag b'Chermoula",
     "cuisine": "Mediterranean",
     "region": "Israel and North Africa \u2014 chermoula originates in Morocco",
@@ -8728,8 +8305,8 @@
         "aldiProduct": true,
         "ingredientId": 1407,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 16,
+          "unit": "oz"
         }
       },
       {
@@ -8764,8 +8341,8 @@
         "aldiProduct": true,
         "ingredientId": 1025,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 10,
+          "unit": "slice"
         }
       },
       {
@@ -8791,147 +8368,25 @@
         "aldiProduct": true,
         "ingredientId": 2357,
         "amountInfo": {
-          "size": 1,
-          "unit": "hello"
+          "size": 3,
+          "unit": "cup"
         }
       }
     ],
     "steps": [
       "Preheat oven to 425\u00b0F.",
-      "Mix olive oil, lemon juice, garlic, cumin, turmeric, and lemon pepper into a paste.",
+      "Cut lemons into slices (1 lemon = 8 slices). Squeeze about 6 slices to yield roughly 2 tbsp juice; set aside 4 slices for garnish.",
+      "Mix olive oil, lemon juice, garlic, cumin, turmeric, paprika, and chopped cilantro into a paste.",
       "Coat fish fillets generously with chermoula paste.",
+      "Bake 12-14 minutes until flaky.",
+      "Top each fillet with a reserved lemon slice.",
       "Bake 12-14 minutes until flaky.",
       "Prepare couscous per package directions.",
       "Serve fish over couscous with extra lemon wedges."
     ]
   },
   {
-    "recipeId": 79,
-    "name": "Spanish Lentejas",
-    "recipeServings": null,
-    "culturalName": "Lentejas",
-    "cuisine": "Mediterranean",
-    "region": "Spain \u2014 a staple of Spanish home cooking",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Simple",
-    "prepTimeMinutes": 35,
-    "mealPrep": true,
-    "dietType": [
-      "Vegan",
-      "Vegetarian",
-      "Gluten-Free",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Fat",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 320,
-      "protein": 18,
-      "carbs": 50,
-      "fat": 5,
-      "fiber": 14,
-      "sugar": 5,
-      "sodium": 360
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "Spain \u2014 eaten in every Spanish household every season",
-      "context": "Lentejas is one of Spain's most beloved comfort foods \u2014 a simple hearty stew eaten across all regions and social classes. There is a Spanish saying: 'lentejas, si quieres las comes y si no las dejas.' This vegetarian version uses smoked paprika which is essential to the authentic Spanish flavor."
-    },
-    "ingredients": [
-      {
-        "name": "Organic Green Lentils, 16 oz",
-        "aldiProduct": true,
-        "ingredientId": 426,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
-      },
-      {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 4,
-          "unit": "cup"
-        }
-      },
-      {
-        "name": "Organic Ground Cumin, 1.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2193,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Organic Ground Turmeric, 1.37 oz",
-        "aldiProduct": true,
-        "ingredientId": 2510,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "tsp"
-        }
-      },
-      {
-        "name": "Olive Oil",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tbsp"
-        }
-      },
-      {
-        "name": "Lemons, 2 lb",
-        "aldiProduct": true,
-        "ingredientId": 1025,
-        "amountInfo": {
-          "size": 1,
-          "unit": "hello"
-        }
-      }
-    ],
-    "steps": [
-      "Heat olive oil, cook peppers & onions 5 minutes.",
-      "Add cumin and turmeric, stir 30 seconds.",
-      "Add rinsed lentils, tomatoes, and broth. Bring to boil.",
-      "Reduce heat, simmer 25-30 minutes until lentils are tender.",
-      "Finish with a squeeze of lemon.",
-      "Serve with crusty bread or naan.",
-      "Freezes perfectly."
-    ]
-  },
-  {
-    "recipeId": 80,
+    "recipeId": 75,
     "name": "Ribollita",
     "recipeServings": null,
     "culturalName": "Ribollita",
@@ -8966,14 +8421,14 @@
     },
     "hasNonAldiIngredients": false,
     "culturalContext": {
-      "origin": "Tuscany, Italy \u2014 Florence and the surrounding countryside",
-      "context": "Ribollita means 'reboiled' \u2014 made by taking leftover minestrone, adding stale bread to thicken it, and reboiling it. It is one of the great dishes of cucina povera and has become one of Tuscany's most iconic soups. The bread dissolves into a thick, porridge-like consistency. Best on the second or third day."
-    },
+      "origin": "Tuscany, Italy — Florence and the surrounding countryside",
+      "context": "Ribollita means 'reboiled' — made by taking leftover minestrone, adding stale bread to thicken it, and reboiling it. It is one of the great dishes of cucina povera and has become one of Tuscany's most iconic soups. This version uses cannellini beans, the definitive Tuscan bean, and Tuscan kale — both staples of the region. The bread dissolves into a thick, porridge-like consistency. Best on the second or third day."
+  }, 
     "ingredients": [
       {
-        "name": "Great Northern Beans, 15.5 oz Can",
+        "name": "Cannelini Beans, 15.5 oz",
         "aldiProduct": true,
-        "ingredientId": 2260,
+        "ingredientId": 3342,
         "amountInfo": {
           "size": 2,
           "unit": "can"
@@ -9007,30 +8462,21 @@
         }
       },
       {
-        "name": "Frozen Pepper & Onion Blend",
-        "aldiProduct": false,
-        "ingredientId": null,
-        "amountInfo": {
-          "size": 1,
-          "unit": "cup"
+        "name": "Yellow Onions, Bag 3lb",
+        "aldiProduct": true,
+        "ingredientId": 1043,
+        "amountInfo": { 
+          "size": 1, 
+          "unit": "medium onion" 
         }
       },
       {
-        "name": "Whole Grain Bread",
+        "name": "Sliced Italian Loaf, 24 oz",
         "aldiProduct": true,
-        "ingredientId": 1635,
+        "ingredientId": 1660,
         "amountInfo": {
           "size": 1,
           "unit": "unit"
-        }
-      },
-      {
-        "name": "Quartered Marinated Artichoke Hearts, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 2320,
-        "amountInfo": {
-          "size": 0.5,
-          "unit": "cup"
         }
       },
       {
@@ -9053,8 +8499,8 @@
       }
     ],
     "steps": [
-      "Heat olive oil, cook peppers & onions 5 minutes.",
-      "Add tomatoes, broth, beans, artichoke hearts, and oregano. Bring to boil.",
+      "Heat olive oil, cook onion 5 minutes.",
+      "Add tomatoes, broth, beans, and oregano. Bring to boil.",
       "Reduce heat, simmer 15 minutes.",
       "Add kale, stir in and cook 10 minutes.",
       "Tear bread into the soup, stir well \u2014 it will dissolve and thicken.",
