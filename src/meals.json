@@ -113,7 +113,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -213,9 +213,9 @@
         }
       },
       {
-        "name": "Granola",
+        "name": "Protein Granola",
         "aldiProduct": true,
-        "ingredientId": 296,
+        "ingredientId": 308,
         "amountInfo": {
           "size": 2,
           "unit": "tbsp"
@@ -275,7 +275,7 @@
         "ingredientId": 1635,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "slice"
         }
       },
       {
@@ -293,7 +293,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -683,7 +683,7 @@
         "ingredientId": 1635,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "slice"
         }
       }
     ],
@@ -1151,7 +1151,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -2991,7 +2991,7 @@
         "ingredientId": 2596,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "stick"
         }
       },
       {
@@ -3085,7 +3085,7 @@
         "ingredientId": 2596,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "stick"
         }
       },
       {
@@ -3165,7 +3165,7 @@
         "ingredientId": 134,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "egg"
         }
       },
       {
@@ -4147,7 +4147,7 @@
         "ingredientId": 1020,
         "amountInfo": {
           "size": 2,
-          "unit": "unit"
+          "unit": "mini avocado"
         }
       }
     ],
@@ -4349,7 +4349,7 @@
         "ingredientId": 1004,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "lime"
         }
       },
       {
@@ -4498,7 +4498,7 @@
         "ingredientId": 1016,
         "amountInfo": {
           "size": 1,
-          "unit": "unit"
+          "unit": "pepper"
         }
       }
     ],
@@ -5172,7 +5172,7 @@
   {
     "recipeId": 50,
     "name": "Lentil and Sweet Potato Stew",
-    "recipeServings": null,
+    "recipeServings": 4,
     "culturalName": "Lentil Sweet Potato Stew",
     "cuisine": "Soul Food",
     "region": "American South \u2014 modern soul food tradition",
@@ -5769,7 +5769,6 @@
     "dietType": [
       "Vegetarian",
       "Gluten-Free",
-      "Dairy-Free",
       "Pescatarian"
     ],
     "nutritionHighlights": [
@@ -8386,127 +8385,550 @@
     ]
   },
   {
-    "recipeId": 75,
-    "name": "Ribollita",
-    "recipeServings": null,
-    "culturalName": "Ribollita",
-    "cuisine": "Mediterranean",
-    "region": "Tuscany, Italy \u2014 specifically Florence",
-    "mealType": [
-      "Lunch",
-      "Dinner"
-    ],
-    "complexity": "Moderate",
-    "prepTimeMinutes": 40,
-    "mealPrep": true,
-    "dietType": [
-      "Vegan",
-      "Vegetarian",
-      "Dairy-Free",
-      "Pescatarian"
-    ],
-    "nutritionHighlights": [
-      "High Fiber",
-      "High Protein",
-      "Low Sodium"
-    ],
-    "estimatedNutrition": {
-      "calories": 340,
-      "protein": 14,
-      "carbs": 52,
-      "fat": 8,
-      "fiber": 12,
-      "sugar": 6,
-      "sodium": 420
-    },
-    "hasNonAldiIngredients": false,
-    "culturalContext": {
-      "origin": "Tuscany, Italy — Florence and the surrounding countryside",
-      "context": "Ribollita means 'reboiled' — made by taking leftover minestrone, adding stale bread to thicken it, and reboiling it. It is one of the great dishes of cucina povera and has become one of Tuscany's most iconic soups. This version uses cannellini beans, the definitive Tuscan bean, and Tuscan kale — both staples of the region. The bread dissolves into a thick, porridge-like consistency. Best on the second or third day."
-  }, 
-    "ingredients": [
-      {
-        "name": "Cannelini Beans, 15.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 3342,
-        "amountInfo": {
-          "size": 2,
-          "unit": "can"
-        }
+  "recipeId": 75,
+  "name": "Vegan Biscuits and Mushroom Gravy",
+  "recipeServings": 4,
+  "culturalName": "Biscuits and Gravy",
+  "cuisine": "Soul Food",
+  "region": "American South",
+  "mealType": ["Breakfast"],
+  "complexity": "Moderate",
+  "prepTimeMinutes": 35,
+  "mealPrep": false,
+  "dietType": ["Vegan", "Vegetarian", "Dairy-Free"],
+  "nutritionHighlights": ["High Fiber"],
+  "estimatedNutrition": {
+    "calories": 360,
+    "protein": 7,
+    "carbs": 46,
+    "fat": 15,
+    "fiber": 3,
+    "sugar": 3,
+    "sodium": 590
+  },
+  "hasNonAldiIngredients": false,
+  "culturalContext": {
+    "origin": "American South",
+    "context": "Biscuits and gravy is one of the most iconic Southern breakfast tables, and soul food kitchens have long put their own stamp on it with deeper seasoning and a heavier hand of black pepper and hot sauce. This version leans on the growing plant-based movement within contemporary soul food: deeply browned mushrooms replace sausage to build the same savory, almost meaty richness, while coconut milk gives the gravy its body without any dairy. The biscuit itself stays true to form — a simple, humble dough that's been a Southern Black kitchen staple since the days when flour, fat, and a hot oven were what a family could reliably count on."
+  },
+  "ingredients": [
+    { 
+      "name": "All Purpose Flour, 5 lb", 
+      "aldiProduct": true, 
+      "ingredientId": 2387, 
+      "amountInfo": { 
+        "size": 2.25, 
+        "unit": "cup" } 
       },
-      {
-        "name": "Organic Chopped Kale, 12 oz",
-        "aldiProduct": true,
-        "ingredientId": 303,
-        "amountInfo": {
-          "size": 2,
-          "unit": "cup"
-        }
+    { 
+      "name": "Baking Powder, 8.1 oz", 
+      "aldiProduct": true, 
+      "ingredientId": 2223, 
+      "amountInfo": { 
+        "size": 1, 
+        "unit": "tbsp" } 
       },
-      {
-        "name": "Diced Tomatoes with Basil, Garlic and Oregano, 14.5 oz",
-        "aldiProduct": true,
-        "ingredientId": 2488,
-        "amountInfo": {
-          "size": 1,
-          "unit": "can"
-        }
+    { 
+      "name": "Sea Salt Grinder, 3.53 oz",
+      "aldiProduct": true, 
+      "ingredientId": 2270, 
+      "amountInfo": { 
+        "size": 0.75, 
+        "unit": "tsp" } 
       },
-      {
-        "name": "Fat Free Reduced Sodium Chicken Broth, 32 oz",
-        "aldiProduct": true,
-        "ingredientId": 2423,
-        "amountInfo": {
-          "size": 4,
-          "unit": "cup"
-        }
+    { 
+      "name": "Coconut Milk, 13.5 fl oz", 
+      "aldiProduct": true, 
+      "ingredientId": 889, 
+      "amountInfo": { 
+        "size": 1.5, 
+        "unit": "cup" } 
       },
-      {
-        "name": "Yellow Onions, Bag 3lb",
-        "aldiProduct": true,
-        "ingredientId": 1043,
-        "amountInfo": { 
-          "size": 1, 
-          "unit": "medium onion" 
-        }
+    { 
+      "name": "Olive Oil", 
+      "aldiProduct": true, 
+      "ingredientId": 2442, 
+      "amountInfo": { 
+        "size": 3, 
+        "unit": "tbsp" } 
       },
-      {
-        "name": "Sliced Italian Loaf, 24 oz",
-        "aldiProduct": true,
-        "ingredientId": 1660,
-        "amountInfo": {
-          "size": 1,
-          "unit": "unit"
-        }
+    { 
+      "name": "Baby Bella Mushrooms, 8 oz", 
+      "aldiProduct": true, 
+      "ingredientId": 1059, 
+      "amountInfo": { 
+        "size": 8, 
+        "unit": "oz" } 
       },
-      {
-        "name": "Organic Extra Virgin Olive Oil, 16.9 fl oz",
-        "aldiProduct": true,
-        "ingredientId": 2442,
-        "amountInfo": {
-          "size": 2,
-          "unit": "tbsp"
-        }
+    { 
+      "name": "Yellow Onions, 3 lb", 
+      "aldiProduct": true, 
+      "ingredientId": 1043, 
+      "amountInfo": { 
+        "size": 0.25, 
+        "unit": "medium onion" 
+        } 
       },
-      {
-        "name": "Oregano Leaves, 0.75 oz",
-        "aldiProduct": true,
-        "ingredientId": 2192,
-        "amountInfo": {
-          "size": 1,
-          "unit": "tsp"
-        }
+    { 
+      "name": "Onion Powder, 2.62 oz", 
+      "aldiProduct": true, 
+      "ingredientId": 2431, 
+      "amountInfo": { 
+        "size": 0.5, 
+        "unit": "tsp" } 
+      },
+    { 
+      "name": "Black pepper", 
+      "aldiProduct": true, 
+      "ingredientId": 2267, 
+      "amountInfo": { 
+        "size": 0.5, 
+        "unit": "tsp" } 
+      },
+    { 
+      "name": "Hot Sauce, 12 fl oz", 
+      "aldiProduct": true, 
+      "ingredientId": 2436, 
+      "amountInfo": { 
+        "size": 1, 
+        "unit": "tsp" } 
       }
-    ],
-    "steps": [
-      "Heat olive oil, cook onion 5 minutes.",
-      "Add tomatoes, broth, beans, and oregano. Bring to boil.",
-      "Reduce heat, simmer 15 minutes.",
-      "Add kale, stir in and cook 10 minutes.",
-      "Tear bread into the soup, stir well \u2014 it will dissolve and thicken.",
-      "Simmer 5 more minutes, adjust seasoning.",
-      "Drizzle with olive oil before serving.",
-      "Best reheated the next day \u2014 the classic ribollita experience."
-    ]
-  }
+  ],
+  "steps": [
+    "Preheat oven to 450°F. In a large bowl, whisk together 2 cups of the flour, the baking powder, and 1/4 tsp of the salt.",
+    "Cut in 2 tablespoons of the olive oil until the mixture looks like coarse crumbs, then stir in 3/4 cup of the coconut milk just until a shaggy dough forms — don't overmix.",
+    "Turn the dough onto a floured surface, pat into a 1-inch-thick round, and cut into 4 biscuits. Bake on a sheet pan 12-15 minutes until golden.",
+    "While the biscuits bake, heat the remaining 1 tablespoon olive oil in a skillet over medium heat. Add the diced onion and cook 3-4 minutes until softened.",
+    "Add the chopped mushrooms and cook 5-6 minutes, stirring occasionally, until deeply browned and any released liquid has cooked off — this browning builds the gravy's savory depth.",
+    "Sprinkle the remaining 1/4 cup flour over the mushrooms and stir constantly for 1 minute to cook off the raw flour taste.",
+    "Slowly whisk in the remaining 3/4 cup coconut milk, the onion powder, black pepper, and remaining salt. Simmer 3-5 minutes, stirring, until thickened.",
+    "Split the warm biscuits, ladle the mushroom gravy over top, and serve with hot sauce on the side."
+  ]
+}, 
+{
+  "recipeId": 76,
+  "name": "Salmon Croquettes with Cheesy Hash Browns",
+  "recipeServings": 2,
+  "culturalName": "Salmon Croquettes",
+  "cuisine": "Soul Food",
+  "region": "Gullah Geechee Lowcountry, coastal South Carolina and Georgia",
+  "mealType": ["Breakfast"],
+  "complexity": "Moderate",
+  "prepTimeMinutes": 30,
+  "mealPrep": false,
+  "dietType": ["Pescatarian"],
+  "nutritionHighlights": ["High Protein"],
+  "estimatedNutrition": {
+    "calories": 430,
+    "protein": 28,
+    "carbs": 30,
+    "fat": 21,
+    "fiber": 1,
+    "sugar": 2,
+    "sodium": 780
+  },
+  "hasNonAldiIngredients": false,
+  "culturalContext": {
+    "origin": "Gullah Geechee Lowcountry, coastal South Carolina and Georgia",
+    "context": "Salmon croquettes made from canned salmon are a beloved, budget-stretching Black Southern breakfast, especially rooted in the Gullah Geechee communities of the Sea Islands, where fishing and seafood have shaped daily cooking since West Africans were first brought to the coastal Lowcountry. The dish leans on crushed saltines rather than fresh breadcrumbs, a pantry-driven habit from Southern kitchens that stretched a can of salmon into a full, satisfying patty."
+  },
+  "ingredients": [
+    {
+      "name": "Pink Salmon, 14.75 oz",
+      "aldiProduct": true,
+      "ingredientId": 2273,
+      "amountInfo": {
+        "size": 1,
+        "unit": "can"
+      }
+    },
+    {
+      "name": "Cage Free Large Eggs - Grade A, 1 dozen",
+      "aldiProduct": true,
+      "ingredientId": 734,
+      "amountInfo": {
+        "size": 1,
+        "unit": "egg"
+      }
+    },
+    {
+      "name": "Saltine Crackers, 16 oz",
+      "aldiProduct": true,
+      "ingredientId": 1709,
+      "amountInfo": {
+        "size": 16,
+        "unit": "piece"
+      }
+    },
+    {
+      "name": "Green Onions, 5.5 oz",
+      "aldiProduct": true,
+      "ingredientId": 1032,
+      "amountInfo": {
+        "size": 0.3,
+        "unit": "oz"
+      }
+    },
+    {
+      "name": "Onion Powder, 2.62 oz",
+      "aldiProduct": true,
+      "ingredientId": 2431,
+      "amountInfo": {
+        "size": 0.5,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Black pepper",
+      "aldiProduct": true,
+      "ingredientId": 2267,
+      "amountInfo": {
+        "size": 0.25,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Hot Sauce, 12 fl oz",
+      "aldiProduct": true,
+      "ingredientId": 2436,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Olive Oil",
+      "aldiProduct": true,
+      "ingredientId": 2442,
+      "amountInfo": {
+        "size": 2,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "Frozen Shredded Hash Browns, 30 oz",
+      "aldiProduct": true,
+      "ingredientId": 1430,
+      "amountInfo": {
+        "size": 2,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Shredded Sharp Cheddar Cheese, 12 oz",
+      "aldiProduct": true,
+      "ingredientId": 810,
+      "amountInfo": {
+        "size": 0.5,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Lemons, 2 lb",
+      "aldiProduct": true,
+      "ingredientId": 1025,
+      "amountInfo": {
+        "size": 2,
+        "unit": "slice"
+      }
+    }
+  ],
+  "steps": [
+    "Drain the canned salmon well, removing any large bones or skin if you prefer, then flake it into a bowl.",
+    "Crush 10 of the saltines finely and stir them into the salmon along with the egg, sliced green onion, onion powder, black pepper, and hot sauce until it just holds together.",
+    "Shape into 4 flat patties.",
+    "Crush the remaining 6 saltines and press both sides of each patty into the crumbs to coat.",
+    "Heat the olive oil in a nonstick skillet over medium heat. Cook the patties 3-4 minutes per side, until golden and crisp.",
+    "In a separate skillet, cook the shredded hash browns in an even layer 4-5 minutes per side until crisp and golden.",
+    "Sprinkle the cheddar over the hash browns in the last minute of cooking and cover briefly to melt.",
+    "Serve the salmon patties alongside the cheesy hash browns, with lemon wedges and hot sauce."
+  ]
+}, 
+{
+  "recipeId": 80,
+  "name": "Sweet Potato Biscuits",
+  "recipeServings": 4,
+  "culturalName": "Sweet Potato Biscuits",
+  "cuisine": "Soul Food",
+  "region": "American South",
+  "mealType": ["Breakfast"],
+  "complexity": "Moderate",
+  "prepTimeMinutes": 30,
+  "mealPrep": true,
+  "dietType": ["Vegan", "Vegetarian", "Dairy-Free"],
+  "nutritionHighlights": ["Good Source of Vitamin A"],
+  "estimatedNutrition": {
+    "calories": 420,
+    "protein": 6,
+    "carbs": 58,
+    "fat": 18,
+    "fiber": 3,
+    "sugar": 12,
+    "sodium": 380
+  },
+  "hasNonAldiIngredients": false,
+  "culturalContext": {
+    "origin": "American South",
+    "context": "Sweet potato biscuits are a beloved variation on the classic Southern biscuit, rooted in the same African American culinary tradition that made the sweet potato a centerpiece of soul food cooking. The puree adds natural sweetness and moisture the way buttermilk traditionally would, and this vegan version leans on a classic plant-based baking trick — combining non-dairy milk with vinegar to mimic buttermilk's acidity, which activates the baking powder for the same tender, flaky rise as the original."
+  },
+  "ingredients": [
+    {
+      "name": "Sweet Potatoes, 3 lb",
+      "aldiProduct": true,
+      "ingredientId": 1044,
+      "amountInfo": {
+        "size": 7,
+        "unit": "oz"
+      }
+    },
+    {
+      "name": "Original Organic Soymilk, 64 fl oz",
+      "aldiProduct": true,
+      "ingredientId": 307,
+      "amountInfo": {
+        "size": 0.33,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Organic Apple Cider Vinegar, 33.8 oz",
+      "aldiProduct": true,
+      "ingredientId": 2176,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "All Purpose Flour, 5 lb",
+      "aldiProduct": true,
+      "ingredientId": 2387,
+      "amountInfo": {
+        "size": 1.5,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Organic Cane Sugar Pouch, 24 oz",
+      "aldiProduct": true,
+      "ingredientId": 2457,
+      "amountInfo": {
+        "size": 2,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "Baking Powder, 8.1 oz",
+      "aldiProduct": true,
+      "ingredientId": 2223,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "Sea Salt Grinder, 3.53 oz",
+      "aldiProduct": true,
+      "ingredientId": 2270,
+      "amountInfo": {
+        "size": 0.75,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Organic Coconut Oil, 14 oz",
+      "aldiProduct": true,
+      "ingredientId": 2162,
+      "amountInfo": {
+        "size": 5,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "Organic Raw Agave Nectar, 23.5 oz",
+      "aldiProduct": true,
+      "ingredientId": 2522,
+      "amountInfo": {
+        "size": 2,
+        "unit": "tbsp"
+      }
+    }
+  ],
+  "steps": [
+    "Roast or steam the sweet potato until fork-tender, then scoop out the flesh and mash with a fork until smooth — this yields the 3/4 cup puree needed. Avoid boiling, which waterlogs the potato and makes the dough too wet.",
+    "Preheat the oven to 425°F and line a baking sheet with parchment paper.",
+    "Stir the sweet potato puree, vinegar, and soy milk together in a bowl until combined. Set aside.",
+    "In a food processor (or a bowl, whisking by hand), combine the flour, sugar, baking powder, and sea salt.",
+    "Add the cold coconut oil and pulse (or cut in with a pastry cutter) until the mixture resembles a coarse meal.",
+    "Add the sweet potato mixture and pulse 5-10 times until just combined, or stir by hand.",
+    "Generously flour a clean work surface. Transfer the dough and gently fold it over a couple of times, then pat to about 1/2-1 inch thick.",
+    "Cut into biscuits with a biscuit cutter or wide-rimmed glass, pressing straight down without twisting.",
+    "Transfer the biscuits to the prepared baking sheet and bake for 12 minutes.",
+    "Serve hot, drizzled with agave syrup."
+  ]
+}, 
+{
+  "recipeId": 81,
+  "name": "Creamy Vegan Corn Chowder",
+  "recipeServings": 6,
+  "culturalName": "Corn Chowder",
+ "cuisine": "Soul Food",
+  "region": "Gullah Geechee Lowcountry, coastal South Carolina and Georgia",
+  "mealType": ["Lunch", "Dinner"],
+  "complexity": "Simple",
+  "prepTimeMinutes": 30,
+  "mealPrep": true,
+  "dietType": ["Vegan", "Vegetarian", "Dairy-Free", "Gluten-Free"],
+  "nutritionHighlights": ["Good Source of Fiber"],
+  "estimatedNutrition": {
+    "calories": 310,
+    "protein": 5,
+    "carbs": 40,
+    "fat": 16,
+    "fiber": 5,
+    "sugar": 8,
+    "sodium": 420
+  },
+  "hasNonAldiIngredients": false,
+  "culturalContext": {
+    "origin": "Gullah Geechee Lowcountry, coastal South Carolina and Georgia",
+    "context": "Corn has been central to Southern and African American cooking since colonial times, showing up in everything from grits to cornbread to succotash, and creamy, corn-based soups have long had a place in Gullah Geechee Lowcountry cooking. This version leans further into that lineage by building its creaminess from coconut milk instead of dairy — coconut milk itself carries deep West African and Caribbean roots as a traditional dairy alternative, long predating its current popularity in vegan cooking, making this chowder feel right at home in the soul food tradition rather than borrowed from outside it."
+  },
+  "ingredients": [
+    {
+      "name": "Organic Coconut Oil, 14 oz",
+      "aldiProduct": true,
+      "ingredientId": 2162,
+      "amountInfo": {
+        "size": 2,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "Red Onions, 2 lb Bag",
+      "aldiProduct": true,
+      "ingredientId": 1082,
+      "amountInfo": {
+        "size": 0.75,
+        "unit": "medium onion"
+      }
+    },
+    {
+      "name": "Garlic, 3 pack",
+      "aldiProduct": true,
+      "ingredientId": 1070,
+      "amountInfo": {
+        "size": 2,
+        "unit": "clove"
+      }
+    },
+    {
+      "name": "Celery, each",
+      "aldiProduct": true,
+      "ingredientId": 336,
+      "amountInfo": {
+        "size": 2,
+        "unit": "stalk"
+      }
+    },
+    {
+      "name": "Carrots, 2 lb",
+      "aldiProduct": true,
+      "ingredientId": 994,
+      "amountInfo": {
+        "size": 2,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Yellow Potatoes, 5 lb",
+      "aldiProduct": true,
+      "ingredientId": 1053,
+      "amountInfo": {
+        "size": 2,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Steamable Frozen Sweet Corn, 12 oz",
+      "aldiProduct": true,
+      "ingredientId": 1474,
+      "amountInfo": {
+        "size": 2.5,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Coconut Milk, 13.5 fl oz",
+      "aldiProduct": true,
+      "ingredientId": 889,
+      "amountInfo": {
+        "size": 1,
+        "unit": "can"
+      }
+    },
+    {
+      "name": "Organic  Vegetable Broth, 32oz",
+      "aldiProduct": true,
+      "ingredientId": 2461,
+      "amountInfo": {
+        "size": 2,
+        "unit": "cup"
+      }
+    },
+    {
+      "name": "Herbs Thyme, each",
+      "aldiProduct": true,
+      "ingredientId": 1105,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Crushed Red Pepper, 1.5 oz",
+      "aldiProduct": true,
+      "ingredientId": 2481,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Ground Black Pepper, 3 oz",
+      "aldiProduct": true,
+      "ingredientId": 2267,
+      "amountInfo": {
+        "size": 1,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Sea Salt Grinder, 3.53 oz",
+      "aldiProduct": true,
+      "ingredientId": 2270,
+      "amountInfo": {
+        "size": 0.5,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "Cilantro Bunch",
+      "aldiProduct": true,
+      "ingredientId": 1047,
+      "amountInfo": {
+        "size": 1,
+        "unit": "cup"
+      }
+    }
+  ],
+  "steps": [
+    "Heat coconut oil over medium-high heat in a heavy-bottomed pot. Add the onion, garlic, and celery. Sauté 4-5 minutes until the onion is translucent.",
+    "Stir in the carrots, potatoes, corn, coconut milk, vegetable broth, and thyme. Bring to a boil, then reduce heat to medium-low and simmer with the lid ajar for 20 minutes, until the potatoes are tender.",
+    "Remove from heat. Using an immersion blender, blend about a third of the soup until partially creamy (or transfer a third to a stand blender, venting the lid, and blend until smooth before returning it to the pot).",
+    "Stir in the chili flakes and black pepper, and season to taste with salt.",
+    "Serve immediately, garnished with chopped cilantro."
+  ]
+}
+
 ]

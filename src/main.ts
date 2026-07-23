@@ -2,15 +2,14 @@ import './pico.pink.css'
 import './style.css'
 import mealsData from './meals.json' // loads meals.json into JavaScript
 import ingredientsData from './ingredients.json'
-import type { Meal, Ingredient } from './meals.ts'
-import { filterMeals } from './filters.ts'
-// import { getMealCost } from './filters.ts' // old per-package cost model — replaced by the pantry-aware generator below
+import type { Meal, Ingredient, MealIngredient} from './meals.ts'
 import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
 
-const meals = mealsData as unknown as Meal[]
-const ingredients = ingredientsData as unknown as Record<string, Ingredient>
-const filtered = filterMeals(meals, { cuisine: 'Mediterranean', dietType: 'Vegetarian', perMealBudget: null })
-console.log(filtered)
+const meals: Meal[] = [...(mealsData as unknown as Meal[]), ...getCustomMeals()]
+const ingredients: Record<string, Ingredient> = { ...(ingredientsData as unknown as Record<string, Ingredient>) }
+for (const ing of getCustomIngredients()) {
+  ingredients[ing.ingredientId.toString()] = ing
+}
 
 const appElement = document.querySelector<HTMLElement>('#app')!
 if (!appElement) throw new Error("Couldn't find element with id 'app'")
@@ -26,8 +25,14 @@ function getLocalDateString() {
 type DietType = "Vegan" | "Vegetarian" | "Gluten-Free" | "Dairy-Free" | "Pescatarian" | typeof NO_DIET;
 const dietTypes: DietType[] = ["Dairy-Free", "Gluten-Free", "Pescatarian", "Vegan", "Vegetarian", NO_DIET]
 
-type Cuisines = "Mexican" | "Chinese" | "Soul Food" | "Mediterranean";
-const cuisines: Cuisines[] = ["Mexican", "Chinese", "Soul Food", "Mediterranean"]
+const BASE_CUISINES = ["Mexican", "Chinese", "Soul Food", "Mediterranean"];
+
+function getAllCuisines(): string[] {
+  const customCuisines = getCustomMeals()
+    .map((m: Meal) => m.cuisine)
+    .filter((c: string) => c && !BASE_CUISINES.includes(c));
+  return [...BASE_CUISINES, ...Array.from(new Set(customCuisines))];
+}
 
 const AISLE_ORDER = [
   "Fresh Produce",
@@ -154,12 +159,13 @@ let popupMode: 'select-dish' | 'split-select' | 'menu' | 'swap' | null = null;
 let swapRejectionMessage: string | null = null; // set when a chosen swap doesn't fit the budget
 let selectedMeal: Meal | null = null;    // the meal currently shown on the recipe detail page
 
-type Page = "home" | "meal-plan" | "recipe-detail" | "groceries" | "profile";
-const VALID_PAGES: Page[] = ["home", "meal-plan", "recipe-detail", "groceries", "profile"];
+type Page = "home" | "meal-plan" | "recipe-detail" | "groceries" | "profile" | "add-meal";
+const VALID_PAGES: Page[] = ["home", "meal-plan", "recipe-detail", "groceries", "profile", "add-meal"];
 const storedPage = localStorage.getItem("currentPage");
 const defaultPage: Page = mealPlanInfo ? "home" : "profile";
 let currentPage: Page = (storedPage && VALID_PAGES.includes(storedPage as Page)) ? (storedPage as Page) : defaultPage;
-let profileViewMode: 'summary' | 'edit' = 'summary';
+let profileViewMode: 'summary' | 'edit' | 'manage-custom' = 'summary';
+let recipeDetailReturnPage: Page = "meal-plan"; // where "Back" on recipe-detail should return to
 
 // Returns a NEW day object with just the targeted dish (main, or a specific
 // alt dish) updated — used both for direct edits and for building a
@@ -327,6 +333,7 @@ function attachRecipeLinkHandlers() {
       const meal = meals.find(m => m.recipeId === recipeId);
       if (meal) {
         selectedMeal = meal;
+        recipeDetailReturnPage = "home";
         currentPage = "recipe-detail";
         localStorage.setItem("currentPage", currentPage);
         render();
@@ -548,6 +555,7 @@ function renderPopup() {
       const meal = getTargetMeal(activeSlot!.date, activeSlot!.mealType, activeDishTarget);
       if (meal) {
         selectedMeal = meal;
+        recipeDetailReturnPage = "meal-plan";
         closePopup();
         currentPage = "recipe-detail";
         localStorage.setItem("currentPage", currentPage);
@@ -660,6 +668,334 @@ function renderBottomNav() {
   })
 } 
 
+const SERVING_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","can","spear","slice","tomato","tortilla","olive","slices","egg","mini avocado","g","stick","stalk","pepper","medium onion"] as const;
+const RECIPE_AMOUNT_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","tortilla","can","stalk","unit","bag","egg"] as const;
+const MEAL_TYPE_OPTIONS = ["Breakfast", "Lunch", "Dinner"];
+
+type DraftIngredientEntry = {
+  ingredientId: number;
+  name: string;
+  aldiProduct: boolean;
+  amountSize: number;
+  amountUnit: MealIngredient['amountInfo']['unit'];
+};
+
+type AddMealDraft = {
+  name: string;
+  cuisine: string;
+  isNewCuisine: boolean;
+  mealTypes: string[];
+  dietTypes: string[];
+  recipeServings: number;
+  steps: string[];
+  ingredientEntries: DraftIngredientEntry[];
+};
+
+function createEmptyMealDraft(): AddMealDraft {
+  return {
+    name: '',
+    cuisine: '',
+    isNewCuisine: false,
+    mealTypes: [],
+    dietTypes: [],
+    recipeServings: 1,
+    steps: [''],
+    ingredientEntries: [],
+  };
+}
+
+let addMealDraft: AddMealDraft = createEmptyMealDraft();
+let ingredientSearchQuery = '';
+let showNewIngredientForm = false;
+
+function searchIngredientCatalog(query: string): Ingredient[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  const queryWords = q.split(/\s+/);
+
+  const matches = Object.values(ingredients).filter(ing => {
+    const haystack = ing.name.toLowerCase();
+    return queryWords.every(word => haystack.includes(word));
+  });
+
+  matches.sort((a, b) => {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    const aStarts = aName.startsWith(q) ? 0 : 1;
+    const bStarts = bName.startsWith(q) ? 0 : 1;
+    if (aStarts !== bStarts) return aStarts - bStarts;
+    return aName.length - bName.length;
+  });
+
+  return matches.slice(0, 8);
+}
+
+function renderNewIngredientForm(): string {
+  return `
+    <div id="new-ingredient-form" style="border:1px solid #ccc; padding:12px; margin:12px 0;">
+      <h3>New Ingredient</h3>
+      <div class="form-row"><label for="new-ing-name">Name</label><input id="new-ing-name" /></div>
+      <div class="form-row"><label for="new-ing-category">Category</label>
+        <select id="new-ing-category">
+          ${AISLE_ORDER.map(a => `<option value="${a}">${a}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-row"><label for="new-ing-price">Price per package ($)</label><input id="new-ing-price" type="number" step="0.01" min="0" /></div>
+      <div class="form-row"><label for="new-ing-serving-size">Serving Size</label><input id="new-ing-serving-size" type="number" step="0.01" min="0" /></div>
+      <div class="form-row"><label for="new-ing-serving-unit">Serving Unit</label>
+        <select id="new-ing-serving-unit">${SERVING_UNITS.map(u => `<option value="${u}">${u}</option>`).join('')}</select>
+      </div>
+      <div class="form-row"><label for="new-ing-servings-per-container">Servings per Package</label><input id="new-ing-servings-per-container" type="number" min="1" /></div>
+      <fieldset>
+        <legend>Nutrition (per serving)</legend>
+        <div class="form-row"><label for="new-ing-calories">Calories</label><input id="new-ing-calories" type="number" /></div>
+        <div class="form-row"><label for="new-ing-protein">Protein (g)</label><input id="new-ing-protein" type="number" /></div>
+        <div class="form-row"><label for="new-ing-carbs">Carbs (g)</label><input id="new-ing-carbs" type="number" /></div>
+        <div class="form-row"><label for="new-ing-fat">Fat (g)</label><input id="new-ing-fat" type="number" /></div>
+        <div class="form-row"><label for="new-ing-fiber">Fiber (g)</label><input id="new-ing-fiber" type="number" /></div>
+        <div class="form-row"><label for="new-ing-sugar">Sugar (g)</label><input id="new-ing-sugar" type="number" /></div>
+        <div class="form-row"><label for="new-ing-sodium">Sodium (mg)</label><input id="new-ing-sodium" type="number" /></div>
+      </fieldset>
+      <fieldset>
+        <legend>Dietary Flags</legend>
+        <div><input type="checkbox" id="new-ing-is-meat" /> <label for="new-ing-is-meat">Contains Meat</label></div>
+        <div><input type="checkbox" id="new-ing-is-fish" /> <label for="new-ing-is-fish">Contains Fish</label></div>
+        <div><input type="checkbox" id="new-ing-is-dairy" /> <label for="new-ing-is-dairy">Contains Dairy</label></div>
+        <div><input type="checkbox" id="new-ing-is-egg" /> <label for="new-ing-is-egg">Contains Egg</label></div>
+        <div><input type="checkbox" id="new-ing-contains-gluten" /> <label for="new-ing-contains-gluten">Contains Gluten</label></div>
+        <div><input type="checkbox" id="new-ing-contains-nuts" /> <label for="new-ing-contains-nuts">Contains Nuts</label></div>
+        <div><input type="checkbox" id="new-ing-snap-eligible" /> <label for="new-ing-snap-eligible">SNAP/EBT Eligible</label></div>
+      </fieldset>
+      <button type="button" id="confirm-new-ingredient">Add Ingredient to Meal</button>
+      <button type="button" id="cancel-new-ingredient">Cancel</button>
+    </div>
+  `;
+}
+
+function addIngredientEntryToDraft(ingredientId: number, name: string, aldiProduct: boolean) {
+  addMealDraft.ingredientEntries.push({
+    ingredientId,
+    name,
+    aldiProduct,
+    amountSize: 1,
+    amountUnit: 'unit',
+  });
+}
+
+function renderIngredientSearchResults() {
+  const container = document.getElementById('ingredient-search-results');
+  if (!container) return;
+  const searchResults = searchIngredientCatalog(ingredientSearchQuery);
+  container.innerHTML = `
+    ${searchResults.map(ing => `
+      <div class="ingredient-search-result" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>${ing.name} (${ing.formattedPrice})</span>
+        <button type="button" class="pick-search-result" data-id="${ing.ingredientId}">Add</button>
+      </div>
+    `).join('')}
+    ${ingredientSearchQuery.trim() && searchResults.length === 0 ? '<p>No matches found.</p>' : ''}
+  `;
+  container.querySelectorAll<HTMLElement>('.pick-search-result').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.id);
+      const ing = ingredients[id.toString()];
+      if (ing) addIngredientEntryToDraft(id, ing.name, true);
+      ingredientSearchQuery = '';
+      render();
+    });
+  });
+}
+
+function wireAddMealPage() {
+  document.getElementById('cancel-add-meal')?.addEventListener('click', () => {
+    currentPage = "profile";
+    localStorage.setItem("currentPage", currentPage);
+    render();
+  });
+
+  document.getElementById('meal-name')?.addEventListener('change', (e) => {
+    addMealDraft.name = (e.currentTarget as HTMLInputElement).value;
+  });
+  document.getElementById('meal-cuisine')?.addEventListener('change', (e) => {
+    const value = (e.currentTarget as HTMLSelectElement).value;
+    if (value === '__new__') {
+      addMealDraft.isNewCuisine = true;
+      addMealDraft.cuisine = '';
+    } else {
+      addMealDraft.isNewCuisine = false;
+      addMealDraft.cuisine = value;
+    }
+    render();
+  });
+  document.getElementById('meal-cuisine-new')?.addEventListener('change', (e) => {
+    addMealDraft.cuisine = (e.currentTarget as HTMLInputElement).value.trim();
+  });
+  document.getElementById('meal-servings')?.addEventListener('change', (e) => {
+    addMealDraft.recipeServings = Number((e.currentTarget as HTMLInputElement).value) || 1;
+  });
+
+  document.querySelectorAll<HTMLInputElement>('.meal-type-check').forEach(cb => {
+    cb.addEventListener('change', () => {
+      addMealDraft.mealTypes = cb.checked
+        ? [...addMealDraft.mealTypes, cb.value]
+        : addMealDraft.mealTypes.filter(v => v !== cb.value);
+    });
+  });
+  document.querySelectorAll<HTMLInputElement>('.diet-type-check').forEach(cb => {
+    cb.addEventListener('change', () => {
+      addMealDraft.dietTypes = cb.checked
+        ? [...addMealDraft.dietTypes, cb.value]
+        : addMealDraft.dietTypes.filter(v => v !== cb.value);
+    });
+  });
+
+  document.querySelectorAll<HTMLInputElement>('.draft-ingredient-amount-size').forEach(input => {
+    input.addEventListener('change', () => {
+      const i = Number(input.dataset.index);
+      addMealDraft.ingredientEntries[i].amountSize = Number(input.value) || 0;
+    });
+  });
+  document.querySelectorAll<HTMLSelectElement>('.draft-ingredient-amount-unit').forEach(select => {
+    select.addEventListener('change', () => {
+      const i = Number(select.dataset.index);
+      addMealDraft.ingredientEntries[i].amountUnit = select.value as MealIngredient['amountInfo']['unit'];
+    });
+  });
+  document.querySelectorAll<HTMLElement>('.remove-ingredient-entry').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.index);
+      addMealDraft.ingredientEntries.splice(i, 1);
+      render();
+    });
+  });
+
+  document.getElementById('ingredient-search')?.addEventListener('input', (e) => {
+    ingredientSearchQuery = (e.currentTarget as HTMLInputElement).value;
+    renderIngredientSearchResults();
+  });
+  renderIngredientSearchResults();
+
+  document.getElementById('show-new-ingredient-form')?.addEventListener('click', () => {
+    showNewIngredientForm = true;
+    render();
+  });
+  document.getElementById('cancel-new-ingredient')?.addEventListener('click', () => {
+    showNewIngredientForm = false;
+    render();
+  });
+  document.getElementById('confirm-new-ingredient')?.addEventListener('click', () => {
+    const name = (document.getElementById('new-ing-name') as HTMLInputElement).value.trim();
+    if (!name) {
+      alert('Please enter an ingredient name.');
+      return;
+    }
+    const category = (document.getElementById('new-ing-category') as HTMLSelectElement).value;
+    const price = Number((document.getElementById('new-ing-price') as HTMLInputElement).value) || 0;
+    const servingSize = Number((document.getElementById('new-ing-serving-size') as HTMLInputElement).value) || null;
+    const servingUnit = (document.getElementById('new-ing-serving-unit') as HTMLSelectElement).value as Ingredient['servingUnit'];
+    const servingsPerContainer = Number((document.getElementById('new-ing-servings-per-container') as HTMLInputElement).value) || null;
+
+    const newIngredientId = Date.now();
+    const newIngredient: Ingredient = {
+      ingredientId: newIngredientId,
+      name,
+      brandName: 'Custom',
+      comparisonPriceUnit: servingUnit ?? 'unit',
+      usaSnapEligible: (document.getElementById('new-ing-snap-eligible') as HTMLInputElement).checked,
+      formattedPrice: `$${price.toFixed(2)}`,
+      categoryName: category,
+      mainCategoryName: category,
+      isMeat: (document.getElementById('new-ing-is-meat') as HTMLInputElement).checked,
+      isFish: (document.getElementById('new-ing-is-fish') as HTMLInputElement).checked,
+      isDairy: (document.getElementById('new-ing-is-dairy') as HTMLInputElement).checked,
+      isEgg: (document.getElementById('new-ing-is-egg') as HTMLInputElement).checked,
+      containsGluten: (document.getElementById('new-ing-contains-gluten') as HTMLInputElement).checked,
+      containsNuts: (document.getElementById('new-ing-contains-nuts') as HTMLInputElement).checked,
+      calories: Number((document.getElementById('new-ing-calories') as HTMLInputElement).value) || 0,
+      protein: Number((document.getElementById('new-ing-protein') as HTMLInputElement).value) || 0,
+      carbs: Number((document.getElementById('new-ing-carbs') as HTMLInputElement).value) || 0,
+      fat: Number((document.getElementById('new-ing-fat') as HTMLInputElement).value) || 0,
+      fiber: Number((document.getElementById('new-ing-fiber') as HTMLInputElement).value) || 0,
+      sugar: Number((document.getElementById('new-ing-sugar') as HTMLInputElement).value) || 0,
+      sodium: Number((document.getElementById('new-ing-sodium') as HTMLInputElement).value) || 0,
+      nutritionFlagged: false,
+      servingsPerContainer,
+      servingSize,
+      servingUnit,
+      servingDisplay: servingSize ? `${servingSize} ${servingUnit}` : null,
+    };
+
+    ingredients[newIngredientId.toString()] = newIngredient;
+    saveCustomIngredient(newIngredient);
+    addIngredientEntryToDraft(newIngredientId, name, false);
+
+    showNewIngredientForm = false;
+    render();
+  });
+
+  document.querySelectorAll<HTMLInputElement>('.draft-step-input').forEach(input => {
+    input.addEventListener('change', () => {
+      const i = Number(input.dataset.index);
+      addMealDraft.steps[i] = input.value;
+    });
+  });
+  document.querySelectorAll<HTMLElement>('.remove-step').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.index);
+      addMealDraft.steps.splice(i, 1);
+      render();
+    });
+  });
+  document.getElementById('add-step')?.addEventListener('click', () => {
+    addMealDraft.steps.push('');
+    render();
+  });
+
+  document.getElementById('submit-add-meal')?.addEventListener('click', () => {
+    if (!addMealDraft.name.trim()) { alert('Please enter a meal name.'); return; }
+    if (!addMealDraft.cuisine.trim()) { alert('Please choose or enter a cuisine.'); return; }
+    if (addMealDraft.mealTypes.length === 0) { alert('Please select at least one meal type.'); return; }
+    if (addMealDraft.ingredientEntries.length === 0) { alert('Please add at least one ingredient.'); return; }
+    const cleanSteps = addMealDraft.steps.map(s => s.trim()).filter(s => s !== '');
+    if (cleanSteps.length === 0) { alert('Please add at least one step.'); return; }
+
+    const mealIngredients: MealIngredient[] = addMealDraft.ingredientEntries.map(entry => ({
+      name: entry.name,
+      aldiProduct: entry.aldiProduct,
+      ingredientId: entry.ingredientId,
+      amountInfo: { size: entry.amountSize, unit: entry.amountUnit },
+    }));
+
+    const newMeal: Meal = {
+      recipeId: Date.now(),
+      name: addMealDraft.name.trim(),
+      recipeServings: addMealDraft.recipeServings,
+      culturalName: null,
+      cuisine: addMealDraft.cuisine,
+      region: '',
+      mealType: addMealDraft.mealTypes,
+      complexity: '',
+      prepTimeMinutes: 0,
+      dietType: addMealDraft.dietTypes,
+      nutritionHighlights: [],
+      estimatedNutrition: { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sugar: 0, sodium: 0 },
+      hasNonAldiIngredients: addMealDraft.ingredientEntries.some(e => !e.aldiProduct),
+      culturalContext: null,
+      ingredients: mealIngredients,
+      steps: cleanSteps,
+      mealPrep: false,
+    };
+
+    meals.push(newMeal);
+    saveCustomMeal(newMeal);
+
+    alert('Meal added! It will be included next time you generate a meal plan.');
+    currentPage = "profile";
+    localStorage.setItem("currentPage", currentPage);
+    render();
+  });
+}
+
 function render() {
 switch (currentPage) {
   case "home": {
@@ -718,6 +1054,7 @@ switch (currentPage) {
   if(!mealPlanInfo || profileViewMode === 'edit'){
     appElement.innerHTML = `
 
+      ${mealPlanInfo ? '<button type="button" id="cancel-edit-settings">Cancel</button>' : ''}
       <h1>Affordable Meal Planner</h1>
       <form id="info-form">
 
@@ -732,7 +1069,7 @@ switch (currentPage) {
         </fieldset>
         <fieldset>
           <legend>Cuisines</legend>
-           ${cuisines.map(type => `
+           ${getAllCuisines().map(type => `
             <div>
             <input type="checkbox" id="${type}" name="cuisine" value="${type}" />
             <label for="${type}">${type}</label>
@@ -805,6 +1142,10 @@ switch (currentPage) {
     }
 
     document.getElementById('add-special-diet-member')?.addEventListener('click', addSpecialDietMemberRow);
+    document.getElementById('cancel-edit-settings')?.addEventListener('click', () => {
+      profileViewMode = 'summary';
+      render();
+    });
     const infoForm = document.getElementById('info-form') as HTMLFormElement | null;
     if (!infoForm) { throw new Error("bad"); }
 
@@ -832,6 +1173,7 @@ switch (currentPage) {
         specialDietMembers,
         usesSnap: formData.get('usesSnap') === 'on',
       };
+      profileViewMode = 'summary';
       saveMealPlanInfo(mealPlanInfo);
 
       const { plan, pantry, totalSpend } = generateMealPlan(
@@ -855,6 +1197,59 @@ switch (currentPage) {
       localStorage.setItem("currentPage", currentPage);
       render();
     })
+  } else if (profileViewMode === 'manage-custom') {
+    const customMeals: Meal[] = getCustomMeals();
+    const customIngredients: Ingredient[] = getCustomIngredients();
+    appElement.innerHTML = `
+      <button id="back-to-profile-summary" style="margin-bottom:16px;">Cancel</button>
+      <h1>Manage Custom Meals</h1>
+
+      <h2>Your Custom Meals</h2>
+      ${customMeals.length === 0 ? "<p>You haven't added any custom meals yet.</p>" : ''}
+      <ul>
+        ${customMeals.map((m: Meal) => `
+          <li>${m.name} <button class="delete-custom-meal" data-id="${m.recipeId}">Delete</button></li>
+        `).join('')}
+      </ul>
+
+      <h2>Your Custom Ingredients</h2>
+      ${customIngredients.length === 0 ? "<p>You haven't added any custom ingredients yet.</p>" : ''}
+      <ul>
+        ${customIngredients.map((i: Ingredient) => `
+          <li>${i.name} <button class="delete-custom-ingredient" data-id="${i.ingredientId}">Delete</button></li>
+        `).join('')}
+      </ul>
+    `;
+
+    document.querySelectorAll<HTMLElement>('.delete-custom-meal').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.dataset.id);
+        if (confirm('Delete this custom meal? This cannot be undone.')) {
+          deleteCustomMeal(id);
+          render();
+        }
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('.delete-custom-ingredient').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.dataset.id);
+        const inUse = getCustomMeals().some((m: Meal) => m.ingredients.some(ing => ing.ingredientId === id));
+        if (inUse) {
+          alert('This ingredient is used in one of your custom meals — remove that meal first.');
+          return;
+        }
+        if (confirm('Delete this custom ingredient? This cannot be undone.')) {
+          deleteCustomIngredient(id);
+          render();
+        }
+      });
+    });
+
+    document.getElementById('back-to-profile-summary')?.addEventListener('click', () => {
+      profileViewMode = 'summary';
+      render();
+    });
   } else {
     const info = mealPlanInfo;
     appElement.innerHTML = `
@@ -871,6 +1266,7 @@ switch (currentPage) {
       <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
         <button id="edit-settings" style="width:100%; display:block;">Edit Settings</button>
         <button id="add-own-meal" style="width:100%; display:block;">Add Your Own Meal</button>
+        <button id="manage-custom" style="width:100%; display:block;">Manage Custom Meals</button>
         <button id="generate-next-plan" style="width:100%; display:block;">Generate Next Plan (using current settings)</button>
       </div>
     `;
@@ -879,11 +1275,19 @@ switch (currentPage) {
       profileViewMode = 'edit';
       render();
     });
-    document.getElementById('add-own-meal')?.addEventListener('click', () => {
-      // placeholder for now — we'll design this feature together next
-      alert('Coming soon!');
+      document.getElementById('add-own-meal')?.addEventListener('click', () => {
+      addMealDraft = createEmptyMealDraft();
+      ingredientSearchQuery = '';
+      showNewIngredientForm = false;
+      currentPage = "add-meal";
+      localStorage.setItem("currentPage", currentPage);
+      render();
     });
-    document.getElementById('generate-next-plan')?.addEventListener('click', generateNextPlan);
+      document.getElementById('generate-next-plan')?.addEventListener('click', generateNextPlan);
+      document.getElementById('manage-custom')?.addEventListener('click', () => {
+        profileViewMode = 'manage-custom';
+        render();
+    });
   }
   break;
 }
@@ -962,7 +1366,7 @@ switch (currentPage) {
     if (!selectedMeal || !mealPlanInfo) {
       appElement.innerHTML = `<h1>No recipe selected</h1><button id="back-to-plan">Back to plan</button>`;
       document.getElementById('back-to-plan')?.addEventListener('click', () => {
-        currentPage = "meal-plan";
+        currentPage = recipeDetailReturnPage;
         localStorage.setItem("currentPage", currentPage);
         render();
       });
@@ -995,13 +1399,104 @@ switch (currentPage) {
       <ol>
         ${meal.steps.map(step => `<li>${step}</li>`).join('')}
       </ol>
+
+      ${meal.culturalContext ? `
+        <h2>About This Dish</h2>
+        <p><strong>Origin:</strong> ${meal.culturalContext.origin}</p>
+        <p>${meal.culturalContext.context}</p>
+      ` : ''}
     `;
 
     document.getElementById('back-to-plan')?.addEventListener('click', () => {
-      currentPage = "meal-plan";
+      currentPage = recipeDetailReturnPage;
       localStorage.setItem("currentPage", currentPage);
       render();
     });
+    break;
+  }
+
+  case "add-meal": {
+    const draft = addMealDraft;
+    const searchResults = searchIngredientCatalog(ingredientSearchQuery);
+
+    appElement.innerHTML = `
+      <button id="cancel-add-meal" style="margin-bottom:16px;">Cancel</button>
+      <h1>Add Your Own Meal</h1>
+
+      <div class="form-row"><label for="meal-name">Meal Name</label><input id="meal-name" value="${draft.name}" /></div>
+
+      <div class="form-row"><label for="meal-cuisine">Cuisine</label>
+        <select id="meal-cuisine">
+          <option value="">Select...</option>
+          ${getAllCuisines().map(c => `<option value="${c}" ${draft.cuisine === c ? 'selected' : ''}>${c}</option>`).join('')}
+          <option value="__new__" ${draft.isNewCuisine ? 'selected' : ''}>Other (type your own)...</option>
+        </select>
+        ${draft.isNewCuisine ? `<input type="text" id="meal-cuisine-new" placeholder="Enter cuisine name" value="${draft.cuisine}" style="margin-top:6px;" />` : ''}
+      </div>
+
+      <fieldset>
+        <legend>Meal Type</legend>
+        ${MEAL_TYPE_OPTIONS.map(mt => `
+          <div><input type="checkbox" class="meal-type-check" id="mt-${mt}" value="${mt}" ${draft.mealTypes.includes(mt) ? 'checked' : ''}/> <label for="mt-${mt}">${mt}</label></div>
+        `).join('')}
+      </fieldset>
+
+      <fieldset>
+        <legend>Diet Type(s) this meal fits</legend>
+        ${dietTypes.map(dt => `
+          <div><input type="checkbox" class="diet-type-check" id="dt-${dt}" value="${dt}" ${draft.dietTypes.includes(dt) ? 'checked' : ''}/> <label for="dt-${dt}">${dt}</label></div>
+        `).join('')}
+      </fieldset>
+
+      <div class="form-row"><label for="meal-servings">Servings</label><input id="meal-servings" type="number" min="1" value="${draft.recipeServings}" /></div>
+
+      <h2>Ingredients</h2>
+      <div id="draft-ingredient-list">
+        ${draft.ingredientEntries.map((entry, i) => `
+          <div class="draft-ingredient-row" style="display:flex; align-items:center; gap:8px;">
+            <input type="number" step="0.01" class="draft-ingredient-amount-size" data-index="${i}" value="${entry.amountSize}" style="width:70px;" />
+            <select class="draft-ingredient-amount-unit" data-index="${i}">
+              ${RECIPE_AMOUNT_UNITS.map(u => `<option value="${u}" ${entry.amountUnit === u ? 'selected' : ''}>${u}</option>`).join('')}
+            </select>
+            <span>${entry.name}${entry.aldiProduct ? '' : ' (custom)'}</span>
+            <button type="button" class="remove-ingredient-entry" data-index="${i}">Remove</button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="form-row"><label for="ingredient-search">Search Aldi ingredients</label>
+        <input id="ingredient-search" value="${ingredientSearchQuery}" placeholder="e.g. chicken breast" />
+      </div>
+      <div id="ingredient-search-results">
+        ${searchResults.map(ing => `
+          <div class="ingredient-search-result" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>${ing.name} (${ing.formattedPrice})</span>
+            <button type="button" class="pick-search-result" data-id="${ing.ingredientId}">Add</button>
+          </div>
+        `).join('')}
+        ${ingredientSearchQuery.trim() && searchResults.length === 0 ? '<p>No matches found.</p>' : ''}
+      </div>
+      <button type="button" id="show-new-ingredient-form">Can't find it? Add a new ingredient</button>
+
+      ${showNewIngredientForm ? renderNewIngredientForm() : ''}
+
+      <h2>Steps</h2>
+      <div id="draft-steps-list">
+        ${draft.steps.map((step, i) => `
+          <div class="draft-step-row" style="display:flex; gap:8px;">
+            <input type="text" class="draft-step-input" data-index="${i}" value="${step}" placeholder="Step ${i + 1}" style="flex:1;" />
+            <button type="button" class="remove-step" data-index="${i}">Remove</button>
+          </div>
+        `).join('')}
+      </div>
+      <button type="button" id="add-step">+ Add Step</button>
+
+      <div style="margin-top:20px;">
+        <button type="button" id="submit-add-meal" style="width:100%;">Save Meal</button>
+      </div>
+    `;
+
+    wireAddMealPage();
     break;
   }
 
@@ -1021,6 +1516,8 @@ switch (currentPage) {
     });
       break;
     }
+
+    
 
     const maxBudget = getMaxBudget();
     const withinBudget = generatedTotalSpend <= maxBudget;
@@ -1125,8 +1622,7 @@ function checkShoppingReminder() {
   const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
   const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
   nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
-  const nextShoppingDateStr = nextShoppingDate.toISOString().split('T')[0];
-
+  
   const today = new Date(getLocalDateString() + 'T00:00:00');
   const msPerDay = 1000 * 60 * 60 * 24;
   const daysUntil = Math.round((nextShoppingDate.getTime() - today.getTime()) / msPerDay); 
@@ -1164,7 +1660,7 @@ function saveCustomMeal(newMeal: Meal) {
   localStorage.setItem("custom-meals", JSON.stringify(mealList));
 };
 
-function getCustomMeals() {
+function getCustomMeals(): Meal[] {
   const customMealsString = localStorage.getItem("custom-meals");
 
   if (customMealsString != null) {
@@ -1176,5 +1672,39 @@ function getCustomMeals() {
     return [];
   }
 };
+
+function saveCustomIngredient(ingredient: Ingredient) {
+  const list = JSON.parse(localStorage.getItem("custom-ingredients") ?? "[]");
+  list.push(ingredient);
+  localStorage.setItem("custom-ingredients", JSON.stringify(list));
+}
+
+function getCustomIngredients(): Ingredient[] {
+  const raw = localStorage.getItem("custom-ingredients");
+  if (raw == null) return [];
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function deleteCustomMeal(recipeId: number) {
+  const mealList = getCustomMeals().filter((m: Meal) => m.recipeId !== recipeId);
+  localStorage.setItem("custom-meals", JSON.stringify(mealList));
+
+  // also remove it from the live in-memory meals array, so it stops
+  // being suggested immediately instead of only after a page refresh
+  const index = meals.findIndex(m => m.recipeId === recipeId);
+  if (index !== -1) meals.splice(index, 1);
+}
+
+function deleteCustomIngredient(ingredientId: number) {
+  const ingredientList = getCustomIngredients().filter((i: Ingredient) => i.ingredientId !== ingredientId);
+  localStorage.setItem("custom-ingredients", JSON.stringify(ingredientList));
+
+  // same reasoning as above — remove it from the live in-memory object
+  delete ingredients[ingredientId.toString()];
+}
 
 console.log(getCustomMeals());

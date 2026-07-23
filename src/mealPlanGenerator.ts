@@ -22,7 +22,7 @@ function convertVolume(amount: number, fromUnit: string, toUnit: string): number
   return (amount * VOLUME_TO_ML[fromUnit]) / VOLUME_TO_ML[toUnit]
 }
 
-const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'mini avocado', 'link', 'slice', 'naan', "spear", 'stalk', 'pepper', 'medium onion', 'slice'])
+const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'mini avocado', 'link', 'piece', 'naan', "spear", 'stalk', 'pepper', 'medium onion', 'slice', 'pepper', 'lime'])
 const WHOLE_PACKAGE_UNITS = new Set(['can', 'bag', "package"])
 
 type ManualConversion = {
@@ -287,16 +287,6 @@ function cheapestPossibleCost(
   return Math.min(...costs)
 }
 
-function cheapestPossibleCostExcluding(
-  pool: Meal[],
-  excludeToday: Set<number>,
-  familySize: number,
-  pantry: Pantry,
-  ingredients: Record<string, Ingredient>
-): number {
-  const filtered = pool.filter(m => !excludeToday.has(m.recipeId))
-  return cheapestPossibleCost(filtered.length > 0 ? filtered : pool, familySize, pantry, ingredients)
-}
 export type SpecialDietMember = {
   name: string
   dietType: string

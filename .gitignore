@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+
+# iOS (Capacitor)
+ios/App/Pods/
+ios/App/output/
+ios/App/App/public/
+ios/App/.xcode.env.local
+**/xcuserdata/
+**/DerivedData/
+
+# Android (Capacitor)
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/captures/
+android/.idea/
+android/*.iml
+android/app/*.iml
