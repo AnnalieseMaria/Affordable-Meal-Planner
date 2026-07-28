@@ -22,7 +22,7 @@ function convertVolume(amount: number, fromUnit: string, toUnit: string): number
   return (amount * VOLUME_TO_ML[fromUnit]) / VOLUME_TO_ML[toUnit]
 }
 
-const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'mini avocado', 'link', 'piece', 'naan', "spear", 'stalk', 'pepper', 'medium onion', 'slice', 'pepper', 'lime'])
+const COUNT_ALIASES = new Set(['unit', 'tortilla', 'egg', 'tomato', 'clove', 'tea bag', 'mini avocado', 'link', 'piece', 'naan', "spear", 'stalk', 'pepper', 'medium onion', 'slice', 'pepper', 'lime', 'bun'])
 const WHOLE_PACKAGE_UNITS = new Set(['can', 'bag', "package"])
 
 type ManualConversion = {
@@ -86,7 +86,7 @@ export function isMealUsable(meal: Meal, ingredients: Record<string, Ingredient>
   if (meal.recipeServings === null) return false
 
   for (const ing of meal.ingredients) {
-    if (ing.ingredientId === null) return false
+    if (ing.ingredientId == null) return false
     const price = ingredients[ing.ingredientId.toString()]
     if (!price) return false
     if (price.servingSize === null) return false
@@ -248,6 +248,196 @@ export function calculateMealNutrition(
   return totals
 }
 
+export type MacroTargets = {
+  caloriesPerDay: number
+  carbsPerDay: number
+  proteinPerDay: number
+  fatPerDay: number       // informational only — see the fat-quality note below
+  fiberPerDayMin: number
+  sodiumPerDayMax: number
+}
+
+// Daily macro targets per health condition, based on a standard 2,000
+// calorie/day reference (the same baseline used on US nutrition labels) and
+// ADA / USDA Dietary Guidelines. These are soft DAILY targets, not per-meal
+// minimums — the generator balances the whole day toward them rather than
+// requiring every single meal to individually hit the percentages.
+//
+// Total fat is NOT scored directly. What actually matters for diabetes risk
+// is fat QUALITY (saturated vs. unsaturated), not total grams — a total-fat
+// equation would score bacon as "better" than avocado or salmon, which is
+// backwards. We don't have gram-level saturated fat data per ingredient, so
+// fat quality is instead handled by fatQualityAdjustment() below, using a
+// preference nudge rather than a precise number.
+export const HEALTH_CONDITION_TARGETS: Record<string, MacroTargets> = {
+  'Type 2 Diabetes': {
+    caloriesPerDay: 2000,
+    carbsPerDay: 225,      // ~45% of calories, mid-range of 40-50% guidance
+    proteinPerDay: 100,    // ~20% of calories, mid-range of 15-25% guidance
+    fatPerDay: 67,         // ~30% of calories — informational only, not scored
+    fiberPerDayMin: 28,    // ADA/USDA guidance: ~14g per 1,000 kcal
+    sodiumPerDayMax: 2300, // ADA/USDA guidance: under 2,300mg/day
+  },
+}
+
+// Merges however many health conditions apply to one person/group into a
+// single set of targets, by taking the STRICTEST bound per field — e.g. if
+// two conditions disagreed on the sodium ceiling, the lower (stricter) one
+// wins, so the day's balance never accidentally under-restricts someone.
+// Returns null for an empty list, meaning "no condition applies here, don't
+// nudge anything" — replaces the old single-sentinel-string design.
+export function getCombinedMacroTargets(healthConditions: string[]): MacroTargets | null {
+  const applicable = healthConditions
+    .map(condition => HEALTH_CONDITION_TARGETS[condition])
+    .filter((t): t is MacroTargets => t !== undefined)
+
+  if (applicable.length === 0) return null
+
+  return {
+    caloriesPerDay: Math.min(...applicable.map(t => t.caloriesPerDay)),
+    carbsPerDay: Math.min(...applicable.map(t => t.carbsPerDay)),
+    proteinPerDay: Math.max(...applicable.map(t => t.proteinPerDay)),
+    fatPerDay: Math.min(...applicable.map(t => t.fatPerDay)),
+    fiberPerDayMin: Math.max(...applicable.map(t => t.fiberPerDayMin)),
+    sodiumPerDayMax: Math.min(...applicable.map(t => t.sodiumPerDayMax)),
+  }
+}
+
+export type DailyNutritionTracker = {
+  carbs: number
+  protein: number
+  fat: number
+  fiber: number
+  sodium: number
+}
+
+// Ingredient name fragments that reliably signal a plant-based unsaturated
+// fat source, for cases where isFish/containsNuts alone wouldn't catch it
+// (avocado and cooking oils aren't flagged as fish or nuts in the data).
+const UNSATURATED_FAT_NAME_HINTS = ['avocado', 'olive oil', 'canola oil', 'sunflower oil', 'flaxseed', 'chia seed']
+
+// Recipe text that suggests frying/breading — a real limitation of ANY
+// ingredient-level nutrition data (even true saturated fat grams) is that
+// it describes the raw ingredient, not what high-heat oil does to a dish
+// during cooking. Scanning the recipe's own name/steps is the honest way
+// to catch that, since it's a preparation effect, not an ingredient one.
+const FRIED_PREP_KEYWORDS = ['fried', 'fry', 'deep-fry', 'deep fry', 'breaded', 'battered']
+
+function isLikelyFried(meal: Meal): boolean {
+  const text = `${meal.name} ${meal.steps.join(' ')}`.toLowerCase()
+  return FRIED_PREP_KEYWORDS.some(keyword => text.includes(keyword))
+}
+
+// A soft nudge toward better fat QUALITY, not quantity. Rather than a flat
+// yes/no "does this meal contain meat/dairy," this weights the signal by
+// how many actual fat GRAMS each ingredient contributes (using the fat
+// field you already track) — so a lean cut like chicken breast (a few
+// grams of fat) barely moves this, while a fatty cut like bacon, or a
+// cream-heavy sauce, moves it a lot. That's what lets grilled chicken and
+// bacon — or plain yogurt and a cream sauce — land differently, instead of
+// all being treated as one "meat" or "dairy" bucket.
+function fatQualityAdjustment(meal: Meal, ingredients: Record<string, Ingredient>): number {
+  const scaleFactor = getScaleFactor(meal, 1) // per-person basis, matching the rest of the day's macro scoring
+
+  let unsaturatedLeaningFat = 0
+  let saturatedLeaningFat = 0
+
+  for (const ing of meal.ingredients) {
+    if (ing.ingredientId === null) continue
+    const price = ingredients[ing.ingredientId.toString()]
+    if (!price) continue
+
+    const needed = getNeededAmountInPriceUnits(ing, price, scaleFactor)
+    if (needed === null) continue
+
+    const servingSize = price.servingSize ?? 1
+    const servingsUsed = needed / servingSize
+    const fatFromThisIngredient = servingsUsed * (price.fat ?? 0)
+    if (fatFromThisIngredient <= 0) continue
+
+    const nameLower = price.name.toLowerCase()
+    const isUnsaturatedSource = price.isFish || price.containsNuts || UNSATURATED_FAT_NAME_HINTS.some(hint => nameLower.includes(hint))
+    const isSaturatedSource = price.isMeat || price.isDairy
+
+    if (isUnsaturatedSource) unsaturatedLeaningFat += fatFromThisIngredient
+    else if (isSaturatedSource) saturatedLeaningFat += fatFromThisIngredient
+  }
+
+  // Small per-gram weight so this nudges the score rather than overriding
+  // the carb/protein/fiber/sodium balance — tune this constant once you've
+  // seen it play out against real meals.
+  const FAT_GRAM_WEIGHT = 0.02
+  const friedPrepPenalty = isLikelyFried(meal) ? 0.2 : 0
+
+  return (saturatedLeaningFat - unsaturatedLeaningFat) * FAT_GRAM_WEIGHT + friedPrepPenalty
+}
+
+// Scores how well a candidate meal helps the WHOLE DAY trend toward its
+// macro targets, instead of requiring every individual meal to hit them.
+// It figures out what's left to "spend" (or, for fiber, still needs to be
+// eaten) for the rest of the day, spreads that remaining amount evenly
+// across the meals still to come, and prefers meals close to that per-meal
+// share. Fiber and sodium are one-sided: fiber is a floor (more is never
+// bad), sodium is a ceiling (less is never bad), so only shortfalls (fiber)
+// or overages (sodium) are penalized.
+export function nutritionFitScore(
+  meal: Meal,
+  mealNutrition: NutritionBreakdown,
+  tracker: DailyNutritionTracker,
+  targets: MacroTargets,
+  mealsRemainingToday: number,
+  ingredients: Record<string, Ingredient>
+): number {
+  const idealCarbs = (targets.carbsPerDay - tracker.carbs) / mealsRemainingToday
+  const idealProtein = (targets.proteinPerDay - tracker.protein) / mealsRemainingToday
+  const idealFiber = (targets.fiberPerDayMin - tracker.fiber) / mealsRemainingToday
+  const idealSodium = (targets.sodiumPerDayMax - tracker.sodium) / mealsRemainingToday
+
+  // Normalize each macro's error against its own daily target so bigger
+  // gram numbers (like carbs or sodium) don't automatically dominate.
+  const carbError = Math.abs(mealNutrition.carbs - idealCarbs) / targets.carbsPerDay
+  const proteinError = Math.abs(mealNutrition.protein - idealProtein) / targets.proteinPerDay
+  const fiberError = Math.max(0, idealFiber - mealNutrition.fiber) / targets.fiberPerDayMin
+  const sodiumError = Math.max(0, mealNutrition.sodium - idealSodium) / targets.sodiumPerDayMax
+
+  return carbError + proteinError + fiberError + sodiumError + fatQualityAdjustment(meal, ingredients)
+}
+
+// Turns the same macro math nutritionFitScore uses into short, plain-language
+// reasons a meal is a good fit today — e.g. "Lower carb", "Adds fiber" — so
+// the swap UI can explain WHY the top-ranked option is ranked there instead
+// of just showing an opaque number. Only surfaces a reason the meal actually
+// earns (never invents one), ranked strongest first so the UI can show just
+// the top one or two. Kept in sync with nutritionFitScore's math on purpose —
+// if that scoring changes, update the thresholds here too.
+export function nutritionFitReasons(
+  mealNutrition: NutritionBreakdown,
+  tracker: DailyNutritionTracker,
+  targets: MacroTargets,
+  mealsRemainingToday: number
+): string[] {
+  const idealCarbs = (targets.carbsPerDay - tracker.carbs) / mealsRemainingToday
+  const idealFiber = (targets.fiberPerDayMin - tracker.fiber) / mealsRemainingToday
+  const idealSodium = (targets.sodiumPerDayMax - tracker.sodium) / mealsRemainingToday
+
+  const reasons: { label: string; strength: number }[] = []
+
+  // Comes in under what's left to "spend" on carbs today.
+  const carbSlack = (idealCarbs - mealNutrition.carbs) / targets.carbsPerDay
+  if (carbSlack > 0.03) reasons.push({ label: 'Lower carb', strength: carbSlack })
+
+  // Meets or beats the fiber still needed today.
+  const fiberSurplus = (mealNutrition.fiber - idealFiber) / targets.fiberPerDayMin
+  if (fiberSurplus > 0.03) reasons.push({ label: 'Adds fiber', strength: fiberSurplus })
+
+  // Comes in under the sodium ceiling still available today.
+  const sodiumSlack = (idealSodium - mealNutrition.sodium) / targets.sodiumPerDayMax
+  if (sodiumSlack > 0.03) reasons.push({ label: 'Lower sodium', strength: sodiumSlack })
+
+  return reasons.sort((a, b) => b.strength - a.strength).map(r => r.label)
+}
+
+
 function marginalCost(
   meal: Meal,
   pantry: Pantry,
@@ -290,24 +480,34 @@ function cheapestPossibleCost(
 export type SpecialDietMember = {
   name: string
   dietType: string
+  healthConditions: string[]
 }
 
 type SpecialDietGroup = {
   dietType: string
   names: string[]
+  healthConditions: string[]
 }
 
 // Groups individual family members by diet — so 2 people who are both
 // vegan share ONE alt dish (scaled for 2), rather than generating two
-// separate single-portion dishes.
+// separate single-portion dishes. Health conditions merge too: the group's
+// conditions are the UNION of every member's conditions in that group, so
+// their shared alt dish stays aware of whichever conditions apply to anyone
+// eating it.
 function groupSpecialDietMembers(members: SpecialDietMember[]): SpecialDietGroup[] {
-  const groups = new Map<string, string[]>()
+  const groups = new Map<string, { names: string[]; healthConditions: Set<string> }>()
   for (const member of members) {
-    const existing = groups.get(member.dietType) ?? []
-    existing.push(member.name)
+    const existing = groups.get(member.dietType) ?? { names: [], healthConditions: new Set<string>() }
+    existing.names.push(member.name)
+    for (const condition of member.healthConditions ?? []) existing.healthConditions.add(condition)
     groups.set(member.dietType, existing)
   }
-  return [...groups.entries()].map(([dietType, names]) => ({ dietType, names }))
+  return [...groups.entries()].map(([dietType, g]) => ({
+    dietType,
+    names: g.names,
+    healthConditions: [...g.healthConditions],
+  }))
 }
 
 export type AltDish = {
@@ -388,7 +588,10 @@ function pickAffordableVariedMeal(
   reserveForRest: number,
   excludeToday: Set<number>,
   fairShareCeiling: number,
-  dayIndex: number
+  dayIndex: number,
+  healthConditions: string[] = [],
+  dailyTracker: DailyNutritionTracker | null = null,
+  mealsRemainingToday: number = 1
 ): { meal: Meal | null; cost: number } {
   const poolExcludingToday = pool.filter(m => !excludeToday.has(m.recipeId))
   if (poolExcludingToday.length === 0) return { meal: null, cost: 0 }
@@ -408,9 +611,31 @@ function pickAffordableVariedMeal(
   const idealScored = scoreMeals(idealPool)
   const affordable = idealScored.filter(s => s.cost <= affordableCeiling)
 
+const healthTargets = getCombinedMacroTargets(healthConditions)
+
   let chosen
   if (affordable.length > 0) {
-    chosen = affordable[Math.floor(Math.random() * affordable.length)]
+    if (healthTargets && dailyTracker) {
+      const withNutritionScore = affordable.map(s => ({
+        ...s,
+        nutritionScore: nutritionFitScore(
+          s.meal,
+          calculateMealNutrition(s.meal, 1, ingredients), // 1 = per-person nutrition, regardless of how many the dish is scaled to serve
+          dailyTracker,
+          healthTargets,
+          mealsRemainingToday,
+          ingredients
+        ),
+      }))
+      withNutritionScore.sort((a, b) => a.nutritionScore - b.nutritionScore)
+      // Randomize within the better-fitting half rather than always picking
+      // the single "best" meal, so there's still day-to-day variety.
+      const shortlistSize = Math.max(1, Math.ceil(withNutritionScore.length / 2))
+      const shortlist = withNutritionScore.slice(0, shortlistSize)
+      chosen = shortlist[Math.floor(Math.random() * shortlist.length)]
+    } else {
+      chosen = affordable[Math.floor(Math.random() * affordable.length)]
+    }
   } else {
     const fullScored = scoreMeals(poolExcludingToday)
     const withinHardBudget = fullScored.filter(s => s.cost <= remainingBudget)
@@ -426,6 +651,15 @@ function pickAffordableVariedMeal(
   usedIds.add(chosen.meal.recipeId)
   for (const ing of chosen.meal.ingredients) {
     usePantryIngredient(pantry, ing, ingredients, chosen.scaleFactor, dayIndex)
+  }
+
+  if (healthTargets && dailyTracker) {
+    const chosenNutrition = calculateMealNutrition(chosen.meal, 1, ingredients)
+    dailyTracker.carbs += chosenNutrition.carbs
+    dailyTracker.protein += chosenNutrition.protein
+    dailyTracker.fat += chosenNutrition.fat
+    dailyTracker.fiber += chosenNutrition.fiber
+    dailyTracker.sodium += chosenNutrition.sodium
   }
 
   return { meal: chosen.meal, cost: chosen.cost }
@@ -447,7 +681,11 @@ function fillMealSlot(
   reserveForRest: number,
   excludeToday: Set<number>,
   fairShareCeiling: number,
-  dayIndex: number
+  dayIndex: number,
+  healthConditions: string[] = [],
+  dailyTracker: DailyNutritionTracker | null = null,
+  mealsRemainingToday: number = 1,
+  altGroupTrackers: Map<string, DailyNutritionTracker> | null = null
 ): { result: MealSlotResult; cost: number } {
   const familySize = mainGroupSize + specialDietGroups.reduce((sum, g) => sum + g.names.length, 0)
   const allRequiredDiets = [mainDietType, ...specialDietGroups.map(g => g.dietType)]
@@ -456,18 +694,25 @@ function fillMealSlot(
   if (sharedPool.length > 0) {
     const { meal, cost } = pickAffordableVariedMeal(
       sharedPool, familySize, pantry, ingredients, usedIds,
-      remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+      remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
+      healthConditions, dailyTracker, mealsRemainingToday
     )
     if (meal) {
       return { result: { meal, mainGroupSize: familySize, altDishes: [] }, cost }
     }
   }
 
-  // No shared meal worked — split into a main dish + alt dish(es)
+  // No shared meal worked — split into a main dish + alt dish(es). The main
+  // dish is still "the household eating together," so it stays health-
+  // condition aware; each alt dish below is now ALSO health-condition aware
+  // for whichever conditions its own group members have, tracked against
+  // its own running daily tracker — so someone split into their own dish
+  // still gets their day balanced, not just the shared main dish.
   const mainPool = allDietPool.filter(m => matchesDiet(m, mainDietType))
   const { meal: mainMeal, cost: mainCost } = pickAffordableVariedMeal(
     mainPool, mainGroupSize, pantry, ingredients, usedIds,
-    remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+    remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
+    healthConditions, dailyTracker, mealsRemainingToday
   )
 
   let totalCost = mainCost
@@ -476,9 +721,11 @@ function fillMealSlot(
 
   for (const group of specialDietGroups) {
     const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType))
+    const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
     const { meal: altMeal, cost: altCost } = pickAffordableVariedMeal(
       altPool, group.names.length, pantry, ingredients, usedIds,
-      runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex
+      runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
+      group.healthConditions, groupTracker, mealsRemainingToday
     )
     if (altMeal) {
       altDishes.push({ meal: altMeal, forNames: group.names, dietType: group.dietType, groupSize: group.names.length })
@@ -539,7 +786,8 @@ export function generateMealPlan(
   shoppingIntervalDays: number,
   ingredients: Record<string, Ingredient>,
   budgetPerTrip: number,
-  specialDietMembers: SpecialDietMember[] = []
+  specialDietMembers: SpecialDietMember[] = [],
+  healthConditions: string[] = []
 ): { plan: DayPlan[]; pantry: Pantry; totalSpend: number } {
   const usableMeals = getUsableMeals(allMeals, ingredients)
 
@@ -580,6 +828,16 @@ export function generateMealPlan(
 
     agePerishables(pantry, index)
 
+    // Fresh macro tally for THIS day only — health-condition balancing
+    // works within a single day (breakfast/lunch/dinner), not across the
+    // whole shopping cycle. Each special-diet group gets its OWN fresh
+    // tracker too, so a person split into their own alt dish has their day
+    // balanced separately from the shared main dish's tally.
+    const dailyTracker: DailyNutritionTracker = { carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }
+    const altGroupTrackers = new Map<string, DailyNutritionTracker>(
+      specialDietGroups.map(g => [g.dietType, { carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }])
+    )
+
     const freshBreakfastPool = breakfastPool.filter(m => isMealStillFreshOnDay(m, dayInCycle))
     const freshLunchPool = lunchPool.filter(m => isMealStillFreshOnDay(m, dayInCycle))
     const freshDinnerPool = dinnerPool.filter(m => isMealStillFreshOnDay(m, dayInCycle))
@@ -604,7 +862,8 @@ export function generateMealPlan(
     const breakfastFairShare = (budgetPerTrip - cycleSpend) / mealsRemainingInCycle * GENEROSITY
     const { result: breakfast, cost: bCost } = fillMealSlot(
       freshBreakfastPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
-      usedIds.breakfast, budgetPerTrip - cycleSpend, breakfastReserve, excludeToday, breakfastFairShare, index
+      usedIds.breakfast, budgetPerTrip - cycleSpend, breakfastReserve, excludeToday, breakfastFairShare, index,
+      healthConditions, dailyTracker, 3, altGroupTrackers
     )
     cycleSpend += bCost
     totalSpend += bCost
@@ -615,7 +874,8 @@ export function generateMealPlan(
     const lunchFairShare = (budgetPerTrip - cycleSpend) / (mealsRemainingInCycle - 1) * GENEROSITY
     const { result: lunch, cost: lCost } = fillMealSlot(
       freshLunchPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
-      usedIds.lunch, budgetPerTrip - cycleSpend, lunchReserve, excludeToday, lunchFairShare, index
+      usedIds.lunch, budgetPerTrip - cycleSpend, lunchReserve, excludeToday, lunchFairShare, index,
+      healthConditions, dailyTracker, 2, altGroupTrackers
     )
     cycleSpend += lCost
     totalSpend += lCost
@@ -624,7 +884,8 @@ export function generateMealPlan(
     const dinnerFairShare = (budgetPerTrip - cycleSpend) / (mealsRemainingInCycle - 2) * GENEROSITY
     const { result: dinner, cost: dCost } = fillMealSlot(
       freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients,
-      usedIds.dinner, budgetPerTrip - cycleSpend, reserveForFutureDays, excludeToday, dinnerFairShare, index
+      usedIds.dinner, budgetPerTrip - cycleSpend, reserveForFutureDays, excludeToday, dinnerFairShare, index,
+      healthConditions, dailyTracker, 1, altGroupTrackers
     )
     cycleSpend += dCost
     totalSpend += dCost

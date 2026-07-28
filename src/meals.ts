@@ -24,7 +24,7 @@ export type Ingredient = {
 
   servingsPerContainer: number | null
   servingSize: number | null
-  servingUnit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "can" | "spear" | "slice" | "tomato" | "tortilla" | "olive" | "slices" | "egg" | "mini avocado" | "g" | "stick" | "stalk" | "pepper" | "medium onion" | "lime" | null
+  servingUnit: "1/4 tsp" | "1/2 tsp" | "3/4 tsp" | "tsp" | "tbsp" | "1/4 cup" | "1/2 cup" | "3/4 cup" | "cup" | "fl oz" | "oz" | "can" | "spear" | "slice" | "tomato" | "tortilla" | "olive" | "slices" | "egg" | "mini avocado" | "g" | "stick" | "stalk" | "pepper" | "medium onion" | "lime" |  "bun" | null
   servingDisplay: string | null
 }
 

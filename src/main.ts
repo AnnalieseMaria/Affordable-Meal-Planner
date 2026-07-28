@@ -3,7 +3,7 @@ import './style.css'
 import mealsData from './meals.json' // loads meals.json into JavaScript
 import ingredientsData from './ingredients.json'
 import type { Meal, Ingredient, MealIngredient} from './meals.ts'
-import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
+import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, getCombinedMacroTargets, nutritionFitScore, nutritionFitReasons, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
 
 const meals: Meal[] = [...(mealsData as unknown as Meal[]), ...getCustomMeals()]
 const ingredients: Record<string, Ingredient> = { ...(ingredientsData as unknown as Record<string, Ingredient>) }
@@ -24,6 +24,11 @@ function getLocalDateString() {
 
 type DietType = "Vegan" | "Vegetarian" | "Gluten-Free" | "Dairy-Free" | "Pescatarian" | typeof NO_DIET;
 const dietTypes: DietType[] = ["Dairy-Free", "Gluten-Free", "Pescatarian", "Vegan", "Vegetarian", NO_DIET]
+
+// Health conditions are checkboxes, not radio buttons — someone could have
+// more than one (e.g. Type 2 Diabetes and a future CVD option together).
+type HealthCondition = "Type 2 Diabetes";
+const healthConditionOptions: HealthCondition[] = ["Type 2 Diabetes"]
 
 const BASE_CUISINES = ["Mexican", "Chinese", "Soul Food", "Mediterranean"];
 
@@ -71,6 +76,7 @@ const shoppingFrequencyDays: Record<ShoppingFrequency, number> = {
 
 type MealPlanInfo = {
   dietType: string;
+  healthConditions: string[];
   cuisines: string[];
   familySize: number;
   budget: number;
@@ -229,6 +235,81 @@ function getImpliedRequiredDiets(date: string, mealType: MealSlotType): string[]
   return [mealPlanInfo.dietType, ...unsplit.map(m => m.dietType)];
 }
 
+// Which health conditions actually apply to a swap target — the household's
+// own conditions for the shared main dish, or that specific alt-dish
+// person's/group's combined conditions for an individual dish.
+function getApplicableHealthConditions(date: string, mealType: MealSlotType, target: DishTarget): string[] {
+  if (!mealPlanInfo) return [];
+  if (target.kind === 'main') return mealPlanInfo.healthConditions ?? [];
+
+  const day = generatedPlan?.find(d => d.date === date);
+  const forNames = day?.[mealType]?.altDishes[target.altIndex]?.forNames ?? [];
+  const conditions = new Set<string>();
+  for (const member of mealPlanInfo.specialDietMembers) {
+    if (forNames.includes(member.name)) {
+      for (const condition of member.healthConditions ?? []) conditions.add(condition);
+    }
+  }
+  return [...conditions];
+}
+
+// What this same target (the main household, or one alt-dish person/group)
+// already ate TODAY across the day's other two meal slots — lets a manual
+// swap lean toward the day's health-condition balance the same way the
+// automatic generator does. If they're relying on the shared main dish for
+// one of those other slots (no alt dish of their own that day), that main
+// dish's nutrition counts for them instead.
+function getOtherMealsNutritionToday(date: string, mealTypeBeingSwapped: MealSlotType, target: DishTarget): NutritionBreakdown {
+  const totals: NutritionBreakdown = { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sugar: 0, sodium: 0 };
+  const day = generatedPlan?.find(d => d.date === date);
+  if (!day) return totals;
+
+  const forNames = target.kind === 'alt' ? (day[mealTypeBeingSwapped]?.altDishes[target.altIndex]?.forNames ?? []) : [];
+  const otherMealTypes = (['breakfast', 'lunch', 'dinner'] as MealSlotType[]).filter(mt => mt !== mealTypeBeingSwapped);
+
+  for (const mt of otherMealTypes) {
+    const slot = day[mt];
+    const dishMeal = target.kind === 'main'
+      ? slot.meal
+      : (slot.altDishes.find(alt => alt.forNames.some(n => forNames.includes(n)))?.meal ?? slot.meal);
+    if (!dishMeal) continue;
+    const n = calculateMealNutrition(dishMeal, 1, ingredients);
+    totals.calories += n.calories;
+    totals.protein += n.protein;
+    totals.carbs += n.carbs;
+    totals.fat += n.fat;
+    totals.fiber += n.fiber;
+    totals.sugar += n.sugar;
+    totals.sodium += n.sodium;
+  }
+  return totals;
+}
+
+// Builds the small "why is this list ranked this way" note shown above a
+// health-condition-aware swap list. Entirely name/count-based — no gender
+// involved anywhere — so it reads naturally whether it's the whole
+// household, a single-person household, or one or more named people.
+function getHealthConditionSwapNote(date: string, mealType: MealSlotType, target: DishTarget, conditions: string[]): string | null {
+  if (!mealPlanInfo || conditions.length === 0) return null;
+  const conditionText = conditions.join(' and ');
+
+  if (target.kind === 'main') {
+    const who = mealPlanInfo.familySize <= 1 ? 'your' : "your household's";
+    return `Ranked for ${who} ${conditionText}, based on today's other meals`;
+  }
+
+  const day = generatedPlan?.find(d => d.date === date);
+  const forNames = day?.[mealType]?.altDishes[target.altIndex]?.forNames ?? [];
+  if (forNames.length === 0) return `Ranked for ${conditionText}, based on today's other meals`;
+
+  const namesText = forNames.length === 1
+    ? `${forNames[0]}'s`
+    : forNames.length === 2
+      ? `${forNames[0]} and ${forNames[1]}'s`
+      : `${forNames.slice(0, -1).join(', ')}, and ${forNames[forNames.length - 1]}'s`;
+  return `Ranked for ${namesText} ${conditionText}, based on today's other meals`;
+}
+
 // Pulls a person out of the shared main dish into their own separate alt
 // dish (starts empty — the swap screen opens right after so they can pick
 // something for real) — usable even when the algorithm didn't think a
@@ -253,13 +334,6 @@ function splitOffPerson(date: string, mealType: MealSlotType, member: SpecialDie
   return newAltIndex;
 }
 
-function renderSlotCell(slot: MealSlotResult): string {
-  const mainName = slot.meal?.name ?? '—';
-  const altTags = slot.altDishes.map(alt =>
-    `<div style="font-size:0.8em; color:#666;">+ ${alt.forNames.join(', ')}: ${alt.meal?.name ?? '—'}</div>`
-  ).join('');
-  return `${mainName}${altTags}`;
-}
 
 function renderNutritionDonut(nutrition: NutritionBreakdown): string {
   const proteinCal = nutrition.protein * 4;
@@ -284,15 +358,30 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
   return `
     <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
       <svg width="140" height="140" viewBox="0 0 100 100">
+        <defs>
+          <pattern id="donut-protein" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+            <rect width="4" height="4" fill="#D92662" />
+            <line x1="0" y1="0" x2="0" y2="4" stroke="#ffffff" stroke-width="1.6" />
+          </pattern>
+          <pattern id="donut-carbs" patternUnits="userSpaceOnUse" width="6" height="6">
+            <rect width="6" height="6" fill="#BD808A" />
+            <circle cx="3" cy="3" r="1.1" fill="#ffffff" />
+          </pattern>
+          <pattern id="donut-fat" patternUnits="userSpaceOnUse" width="5" height="5">
+            <rect width="5" height="5" fill="#A8A39A" />
+            <line x1="0" y1="0" x2="5" y2="5" stroke="#ffffff" stroke-width="1.2" />
+            <line x1="5" y1="0" x2="0" y2="5" stroke="#ffffff" stroke-width="1.2" />
+          </pattern>
+        </defs>
         <g transform="rotate(-90 50 50)">
-          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#e0e0e0" stroke-width="10" />
-          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#4CAF50" stroke-width="10"
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#f0efec" stroke-width="10" />
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="url(#donut-protein)" stroke-width="10"
             stroke-dasharray="${proteinLength} ${circumference - proteinLength}"
             stroke-dashoffset="${proteinOffset}" />
-          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#2196F3" stroke-width="10"
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="url(#donut-carbs)" stroke-width="10"
             stroke-dasharray="${carbsLength} ${circumference - carbsLength}"
             stroke-dashoffset="${carbsOffset}" />
-          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#FF9800" stroke-width="10"
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="url(#donut-fat)" stroke-width="10"
             stroke-dasharray="${fatLength} ${circumference - fatLength}"
             stroke-dashoffset="${fatOffset}" />
         </g>
@@ -300,9 +389,9 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
         <text x="50" y="60" text-anchor="middle" font-size="8" fill="#666">kcal</text>
       </svg>
       <div>
-        <div style="color:#4CAF50; font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
-        <div style="color:#2196F3; font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
-        <div style="color:#FF9800; font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
+        <div style="color:#D92662; font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
+        <div style="color:#BD808A; font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
+        <div style="color:#A8A39A; font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
       </div>
     </div>
   `;
@@ -376,7 +465,7 @@ function generateNextPlan() {
   mealPlanInfo = { ...mealPlanInfo, shoppingDate: nextShoppingDateStr };
   saveMealPlanInfo(mealPlanInfo);
 
-  const { plan, pantry, totalSpend } = generateMealPlan(
+const { plan, pantry, totalSpend } = generateMealPlan(
     meals,
     mealPlanInfo.cuisines,
     mealPlanInfo.dietType,
@@ -385,7 +474,8 @@ function generateNextPlan() {
     intervalDays,
     ingredients,
     mealPlanInfo.budget,
-    mealPlanInfo.specialDietMembers
+    mealPlanInfo.specialDietMembers,
+    mealPlanInfo.healthConditions ?? []
   );
 
   generatedPlan = plan;
@@ -399,6 +489,33 @@ function generateNextPlan() {
 }
 
 function closePopup() {
+  // If we're bailing out of picking a meal for a split-off dish that never
+  // actually got one (still meal: null), undo the split rather than leaving
+  // a dangling empty alt dish — otherwise that person silently vanishes from
+  // "give someone a different meal" next time, since the app thinks they're
+  // already split off.
+  if (activeSlot && activeDishTarget.kind === 'alt' && generatedPlan) {
+    const meal = getTargetMeal(activeSlot.date, activeSlot.mealType, activeDishTarget);
+    if (meal === null) {
+      const { date, mealType } = activeSlot;
+      const altIndex = activeDishTarget.altIndex;
+      generatedPlan = generatedPlan.map(day => {
+        if (day.date !== date) return day;
+        const slot = day[mealType];
+        const removedGroupSize = slot.altDishes[altIndex]?.groupSize ?? 0;
+        return {
+          ...day,
+          [mealType]: {
+            ...slot,
+            mainGroupSize: slot.mainGroupSize + removedGroupSize,
+            altDishes: slot.altDishes.filter((_, i) => i !== altIndex),
+          }
+        };
+      });
+      recalculateShoppingList();
+    }
+  }
+
   activeSlot = null;
   popupMode = null;
   swapRejectionMessage = null;
@@ -406,23 +523,36 @@ function closePopup() {
   document.getElementById('meal-popup-overlay')?.remove();
 }
 
-function openMealMenu(date: string, mealType: MealSlotType) {
+// Jumps straight to viewing/swapping ONE specific dish (main or a
+// particular person's alt) — skips the "which dish do you mean" menu
+// since the new day-card UI already gives each dish its own tap target.
+function openDishMenu(date: string, mealType: MealSlotType, target: DishTarget) {
+  activeSlot = { date, mealType };
+  activeDishTarget = target;
+  swapRejectionMessage = null;
+  popupMode = 'menu';
+  renderPopup();
+}
+
+// Jumps straight to "who should get a different meal" — used by the small
+// + button, which only ever shows when there's actually someone left to split off.
+function openAddAltDish(date: string, mealType: MealSlotType) {
   activeSlot = { date, mealType };
   swapRejectionMessage = null;
-  const day = generatedPlan?.find(d => d.date === date);
-  const slot = day?.[mealType];
-  const hasAltDishes = slot && slot.altDishes.length > 0;
-  const canSplitSomeone = getUnsplitSpecialMembers(date, mealType).length > 0;
-  if (hasAltDishes || canSplitSomeone) {
-    // There's already more than one dish here, OR there's someone who
-    // COULD be split off even though the algorithm didn't need to —
-    // either way, ask what they want to do first.
-    popupMode = 'select-dish';
-  } else {
-    activeDishTarget = { kind: 'main' };
-    popupMode = 'menu';
-  }
-  renderPopup(); //called multiple times in single popup to show new content 
+  popupMode = 'split-select';
+  renderPopup();
+}
+
+function formatWeekRange(startStr: string, endStr: string): string {
+  const start = new Date(startStr + 'T00:00:00');
+  const end = new Date(endStr + 'T00:00:00');
+  const startMonth = start.toLocaleDateString('en-US', { month: 'long' });
+  const endMonth = end.toLocaleDateString('en-US', { month: 'long' });
+  const startDay = start.getDate();
+  const endDay = end.getDate();
+  return startMonth === endMonth
+    ? `Week of ${startMonth} ${startDay}–${endDay}`
+    : `Week of ${startMonth} ${startDay} – ${endMonth} ${endDay}`;
 }
 
 function renderPopup() { 
@@ -487,7 +617,7 @@ function renderPopup() {
       ? getImpliedRequiredDiets(activeSlot.date, activeSlot.mealType)
       : [getTargetDietType(activeSlot.date, activeSlot.mealType, activeDishTarget)];
 
-    const alternatives = meals.filter(m =>
+const alternatives = meals.filter(m =>
       mealPlanInfo!.cuisines.includes(m.cuisine) &&
       m.mealType.includes(mealTypeLabel) &&
       requiredDiets.every(d => matchesDiet(m, d)) &&
@@ -503,14 +633,77 @@ function renderPopup() {
       s?.altDishes.forEach(a => { if (a.meal) allTodayIds.push(a.meal.recipeId); });
     }
     const usedTodayIds = new Set(allTodayIds);
-    const validAlternatives = alternatives.filter(m => !usedTodayIds.has(m.recipeId));
+    let validAlternatives = alternatives.filter(m => !usedTodayIds.has(m.recipeId));
+
+    // If a health condition applies here, lean the LIST toward whichever
+    // swaps would keep today's macro balance on track — the same soft nudge
+    // the automatic generator uses, just applied to a manual swap. This
+    // never hides or blocks an option, it only reorders so better-fitting
+    // swaps show up first. fitInfo also carries a relative "how good a fit"
+    // percentage plus a couple of plain-language reasons for the top pick(s),
+    // so the swap list can show WHY it's ordered this way instead of just
+    // silently reordering — that silence is what was confusing when the
+    // household's list and one person's list came out in different orders.
+    const applicableConditions = getApplicableHealthConditions(activeSlot.date, activeSlot.mealType, activeDishTarget);
+    const healthTargets = getCombinedMacroTargets(applicableConditions);
+    const fitInfo = new Map<number, { percent: number; reasons: string[] }>();
+    let healthConditionNote: string | null = null;
+
+    if (healthTargets) {
+      const alreadyEatenToday = getOtherMealsNutritionToday(activeSlot.date, activeSlot.mealType, activeDishTarget);
+      const tracker = {
+        carbs: alreadyEatenToday.carbs,
+        protein: alreadyEatenToday.protein,
+        fat: alreadyEatenToday.fat,
+        fiber: alreadyEatenToday.fiber,
+        sodium: alreadyEatenToday.sodium,
+      };
+
+      const scored = validAlternatives.map(m => ({
+        meal: m,
+        score: nutritionFitScore(m, calculateMealNutrition(m, 1, ingredients), tracker, healthTargets, 1, ingredients),
+      }));
+
+      const scores = scored.map(s => s.score);
+      const minScore = Math.min(...scores);
+      const maxScore = Math.max(...scores);
+      const scoreRange = maxScore - minScore || 1; // avoid divide-by-zero when every option scores the same
+
+      for (const s of scored) {
+        const percent = Math.round(100 - ((s.score - minScore) / scoreRange) * 100);
+        const isBestFit = s.score - minScore < 0.01; // covers ties, not just a single "winner"
+        const reasons = isBestFit
+          ? nutritionFitReasons(calculateMealNutrition(s.meal, 1, ingredients), tracker, healthTargets, 1)
+          : [];
+        fitInfo.set(s.meal.recipeId, { percent, reasons });
+      }
+
+      validAlternatives = scored.sort((a, b) => a.score - b.score).map(s => s.meal);
+      healthConditionNote = getHealthConditionSwapNote(activeSlot.date, activeSlot.mealType, activeDishTarget, applicableConditions);
+    }
 
     box.innerHTML = `
       <h3>Swap ${mealTypeLabel} on ${activeSlot.date} (${targetLabel})</h3>
+      ${healthConditionNote ? `<p style="font-size:0.8em; color:#666; margin:-4px 0 8px;">${healthConditionNote}</p>` : ''}
       ${swapRejectionMessage ? `<p style="color:#b00020; font-weight:bold;">${swapRejectionMessage}</p>` : ''}
       ${validAlternatives.length === 0 ? '<p>No other matching recipes found for this slot.</p>' : ''}
       <div style="display:flex; flex-direction:column; gap:6px; margin:12px 0;">
-        ${validAlternatives.map(m => `<button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left;">${m.name}</button>`).join('')}
+        ${validAlternatives.map(m => {
+          const fit = fitInfo.get(m.recipeId);
+          if (!fit) return `<button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left;">${m.name}</button>`;
+          return `
+            <button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left; display:flex; flex-direction:column; gap:4px; padding:10px 14px;">
+              <span style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span>${m.name}</span>
+                ${fit.reasons.length > 0 ? '<span style="font-size:0.7em; font-weight:bold; white-space:nowrap; opacity:0.85;">Best fit today</span>' : ''}
+              </span>
+              <span style="display:block; height:4px; background:rgba(255,255,255,0.35); border-radius:4px; overflow:hidden;">
+                <span style="display:block; height:100%; width:${fit.percent}%; background:#fff;"></span>
+              </span>
+              ${fit.reasons.length > 0 ? `<span style="font-size:0.7em; opacity:0.85;">${fit.reasons.slice(0, 2).join(', ')}</span>` : ''}
+            </button>
+          `;
+        }).join('')}
       </div>
       <button id="popup-close">Cancel</button>
     `;
@@ -535,12 +728,14 @@ function renderPopup() {
       renderPopup();
     });
   } else if (popupMode === 'split-select') {
+
     document.querySelectorAll('.split-off-option').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const el = e.currentTarget as HTMLElement;
         const name = el.dataset.name!;
-        const dietType = el.dataset.diet!;
-        const newAltIndex = splitOffPerson(activeSlot!.date, activeSlot!.mealType, { name, dietType });
+        const member = getUnsplitSpecialMembers(activeSlot!.date, activeSlot!.mealType).find(m => m.name === name);
+        if (!member) return;
+        const newAltIndex = splitOffPerson(activeSlot!.date, activeSlot!.mealType, member);
         recalculateShoppingList();
         if (newAltIndex >= 0) {
           activeDishTarget = { kind: 'alt', altIndex: newAltIndex };
@@ -1068,6 +1263,16 @@ switch (currentPage) {
           `).join("")}
         </fieldset>
         <fieldset>
+          <legend>Health Condition</legend>
+          <p style="font-size:0.85em; color:#666; margin:0 0 8px;">Optional. Meals will lean toward nutrition guidance for these conditions, balanced across the whole day rather than requiring every single meal to match. Check any that apply.</p>
+        ${healthConditionOptions.map(condition => `
+            <div>
+            <input type="checkbox" id="health-${condition}" name="healthCondition" value="${condition}" />
+            <label for="health-${condition}">${condition}</label>
+            </div>
+          `).join("")}
+        </fieldset>
+        <fieldset>
           <legend>Cuisines</legend>
            ${getAllCuisines().map(type => `
             <div>
@@ -1076,11 +1281,15 @@ switch (currentPage) {
             </div>
           `).join("")}
         </fieldset>
+        
         <div class="form-row">
-        <label for="familySize">Family Size</label>
+        <span class="label-with-info">
+          <label for="familySize">Family Size</label>
+          <button type="button" class="info-icon" data-tooltip="Counts everyone, including different-diet members.">i</button>
+        </span>
         <input id="familySize" name="familySize" type="number" required />
         </div>
-
+       
         <div class="form-row">
         <label for="budget">Grocery Budget per Shopping Trip</label>
         <span class='currency-field'>
@@ -1120,7 +1329,7 @@ switch (currentPage) {
 
     let specialDietMemberCount = 0;
 
-    function addSpecialDietMemberRow() {
+function addSpecialDietMemberRow() {
       const container = document.getElementById('special-diet-members');
       if (!container) return;
       const rowId = specialDietMemberCount++;
@@ -1132,6 +1341,11 @@ switch (currentPage) {
             ${dietTypes.map(type => `<option value="${type}">${type}</option>`).join('')}
           </select>
           <button type="button" class="remove-special-diet-row">Remove</button>
+          <div class="special-diet-health-conditions">
+            ${healthConditionOptions.map(condition => `
+              <label><input type="checkbox" class="special-diet-health-condition" value="${condition}" /> ${condition}</label>
+            `).join('')}
+          </div>
         </div>
       `;
       container.insertAdjacentHTML('beforeend', rowHtml);
@@ -1154,17 +1368,27 @@ switch (currentPage) {
 
       const formData = new FormData(infoForm);
 
-      const specialDietMembers: SpecialDietMember[] = [];
+    const specialDietMembers: SpecialDietMember[] = [];
       document.querySelectorAll('.special-diet-row').forEach(row => {
         const name = (row.querySelector('.special-diet-name') as HTMLInputElement)?.value.trim();
         const dietType = (row.querySelector('.special-diet-type') as HTMLSelectElement)?.value;
+        const healthConditions = Array.from(row.querySelectorAll('.special-diet-health-condition'))
+          .filter((cb): cb is HTMLInputElement => (cb as HTMLInputElement).checked)
+          .map(cb => cb.value);
         if (name && dietType) {
-          specialDietMembers.push({ name, dietType });
+          specialDietMembers.push({ name, dietType, healthConditions });
         }
       });
 
+      const enteredFamilySize = Number(formData.get('familySize'));
+      if (specialDietMembers.length >= enteredFamilySize) {
+        alert('At least one family member must be on the main diet.');
+        return;
+      }
+
       mealPlanInfo = {
         dietType: formData.get('dietType') as string,
+        healthConditions: formData.getAll('healthCondition') as string[],
         cuisines: formData.getAll('cuisine') as string[],
         familySize: Number(formData.get('familySize')),
         budget: Number(formData.get('budget')),
@@ -1185,7 +1409,8 @@ switch (currentPage) {
         shoppingFrequencyDays[mealPlanInfo.shoppingFrequency],
         ingredients,
         mealPlanInfo.budget,
-        mealPlanInfo.specialDietMembers
+        mealPlanInfo.specialDietMembers,
+        mealPlanInfo.healthConditions ?? []
       );
 
       generatedPlan = plan;
@@ -1255,13 +1480,14 @@ switch (currentPage) {
     appElement.innerHTML = `
       <h1>Profile</h1>
       <p><strong>Diet:</strong> ${info.dietType}</p>
+      ${info.healthConditions && info.healthConditions.length > 0 ? `<p><strong>Health Conditions:</strong> ${info.healthConditions.join(', ')}</p>` : ''}
       <p><strong>Cuisines:</strong> ${info.cuisines.join(', ')}</p>
       <p><strong>Family Size:</strong> ${info.familySize}</p>
       <p><strong>Budget per Trip:</strong> $${info.budget}</p>
       <p><strong>Shopping Frequency:</strong> ${info.shoppingFrequency}</p>
       <p><strong>Shopping Day:</strong> ${info.shoppingDate}</p>
       <p><strong>SNAP/EBT:</strong> ${info.usesSnap ? 'Yes' : 'No'}</p>
-      ${info.specialDietMembers.length > 0 ? `<p><strong>Family members with different diets:</strong> ${info.specialDietMembers.map(m => `${m.name} (${m.dietType})`).join(', ')}</p>` : ''}
+      ${info.specialDietMembers.length > 0 ? `<p><strong>Family members with different diets:</strong> ${info.specialDietMembers.map(m => `${m.name} (${m.dietType}${m.healthConditions?.length ? ', ' + m.healthConditions.join(', ') : ''})`).join(', ')}</p>` : ''}
 
       <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
         <button id="edit-settings" style="width:100%; display:block;">Edit Settings</button>
@@ -1308,7 +1534,8 @@ switch (currentPage) {
     }
 
     const maxBudget = getMaxBudget();
-    const withinBudget = generatedTotalSpend <= maxBudget;
+    const spentSoFar = getTotalCost(generatedShoppingList);
+    const budgetPct = Math.min(100, (spentSoFar / maxBudget) * 100);
 
     // Break the calendar into 7-day chunks purely for readability — this is
     // unrelated to shopping frequency (even a monthly shopper's full plan
@@ -1320,43 +1547,96 @@ switch (currentPage) {
     }
 
     appElement.innerHTML = `
+      <div class="meal-plan-page">
       <h1>Your Meal Plan</h1>
-      <p>${mealPlanInfo.cuisines.join(', ')} · ${mealPlanInfo.dietType} · Family of ${mealPlanInfo.familySize}</p>
-      <p>Plan runs ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date}</p>
-
-      ${weekChunks.map(chunk => `
-        <h2>${chunk[0].date} – ${chunk[chunk.length - 1].date}</h2>
-       <div class="table-scroll-wrapper">
-        <table border="1" cellpadding="6" style="border-collapse: collapse; width: 100%;">
-          <thead>
-            <tr><th>Date</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>
-          </thead>
-          <tbody>
-            ${chunk.map(day => `
-              <tr>
-                <td>${day.date}</td>
-                <td class="meal-cell" data-date="${day.date}" data-mealtype="breakfast" style="cursor:pointer;">${renderSlotCell(day.breakfast)}</td>
-                <td class="meal-cell" data-date="${day.date}" data-mealtype="lunch" style="cursor:pointer;">${renderSlotCell(day.lunch)}</td>
-                <td class="meal-cell" data-date="${day.date}" data-mealtype="dinner" style="cursor:pointer;">${renderSlotCell(day.dinner)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
+       <div class="budget-bar-wrapper">
+        <div class="budget-bar-track">
+          <div class="budget-bar-fill" style="width: ${budgetPct}%"></div>
+          <div class="budget-bar-bubble" style="left: ${budgetPct}%">$${spentSoFar.toFixed(2)}</div>
         </div>
+        <span class="budget-bar-total">$${maxBudget.toFixed(2)}</span>
+      </div>
+      ${weekChunks.map((chunk, i) => `
+        <details class="week-accordion" ${i === 0 ? 'open' : ''}>
+          <summary>${formatWeekRange(chunk[0].date, chunk[chunk.length - 1].date)}</summary>
+         
+             <div class="day-card-list">
+            ${chunk.map(day => {
+              const dateObj = new Date(day.date + 'T00:00:00');
+              const dayNum = String(dateObj.getDate()).padStart(2, '0');
+              const weekday = dateObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+              const mealTypes: MealSlotType[] = ['breakfast', 'lunch', 'dinner'];
+              return `
+                <div class="day-row">
+                  <div class="day-badge">
+                    <span class="day-badge-num">${dayNum}</span>
+                    <span class="day-badge-weekday">${weekday}</span>
+                  </div>
+                  <div class="day-card">
+                    ${mealTypes.map(mealType => {
+                      const slot = day[mealType];
+                      const canAddAlt = getUnsplitSpecialMembers(day.date, mealType).length > 0;
+                      return `
+                        <div class="meal-section">
+                          <div class="meal-section-header">
+                            <p class="meal-section-label">${mealType.charAt(0).toUpperCase() + mealType.slice(1)}</p>
+                            ${canAddAlt ? `<button type="button" class="add-alt-dish" data-date="${day.date}" data-mealtype="${mealType}" aria-label="Add alternate meal">+</button>` : ''}
+                          </div>
+                          <p class="meal-main-name" data-date="${day.date}" data-mealtype="${mealType}">${slot.meal?.name ?? '—'}</p>
+                          ${slot.altDishes.length > 0 ? `
+                            <div class="alt-dish-chips">
+                              ${slot.altDishes.map((alt, i) => `
+                                <button type="button" class="alt-dish-chip" data-date="${day.date}" data-mealtype="${mealType}" data-altindex="${i}">${alt.forNames.join(', ')}: ${alt.meal?.name ?? '—'}</button>
+                              `).join('')}
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          <button type="button" class="collapse-week-btn">▲ Collapse</button>
+        </details>
       `).join('')}
 
-      <p><strong>Total Cost:</strong> $${getTotalCost(generatedShoppingList).toFixed(2)}
-         (Budget: $${maxBudget.toFixed(2)} for this shopping trip)
-         — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
+      </div>
     `;
 
   
 
-    document.querySelectorAll<HTMLElement>('.meal-cell').forEach(cell => {
-      cell.addEventListener('click', () => {
-        const date = cell.dataset.date!;
-        const mealType = cell.dataset.mealtype as MealSlotType;
-        openMealMenu(date, mealType);
+    document.querySelectorAll<HTMLElement>('.meal-main-name').forEach(el => {
+      el.addEventListener('click', () => {
+        const date = el.dataset.date!;
+        const mealType = el.dataset.mealtype as MealSlotType;
+        openDishMenu(date, mealType, { kind: 'main' });
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('.alt-dish-chip').forEach(el => {
+      el.addEventListener('click', () => {
+        const date = el.dataset.date!;
+        const mealType = el.dataset.mealtype as MealSlotType;
+        const altIndex = Number(el.dataset.altindex);
+        openDishMenu(date, mealType, { kind: 'alt', altIndex });
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('.collapse-week-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const details = btn.closest('details');
+        if (details) details.removeAttribute('open');
+        window.scrollTo(0, 0);
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('.add-alt-dish').forEach(el => {
+      el.addEventListener('click', () => {
+        const date = el.dataset.date!;
+        const mealType = el.dataset.mealtype as MealSlotType;
+        openAddAltDish(date, mealType);
       });
     });
     break;
@@ -1379,32 +1659,46 @@ switch (currentPage) {
     const perPersonNutrition = calculateMealNutrition(meal, 1, ingredients);
 
     appElement.innerHTML = `
-      <button id="back-to-plan">← Back to plan</button>
+      <div class="recipe-page">
+      <button id="back-to-plan" class="recipe-back-btn">← Back to plan</button>
       <h1>${meal.name}</h1>
-      ${meal.culturalName ? `<p><em>${meal.culturalName}</em></p>` : ''}
-      <p>Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
+      ${meal.culturalName ? `<p class="recipe-cultural-name">${meal.culturalName}</p>` : ''}
+      <p class="recipe-scaled-note">Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
          (original recipe serves ${originalServings})</p>
 
-      <h2>Nutrition (per person)</h2>
-      ${renderNutritionDonut(perPersonNutrition)}
-      <h2>Ingredients</h2>
-      <ul>
-        ${meal.ingredients.map(ing => {
-          const scaledSize = ing.amountInfo.size * scaleFactor;
-          return `<li>${scaledSize.toFixed(2)} ${ing.amountInfo.unit} ${ing.name}</li>`;
-        }).join('')}
-      </ul>
+      <div class="recipe-card">
+        <h2>Nutrition (per person)</h2>
+        ${renderNutritionDonut(perPersonNutrition)}
+      </div>
+
+      <div class="recipe-card">
+        <h2>Ingredients</h2>
+        <ul>
+          ${meal.ingredients.map(ing => {
+            const scaledSize = ing.amountInfo.size * scaleFactor;
+            return `<li>${scaledSize.toFixed(2)} ${ing.amountInfo.unit} ${ing.name}</li>`;
+          }).join('')}
+        </ul>
+      </div>
 
       <h2>Steps</h2>
-      <ol>
-        ${meal.steps.map(step => `<li>${step}</li>`).join('')}
-      </ol>
+      <div class="recipe-steps">
+        ${meal.steps.map((step, i) => `
+          <div class="recipe-step-row">
+            <span class="recipe-step-num">${i + 1}</span>
+            <span class="recipe-step-text">${step}</span>
+          </div>
+        `).join('')}
+      </div>
 
       ${meal.culturalContext ? `
-        <h2>About This Dish</h2>
-        <p><strong>Origin:</strong> ${meal.culturalContext.origin}</p>
-        <p>${meal.culturalContext.context}</p>
+        <div class="recipe-about-dish">
+          <h2>About This Dish</h2>
+          <p class="recipe-about-origin">Origin: ${meal.culturalContext.origin}</p>
+          <p class="recipe-about-context">${meal.culturalContext.context}</p>
+        </div>
       ` : ''}
+      </div>
     `;
 
     document.getElementById('back-to-plan')?.addEventListener('click', () => {
