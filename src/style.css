@@ -1,8 +1,91 @@
 /* ============================================================
-   Form field layout — one label + input per line, small boxes.
-   If you already have other rules in style.css, just paste this
-   block in rather than replacing the whole file.
+   THEME — light/dark architecture.
+   Every custom color in this file (and in main.ts's inline styles)
+   should reference one of these variables instead of a hardcoded
+   hex value. To retheme later, only these two blocks need to change —
+   nothing else in the file should need touching.
+
+   The actual light/dark switch is driven by a `data-theme="light"` or
+   `data-theme="dark"` attribute on <html>, set from main.ts (see the
+   theme module near the top of that file). That's a deliberate choice
+   over relying on the browser's prefers-color-scheme media query alone —
+   it lets the app remember a user's explicit choice and apply it
+   consistently, rather than silently changing based on whatever the
+   phone's system setting happens to be at that exact moment.
    ============================================================ */
+
+:root {
+  --app-page-bg: #F4F3F1;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f4dde7;
+  --app-surface-accent-soft: #fbeaf0;
+
+  --app-text: #1a1a1a;
+  --app-text-muted: #57524c;
+  --app-text-faint: #888888;
+
+  --app-border: #dddddd;
+
+  --app-accent: #D92662;
+  --app-accent-soft: #d4537e;
+  --app-accent-text: #993556;
+
+  --app-nav-bg: #ffffff;
+  --app-nav-active: #FF77A8;
+  --app-nav-inactive: #8b93a1;
+
+  --app-link: #0645AD;
+  --app-danger: #b00020;
+
+  --app-recipe-page-bg: #F7F5DD;
+  --app-recipe-muted: #8a7d5a;
+  --app-recipe-muted-2: #7a7052;
+  --app-recipe-border: #e3e0c8;
+
+  --app-budget-track: #E0DDD8;
+
+  --app-donut-protein: #D92662;
+  --app-donut-carbs: #BD808A;
+  --app-donut-fat: #A8A39A;
+}
+
+[data-theme="dark"] {
+  --app-page-bg: #121212;
+  --app-surface: #1e1e1e;
+  --app-surface-soft: #3a2530;
+  --app-surface-accent-soft: #3a2530;
+
+  --app-text: #f0f0f0;
+  --app-text-muted: #b8b3ad;
+  --app-text-faint: #9a9a9a;
+
+  --app-border: #3a3a3a;
+
+  --app-accent: #ff6b9d;
+  --app-accent-soft: #ff8fb8;
+  --app-accent-text: #ffb3cf;
+
+  --app-nav-bg: #1e1e1e;
+  --app-nav-active: #ff8fc0;
+  --app-nav-inactive: #8b93a1;
+
+  --app-link: #7aa7ff;
+  --app-danger: #ff6b6b;
+
+  --app-recipe-page-bg: #1c1b12;
+  --app-recipe-muted: #c9b98a;
+  --app-recipe-muted-2: #b3a480;
+  --app-recipe-border: #4a4636;
+
+  --app-budget-track: #3a3733;
+
+  --app-donut-protein: #ff6b9d;
+  --app-donut-carbs: #c98a9c;
+  --app-donut-fat: #9a958c;
+}
+
+/* These dark values are a reasonable first pass, not a final design pass —
+   swap any of them out later without touching anything below this line. */
 
 /* ============================================================
    Form field layout — one label + input per line where there's room,
@@ -23,41 +106,29 @@
 .form-row label {
   flex: 0 1 auto;      /* take only the space the text actually needs — don't stretch to fill the row */
 }
-/* 
-
-
-.form-row input[type="date"] {
-  width: 11em;
-  flex: 0 0 auto;
-}
-
-.form-row select {
-  font-size: 1em;    /* applies evenly to the closed box AND the option list */
-  /* padding: 0.3em;
-  min-width: 9em;      /* enough room so "Please select an option" fits on one line */
-  /* flex: 0 1 auto;
-  max-width: 100%;
-} */ 
 
 #app {
+  background: var(--app-page-bg);
+  min-height: 100vh;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: 60px;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  color: var(--app-text);
 }
 
-.currency-field { 
-    position: relative; 
+.currency-field {
+    position: relative;
     width: 100%;
 }
 
-.currency-field input { 
+.currency-field input {
     padding-left: 24px;
 }
 
-.currency-field:before { 
-    position: absolute; 
-    top: 13px; 
-    content: "$"; 
-    left: 5px; 
+.currency-field:before {
+    position: absolute;
+    top: 13px;
+    content: "$";
+    left: 5px;
 }
 
 .table-scroll-wrapper {
@@ -78,7 +149,8 @@
   font-weight: bold;
   font-size: 1.05em;
   padding: 0.75em 1em;
-  background: #f4dde7;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
   border-radius: 8px;
   cursor: pointer;
 }
@@ -88,12 +160,6 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 1em;
-}
-
-.day-card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 0.75em;
 }
 
 .day-card-date {
@@ -108,7 +174,7 @@
 }
 
 .meal-cell {
-  border: 1px solid #ddd;
+  border: 1px solid var(--app-border);
   border-radius: 8px;
   padding: 8px;
   text-align: center;
@@ -117,13 +183,14 @@
 
 .meal-cell-label {
   font-size: 0.75em;
-  color: #888;
+  color: var(--app-text-faint);
   margin: 0 0 4px;
 }
 
 .meal-cell-name {
   font-size: 0.9em;
   margin: 0;
+  color: var(--app-text);
 }
 
 @media (max-width: 480px) {
@@ -142,9 +209,9 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1px solid #888;
+  border: 1px solid var(--app-text-faint);
   background: none;
-  color: #666;
+  color: var(--app-text-muted);
   font-size: 9px;
   font-style: italic;
   font-weight: bold;
@@ -184,7 +251,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #f4dde7;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -204,8 +272,9 @@
 
 .day-card {
   flex: 1;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: var(--app-surface);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   padding: 0.75rem 0.9rem;
 }
@@ -226,7 +295,7 @@
 
 .meal-section-label {
   font-size: 11px;
-  color: #888;
+  color: var(--app-text-faint);
   margin: 0;
 }
 
@@ -234,6 +303,7 @@
   font-size: 14px;
   margin: 2px 0 4px;
   cursor: pointer;
+  color: var(--app-text);
 }
 
 .alt-dish-chips {
@@ -243,9 +313,9 @@
 }
 
 .alt-dish-chip {
-  border: 1px solid #d4537e;
-  background: #fbeaf0;
-  color: #993556;
+  border: 1px solid var(--app-accent-soft);
+  background: var(--app-surface-accent-soft);
+  color: var(--app-accent-text);
   border-radius: 14px;
   padding: 4px 9px;
   font-size: 11px;
@@ -255,7 +325,7 @@
 .add-alt-dish {
   border: none;
   background: none;
-  color: #d4537e;
+  color: var(--app-accent-soft);
   font-size: 15px;
   line-height: 1;
   padding: 0;
@@ -264,17 +334,17 @@
 }
 
 .meal-plan-page {
-  background: #F4F3F1;
-  margin: calc(-1rem - env(safe-area-inset-top)) -1rem 0;
-  padding: calc(1rem + env(safe-area-inset-top)) 1rem 1rem;
-  min-height: 100vh;
+  background: var(--app-page-bg);
+  color: var(--app-text);
+  margin: 0 calc(-1 * var(--pico-spacing));
+  padding: 1rem var(--pico-spacing) calc(1rem + 70px + env(safe-area-inset-bottom));
 }
 
 .budget-bar-wrapper {
   position: sticky;
   top: env(safe-area-inset-top);
   z-index: 10;
-  background: #F4F3F1;
+  background: var(--app-page-bg);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -285,13 +355,13 @@
   position: relative;
   flex: 1;
   height: 14px;
-  background: #E0DDD8;
+  background: var(--app-budget-track);
   border-radius: 999px;
 }
 
 .budget-bar-fill {
   height: 100%;
-  background: #D92662;
+  background: var(--app-accent);
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -300,7 +370,7 @@
   position: absolute;
   top: -26px;
   transform: translateX(-50%);
-  background: #D92662;
+  background: var(--app-accent);
   color: #fff;
   font-size: 11px;
   font-weight: bold;
@@ -312,7 +382,7 @@
 .budget-bar-total {
   font-size: 13px;
   font-weight: 500;
-  color: #57524c;
+  color: var(--app-text-muted);
   white-space: nowrap;
 }
 
@@ -322,24 +392,24 @@
   margin: 8px 0 0;
   background: none;
   border: none;
-  color: #57524c;
+  color: var(--app-text-muted);
   font-size: 12px;
   text-align: center;
   cursor: pointer;
 }
 
 .recipe-page {
-  background: #F7F5DD;
-  margin: calc(-1rem - env(safe-area-inset-top)) -1rem 0;
-  padding: calc(1rem + env(safe-area-inset-top)) 1rem 1rem;
-  min-height: 100vh;
+  background: var(--app-recipe-page-bg);
+  color: var(--app-text);
+  margin: 0 calc(-1 * var(--pico-spacing));
+  padding: 1rem var(--pico-spacing) calc(1rem + 70px + env(safe-area-inset-bottom));
 }
 
 .recipe-back-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #D92662;
+  background: var(--app-accent);
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -352,25 +422,26 @@
 
 .recipe-cultural-name {
   font-style: italic;
-  color: #8a7d5a;
+  color: var(--app-recipe-muted);
   margin: 0 0 6px;
 }
 
 .recipe-scaled-note {
   font-size: 0.85em;
-  color: #7a7052;
+  color: var(--app-recipe-muted-2);
   margin: 0 0 16px;
 }
 
 .recipe-card {
-  background: #fff;
+  background: var(--app-surface);
+  color: var(--app-text);
   border-radius: 12px;
   padding: 0.9rem 1rem;
   margin-bottom: 12px;
 }
 
 .recipe-about-dish {
-  border-top: 1px solid #e3e0c8;
+  border-top: 1px solid var(--app-recipe-border);
   padding-top: 14px;
   margin-top: 6px;
 }
@@ -378,7 +449,7 @@
 .recipe-about-origin {
   font-size: 0.85em;
   font-weight: 600;
-  color: #8a7d5a;
+  color: var(--app-recipe-muted);
   margin: 0 0 4px;
 }
 
@@ -391,7 +462,7 @@
   font-size: 1.4em;
   line-height: 1.25;
   margin-bottom: 4px;
-  color: #1a1a1a;
+  color: var(--app-text);
   font-weight: 700;
 }
 
@@ -399,7 +470,7 @@
   font-size: 1em;
   font-weight: 700;
   margin-bottom: 8px;
-  color: #1a1a1a;
+  color: var(--app-text);
 }
 
 .recipe-card + h2 {
@@ -414,10 +485,15 @@
 
 .recipe-step-num {
   font-weight: bold;
-  color: #D92662;
+  color: var(--app-accent);
   flex-shrink: 0;
 }
 
 .recipe-step-text {
   flex: 1;
+  color: var(--app-text);
+}
+
+html, body {
+  background: var(--app-page-bg);
 }

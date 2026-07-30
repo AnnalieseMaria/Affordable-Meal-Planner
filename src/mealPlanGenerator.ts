@@ -34,7 +34,7 @@ const MANUAL_CONVERSIONS: Record<number, ManualConversion> = {
   147: { fromUnit: 'cup', toAmount: 5.5 },
   1260: { fromUnit: 'cup', toAmount: 5 },
   3: { fromUnit: 'cup', toAmount: 6.5 },
-  2596: { fromUnit: 'stick', toAmount: 1 }, //change unit to stick here, in meals.json, and in amountInfo.unit type union as well 
+  2596: { fromUnit: 'stick', toAmount: 1 }, //change unit to stick here, in meals.json, and in amountInfo.unit type union as well
   1016: { fromUnit: 'unit', toAmount: 1 },
   1032: { fromUnit: 'stalk', toAmount: 0.3667 }, // Green Onions: 1 stalk ≈ 0.3667 oz (from the product's own "1 1/2 stalks = 0.55 oz" display)
 }
@@ -249,19 +249,25 @@ export function calculateMealNutrition(
 }
 
 export type MacroTargets = {
-  caloriesPerDay: number
-  carbsPerDay: number
-  proteinPerDay: number
-  fatPerDay: number       // informational only — see the fat-quality note below
-  fiberPerDayMin: number
-  sodiumPerDayMax: number
+  carbsRatio: number        // fraction of the day's ACTUAL calories that should come from carbs
+  proteinRatio: number      // fraction of the day's ACTUAL calories that should come from protein
+  fiberPer1000Kcal: number  // grams of fiber recommended per 1,000 kcal actually eaten
+  fatPerDay: number         // informational only — see the fat-quality note below
+  sodiumPerDayMax: number   // absolute ceiling — sodium guidance does NOT scale with calorie intake
 }
 
-// Daily macro targets per health condition, based on a standard 2,000
-// calorie/day reference (the same baseline used on US nutrition labels) and
-// ADA / USDA Dietary Guidelines. These are soft DAILY targets, not per-meal
-// minimums — the generator balances the whole day toward them rather than
-// requiring every single meal to individually hit the percentages.
+// Daily macro targets per health condition, based on ADA / USDA Dietary
+// Guidelines. Carbs, protein, and fiber are all expressed as a share of
+// calories (or per 1,000 kcal) rather than a fixed gram number, because
+// that's how the underlying guidance actually works — a 1,200-calorie day
+// and a 2,000-calorie day shouldn't share the same gram ceiling. The actual
+// gram target gets computed at scoring time from each day's REAL tracked
+// calories, not a fixed assumption. These are soft DAILY targets, not
+// per-meal minimums — the generator balances the whole day toward them
+// rather than requiring every single meal to individually hit them.
+//
+// Sodium is the one exception — its 2,300mg/day ceiling is a flat guideline
+// (blood pressure / kidney load), not tied to how many calories someone eats.
 //
 // Total fat is NOT scored directly. What actually matters for diabetes risk
 // is fat QUALITY (saturated vs. unsaturated), not total grams — a total-fat
@@ -271,12 +277,11 @@ export type MacroTargets = {
 // preference nudge rather than a precise number.
 export const HEALTH_CONDITION_TARGETS: Record<string, MacroTargets> = {
   'Type 2 Diabetes': {
-    caloriesPerDay: 2000,
-    carbsPerDay: 225,      // ~45% of calories, mid-range of 40-50% guidance
-    proteinPerDay: 100,    // ~20% of calories, mid-range of 15-25% guidance
-    fatPerDay: 67,         // ~30% of calories — informational only, not scored
-    fiberPerDayMin: 28,    // ADA/USDA guidance: ~14g per 1,000 kcal
-    sodiumPerDayMax: 2300, // ADA/USDA guidance: under 2,300mg/day
+    carbsRatio: 0.45,        // mid-range of 40-50% guidance
+    proteinRatio: 0.20,      // mid-range of 15-25% guidance
+    fiberPer1000Kcal: 14,    // ADA/USDA guidance: ~14g per 1,000 kcal
+    fatPerDay: 67,           // informational only, not scored
+    sodiumPerDayMax: 2300,   // ADA/USDA guidance: under 2,300mg/day
   },
 }
 
@@ -294,16 +299,16 @@ export function getCombinedMacroTargets(healthConditions: string[]): MacroTarget
   if (applicable.length === 0) return null
 
   return {
-    caloriesPerDay: Math.min(...applicable.map(t => t.caloriesPerDay)),
-    carbsPerDay: Math.min(...applicable.map(t => t.carbsPerDay)),
-    proteinPerDay: Math.max(...applicable.map(t => t.proteinPerDay)),
+    carbsRatio: Math.min(...applicable.map(t => t.carbsRatio)),
+    proteinRatio: Math.max(...applicable.map(t => t.proteinRatio)),
+    fiberPer1000Kcal: Math.max(...applicable.map(t => t.fiberPer1000Kcal)),
     fatPerDay: Math.min(...applicable.map(t => t.fatPerDay)),
-    fiberPerDayMin: Math.max(...applicable.map(t => t.fiberPerDayMin)),
     sodiumPerDayMax: Math.min(...applicable.map(t => t.sodiumPerDayMax)),
   }
 }
 
 export type DailyNutritionTracker = {
+  calories: number
   carbs: number
   protein: number
   fat: number
@@ -372,6 +377,23 @@ function fatQualityAdjustment(meal: Meal, ingredients: Record<string, Ingredient
   return (saturatedLeaningFat - unsaturatedLeaningFat) * FAT_GRAM_WEIGHT + friedPrepPenalty
 }
 
+const TOTAL_MEALS_PER_DAY = 3
+const REFERENCE_CALORIES_PER_DAY = 2000 // fallback only — used before any real data exists for the day
+
+// Estimates how many calories today will add up to, based on what's
+// actually been eaten so far, instead of always assuming a fixed 2,000 —
+// a 1,200-calorie day and a 2,000-calorie day shouldn't share the same
+// carb/protein/fiber gram targets, since those are really percentages of
+// calories, not fixed numbers. Falls back to the standard 2,000 reference
+// only for the very first meal of the day, when there's no real data yet —
+// it self-corrects as soon as a real meal is tracked.
+function estimateTodaysCalories(tracker: DailyNutritionTracker, mealsRemainingToday: number): number {
+  const mealsSoFar = TOTAL_MEALS_PER_DAY - mealsRemainingToday
+  if (mealsSoFar <= 0 || tracker.calories <= 0) return REFERENCE_CALORIES_PER_DAY
+  const averageCaloriesPerMealSoFar = tracker.calories / mealsSoFar
+  return averageCaloriesPerMealSoFar * TOTAL_MEALS_PER_DAY
+}
+
 // Scores how well a candidate meal helps the WHOLE DAY trend toward its
 // macro targets, instead of requiring every individual meal to hit them.
 // It figures out what's left to "spend" (or, for fiber, still needs to be
@@ -388,16 +410,21 @@ export function nutritionFitScore(
   mealsRemainingToday: number,
   ingredients: Record<string, Ingredient>
 ): number {
-  const idealCarbs = (targets.carbsPerDay - tracker.carbs) / mealsRemainingToday
-  const idealProtein = (targets.proteinPerDay - tracker.protein) / mealsRemainingToday
-  const idealFiber = (targets.fiberPerDayMin - tracker.fiber) / mealsRemainingToday
+  const projectedCalories = estimateTodaysCalories(tracker, mealsRemainingToday)
+  const targetCarbsGrams = (targets.carbsRatio * projectedCalories) / 4
+  const targetProteinGrams = (targets.proteinRatio * projectedCalories) / 4
+  const targetFiberGrams = targets.fiberPer1000Kcal * (projectedCalories / 1000)
+
+  const idealCarbs = (targetCarbsGrams - tracker.carbs) / mealsRemainingToday
+  const idealProtein = (targetProteinGrams - tracker.protein) / mealsRemainingToday
+  const idealFiber = (targetFiberGrams - tracker.fiber) / mealsRemainingToday
   const idealSodium = (targets.sodiumPerDayMax - tracker.sodium) / mealsRemainingToday
 
-  // Normalize each macro's error against its own daily target so bigger
-  // gram numbers (like carbs or sodium) don't automatically dominate.
-  const carbError = Math.abs(mealNutrition.carbs - idealCarbs) / targets.carbsPerDay
-  const proteinError = Math.abs(mealNutrition.protein - idealProtein) / targets.proteinPerDay
-  const fiberError = Math.max(0, idealFiber - mealNutrition.fiber) / targets.fiberPerDayMin
+  // Normalize each macro's error against its own target so bigger gram
+  // numbers (like carbs or sodium) don't automatically dominate.
+  const carbError = Math.abs(mealNutrition.carbs - idealCarbs) / targetCarbsGrams
+  const proteinError = Math.abs(mealNutrition.protein - idealProtein) / targetProteinGrams
+  const fiberError = Math.max(0, idealFiber - mealNutrition.fiber) / targetFiberGrams
   const sodiumError = Math.max(0, mealNutrition.sodium - idealSodium) / targets.sodiumPerDayMax
 
   return carbError + proteinError + fiberError + sodiumError + fatQualityAdjustment(meal, ingredients)
@@ -416,18 +443,22 @@ export function nutritionFitReasons(
   targets: MacroTargets,
   mealsRemainingToday: number
 ): string[] {
-  const idealCarbs = (targets.carbsPerDay - tracker.carbs) / mealsRemainingToday
-  const idealFiber = (targets.fiberPerDayMin - tracker.fiber) / mealsRemainingToday
+  const projectedCalories = estimateTodaysCalories(tracker, mealsRemainingToday)
+  const targetCarbsGrams = (targets.carbsRatio * projectedCalories) / 4
+  const targetFiberGrams = targets.fiberPer1000Kcal * (projectedCalories / 1000)
+
+  const idealCarbs = (targetCarbsGrams - tracker.carbs) / mealsRemainingToday
+  const idealFiber = (targetFiberGrams - tracker.fiber) / mealsRemainingToday
   const idealSodium = (targets.sodiumPerDayMax - tracker.sodium) / mealsRemainingToday
 
   const reasons: { label: string; strength: number }[] = []
 
   // Comes in under what's left to "spend" on carbs today.
-  const carbSlack = (idealCarbs - mealNutrition.carbs) / targets.carbsPerDay
+  const carbSlack = (idealCarbs - mealNutrition.carbs) / targetCarbsGrams
   if (carbSlack > 0.03) reasons.push({ label: 'Lower carb', strength: carbSlack })
 
   // Meets or beats the fiber still needed today.
-  const fiberSurplus = (mealNutrition.fiber - idealFiber) / targets.fiberPerDayMin
+  const fiberSurplus = (mealNutrition.fiber - idealFiber) / targetFiberGrams
   if (fiberSurplus > 0.03) reasons.push({ label: 'Adds fiber', strength: fiberSurplus })
 
   // Comes in under the sodium ceiling still available today.
@@ -435,6 +466,33 @@ export function nutritionFitReasons(
   if (sodiumSlack > 0.03) reasons.push({ label: 'Lower sodium', strength: sodiumSlack })
 
   return reasons.sort((a, b) => b.strength - a.strength).map(r => r.label)
+}
+
+// Whether a SPECIFIC meal, added to what's already been tracked today,
+// represents a genuine problem for someone's health condition — not just
+// "a slightly better option exists." Only trips for a meaningful violation
+// (this meal alone pushes the day's carb or sodium ceiling well past 100%),
+// so it stays rare by design — automatic splitting should be reserved for
+// real problems, not everyday ranking differences. Tune this if it fires
+// too often or too rarely once you've seen it play out against real meals.
+const POOR_HEALTH_FIT_OVERAGE_THRESHOLD = 0.15 // 15% past the day's ceiling
+
+function isPoorHealthFit(
+  mealNutrition: NutritionBreakdown,
+  tracker: DailyNutritionTracker,
+  targets: MacroTargets,
+  mealsRemainingToday: number
+): boolean {
+  const projectedCalories = estimateTodaysCalories(tracker, mealsRemainingToday)
+  const targetCarbsGrams = (targets.carbsRatio * projectedCalories) / 4
+
+  const projectedCarbs = tracker.carbs + mealNutrition.carbs
+  const projectedSodium = tracker.sodium + mealNutrition.sodium
+
+  const carbOverage = (projectedCarbs - targetCarbsGrams) / targetCarbsGrams
+  const sodiumOverage = (projectedSodium - targets.sodiumPerDayMax) / targets.sodiumPerDayMax
+
+  return carbOverage > POOR_HEALTH_FIT_OVERAGE_THRESHOLD || sodiumOverage > POOR_HEALTH_FIT_OVERAGE_THRESHOLD
 }
 
 
@@ -611,7 +669,7 @@ function pickAffordableVariedMeal(
   const idealScored = scoreMeals(idealPool)
   const affordable = idealScored.filter(s => s.cost <= affordableCeiling)
 
-const healthTargets = getCombinedMacroTargets(healthConditions)
+  const healthTargets = getCombinedMacroTargets(healthConditions)
 
   let chosen
   if (affordable.length > 0) {
@@ -655,6 +713,7 @@ const healthTargets = getCombinedMacroTargets(healthConditions)
 
   if (healthTargets && dailyTracker) {
     const chosenNutrition = calculateMealNutrition(chosen.meal, 1, ingredients)
+    dailyTracker.calories += chosenNutrition.calories
     dailyTracker.carbs += chosenNutrition.carbs
     dailyTracker.protein += chosenNutrition.protein
     dailyTracker.fat += chosenNutrition.fat
@@ -663,6 +722,118 @@ const healthTargets = getCombinedMacroTargets(healthConditions)
   }
 
   return { meal: chosen.meal, cost: chosen.cost }
+}
+
+// Picks WHICH meal a group would eat from a pool, WITHOUT yet purchasing
+// anything or committing pantry consumption — nutrition-per-person doesn't
+// depend on group size, so the choice itself can be made before we know the
+// final headcount. Reserves the recipe's identity in usedIds immediately
+// (so it can't get double-picked elsewhere today), but the real cost/pantry
+// commitment happens later, via commitMealPurchase, once the final group
+// size is known.
+function chooseMealForGroup(
+  pool: Meal[],
+  groupSize: number,
+  pantry: Pantry,
+  ingredients: Record<string, Ingredient>,
+  usedIds: Set<number>,
+  remainingBudget: number,
+  reserveForRest: number,
+  excludeToday: Set<number>,
+  fairShareCeiling: number,
+  healthConditions: string[] = [],
+  dailyTracker: DailyNutritionTracker | null = null,
+  mealsRemainingToday: number = 1
+): Meal | null {
+  const poolExcludingToday = pool.filter(m => !excludeToday.has(m.recipeId))
+  if (poolExcludingToday.length === 0) return null
+
+  const unused = poolExcludingToday.filter(m => !usedIds.has(m.recipeId))
+  const idealPool = unused.length > 0 ? unused : poolExcludingToday
+
+  const scoreMeals = (mealList: Meal[]) =>
+    mealList.map(meal => {
+      const scaleFactor = getScaleFactor(meal, groupSize)
+      const cost = marginalCost(meal, pantry, ingredients, scaleFactor)
+      return { meal, scaleFactor, cost }
+    })
+
+  const reserveCeiling = remainingBudget - reserveForRest
+  const affordableCeiling = Math.min(reserveCeiling, fairShareCeiling)
+  const idealScored = scoreMeals(idealPool)
+  const affordable = idealScored.filter(s => s.cost <= affordableCeiling)
+
+  const healthTargets = getCombinedMacroTargets(healthConditions)
+
+  let chosen
+  if (affordable.length > 0) {
+    if (healthTargets && dailyTracker) {
+      const withNutritionScore = affordable.map(s => ({
+        ...s,
+        nutritionScore: nutritionFitScore(
+          s.meal,
+          calculateMealNutrition(s.meal, 1, ingredients),
+          dailyTracker,
+          healthTargets,
+          mealsRemainingToday,
+          ingredients
+        ),
+      }))
+      withNutritionScore.sort((a, b) => a.nutritionScore - b.nutritionScore)
+      const shortlistSize = Math.max(1, Math.ceil(withNutritionScore.length / 2))
+      const shortlist = withNutritionScore.slice(0, shortlistSize)
+      chosen = shortlist[Math.floor(Math.random() * shortlist.length)]
+    } else {
+      chosen = affordable[Math.floor(Math.random() * affordable.length)]
+    }
+  } else {
+    const fullScored = scoreMeals(poolExcludingToday)
+    const withinHardBudget = fullScored.filter(s => s.cost <= remainingBudget)
+
+    if (withinHardBudget.length > 0) {
+      withinHardBudget.sort((a, b) => a.cost - b.cost)
+      chosen = withinHardBudget[0]
+    } else {
+      return null
+    }
+  }
+
+  usedIds.add(chosen.meal.recipeId)
+  return chosen.meal
+}
+
+// Actually purchases/commits a meal already chosen via chooseMealForGroup,
+// scaled for whatever the FINAL group size turns out to be — this is what
+// lets a shared dish get bought for exactly however many people actually
+// end up eating it, instead of always the full original headcount.
+function commitMealPurchase(
+  meal: Meal,
+  groupSize: number,
+  pantry: Pantry,
+  ingredients: Record<string, Ingredient>,
+  dayIndex: number,
+  healthConditions: string[] = [],
+  dailyTracker: DailyNutritionTracker | null = null
+): number {
+  const scaleFactor = getScaleFactor(meal, groupSize)
+  const cost = marginalCost(meal, pantry, ingredients, scaleFactor)
+
+  for (const ing of meal.ingredients) {
+    usePantryIngredient(pantry, ing, ingredients, scaleFactor, dayIndex)
+  }
+
+  const healthTargets = getCombinedMacroTargets(healthConditions)
+  if (healthTargets && dailyTracker) {
+    const chosenNutrition = calculateMealNutrition(meal, 1, ingredients)
+    dailyTracker.calories += chosenNutrition.calories
+    dailyTracker.carbs += chosenNutrition.carbs
+    dailyTracker.protein += chosenNutrition.protein
+    dailyTracker.fat += chosenNutrition.fat
+    dailyTracker.fiber += chosenNutrition.fiber
+    dailyTracker.sodium += chosenNutrition.sodium
+  }
+
+  return cost
 }
 
 // Tries to find ONE meal that satisfies the main diet AND every special
@@ -692,13 +863,87 @@ function fillMealSlot(
   const sharedPool = allDietPool.filter(m => allRequiredDiets.every(d => matchesDiet(m, d)))
 
   if (sharedPool.length > 0) {
-    const { meal, cost } = pickAffordableVariedMeal(
+    const chosenSharedMeal = chooseMealForGroup(
       sharedPool, familySize, pantry, ingredients, usedIds,
-      remainingBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
+      remainingBudget, reserveForRest, excludeToday, fairShareCeiling,
       healthConditions, dailyTracker, mealsRemainingToday
     )
-    if (meal) {
-      return { result: { meal, mainGroupSize: familySize, altDishes: [] }, cost }
+
+    if (chosenSharedMeal) {
+      // This dish satisfies everyone's DIET, but diet compatibility is the
+      // only thing checked to get here — it could still be a real problem
+      // for someone's individual health condition. Carve anyone out for
+      // whom THIS SPECIFIC dish is a genuine problem into their own dish
+      // instead of silently serving it to them.
+      const sharedMealNutrition = calculateMealNutrition(chosenSharedMeal, 1, ingredients)
+      const carveOutGroups: SpecialDietGroup[] = []
+      const stayingGroups: SpecialDietGroup[] = []
+      for (const group of specialDietGroups) {
+        const groupTargets = getCombinedMacroTargets(group.healthConditions)
+        const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
+        if (groupTargets && groupTracker && isPoorHealthFit(sharedMealNutrition, groupTracker, groupTargets, mealsRemainingToday)) {
+          carveOutGroups.push(group)
+        } else {
+          stayingGroups.push(group)
+        }
+      }
+
+      // Try to find each carved-out group their own dish BEFORE committing
+      // the shared dish's purchase, so the shared dish gets bought/scaled
+      // for exactly however many people actually end up eating it — not
+      // the original full family size.
+      let runningBudget = remainingBudget
+      let altTotalCost = 0
+      const altDishes: AltDish[] = []
+      const trulyCarvedOut: SpecialDietGroup[] = []
+      const revertedToShared: SpecialDietGroup[] = []
+
+      for (const group of carveOutGroups) {
+        const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType) && m.recipeId !== chosenSharedMeal.recipeId)
+        const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
+        const { meal: altMeal, cost: altCost } = pickAffordableVariedMeal(
+          altPool, group.names.length, pantry, ingredients, usedIds,
+          runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
+          group.healthConditions, groupTracker, mealsRemainingToday
+        )
+        if (altMeal) {
+          altDishes.push({ meal: altMeal, forNames: group.names, dietType: group.dietType, groupSize: group.names.length })
+          runningBudget -= altCost
+          altTotalCost += altCost
+          trulyCarvedOut.push(group)
+        } else {
+          // No affordable/available alternative — they end up eating the
+          // shared dish after all, so they're not actually carved out.
+          revertedToShared.push(group)
+        }
+      }
+
+      const finalSharedGroupSize = familySize - trulyCarvedOut.reduce((sum, g) => sum + g.names.length, 0)
+      const sharedCost = commitMealPurchase(
+        chosenSharedMeal, finalSharedGroupSize, pantry, ingredients, dayIndex,
+        healthConditions, dailyTracker
+      )
+
+      // Everyone NOT carved out — whether never flagged, or their alt
+      // search came up empty — ends up eating the shared dish, so their own
+      // personal tracker (if they have a health condition) needs it too, so
+      // later meals today see their true running total either way.
+      for (const group of [...stayingGroups, ...revertedToShared]) {
+        if (group.healthConditions.length === 0) continue
+        const groupTracker = altGroupTrackers?.get(group.dietType)
+        if (!groupTracker) continue
+        groupTracker.calories += sharedMealNutrition.calories
+        groupTracker.carbs += sharedMealNutrition.carbs
+        groupTracker.protein += sharedMealNutrition.protein
+        groupTracker.fat += sharedMealNutrition.fat
+        groupTracker.fiber += sharedMealNutrition.fiber
+        groupTracker.sodium += sharedMealNutrition.sodium
+      }
+
+      return {
+        result: { meal: chosenSharedMeal, mainGroupSize: finalSharedGroupSize, altDishes },
+        cost: sharedCost + altTotalCost
+      }
     }
   }
 
@@ -833,9 +1078,9 @@ export function generateMealPlan(
     // whole shopping cycle. Each special-diet group gets its OWN fresh
     // tracker too, so a person split into their own alt dish has their day
     // balanced separately from the shared main dish's tally.
-    const dailyTracker: DailyNutritionTracker = { carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }
+    const dailyTracker: DailyNutritionTracker = { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }
     const altGroupTrackers = new Map<string, DailyNutritionTracker>(
-      specialDietGroups.map(g => [g.dietType, { carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }])
+      specialDietGroups.map(g => [g.dietType, { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }])
     )
 
     const freshBreakfastPool = breakfastPool.filter(m => isMealStillFreshOnDay(m, dayInCycle))

@@ -14,6 +14,35 @@ for (const ing of getCustomIngredients()) {
 const appElement = document.querySelector<HTMLElement>('#app')!
 if (!appElement) throw new Error("Couldn't find element with id 'app'")
 
+// ============================================================
+// THEME — light/dark mode.
+// The actual colors live in style.css as CSS custom properties, split
+// into a `:root` block (light) and a `[data-theme="dark"]` block. This
+// module's only job is deciding which one is active and applying it —
+// it never touches a color value directly, so retheming later never
+// requires changing this file.
+// ============================================================
+type Theme = 'light' | 'dark';
+
+function getSystemPreferredTheme(): Theme {
+  return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+}
+
+// A saved choice always wins; if the user has never picked one, fall back
+// to whatever the phone's system setting is at first launch.
+function loadTheme(): Theme {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  return getSystemPreferredTheme();
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+let currentTheme: Theme = loadTheme();
+applyTheme(currentTheme); // set before the first render so there's no flash of the wrong theme
+
 function getLocalDateString() {
   const now = new Date();
   const year = now.getFullYear();
@@ -86,17 +115,17 @@ type MealPlanInfo = {
   usesSnap: boolean;
 };
 
-//saves MealPlanInfo type to Local Storage --> data persists when user exits/returns to app 
-function saveMealPlanInfo(info: MealPlanInfo){ 
+//saves MealPlanInfo type to Local Storage --> data persists when user exits/returns to app
+function saveMealPlanInfo(info: MealPlanInfo){
   localStorage.setItem('mealPlanInfo', JSON.stringify(info)); //setItem stores info under the key mealPlanInfo
 }
 
 //loading MealPlanInfo back from Local Storage
-function loadMealPlanInfo(): MealPlanInfo | null { 
-  const raw = localStorage.getItem('mealPlanInfo'); 
+function loadMealPlanInfo(): MealPlanInfo | null {
+  const raw = localStorage.getItem('mealPlanInfo');
   if (raw == null){
-    return null; //failure case #1: nothing was ever saved 
-  } 
+    return null; //failure case #1: nothing was ever saved
+  }
     try {
       return JSON.parse(raw) as MealPlanInfo; //SUCCESS case: compile time promise raw is valid JSON text (doesn't do type check)
     } catch {
@@ -109,14 +138,14 @@ function saveCheckedItems(checkedIds: Set<number>) {
 }
 
 function loadCheckedItems(): Set<number> {
-  const checkedItems = localStorage.getItem('checkedGroceryItems'); 
+  const checkedItems = localStorage.getItem('checkedGroceryItems');
   if(checkedItems == null){
-    return new Set(); 
+    return new Set();
   }
-    try { 
-      return new Set(JSON.parse(checkedItems)); 
+    try {
+      return new Set(JSON.parse(checkedItems));
     } catch {
-      return new Set(); 
+      return new Set();
     }
 }
 
@@ -144,7 +173,7 @@ type MealSlotType = 'breakfast' | 'lunch' | 'dinner'
 type ActiveSlot = { date: string; mealType: MealSlotType } | null
 type DishTarget = { kind: 'main' } | { kind: 'alt'; altIndex: number }
 
-let mealPlanInfo: MealPlanInfo | null = loadMealPlanInfo(); // lets a returning user's saved data flow in immediately on load instead of always starting empty 
+let mealPlanInfo: MealPlanInfo | null = loadMealPlanInfo(); // lets a returning user's saved data flow in immediately on load instead of always starting empty
 
 let generatedPlan: DayPlan[] | null = null;
 let generatedShoppingList: ShoppingListItem[] | null = null;
@@ -164,6 +193,7 @@ let activeDishTarget: DishTarget = { kind: 'main' }; // which dish WITHIN that s
 let popupMode: 'select-dish' | 'split-select' | 'menu' | 'swap' | null = null;
 let swapRejectionMessage: string | null = null; // set when a chosen swap doesn't fit the budget
 let selectedMeal: Meal | null = null;    // the meal currently shown on the recipe detail page
+let selectedMealGroupSize: number | null = null; // how many people that specific dish was portioned/scaled for — main dish vs. one person's own alt dish can differ, so this always travels alongside selectedMeal instead of assuming the whole household's familySize
 
 type Page = "home" | "meal-plan" | "recipe-detail" | "groceries" | "profile" | "add-meal";
 const VALID_PAGES: Page[] = ["home", "meal-plan", "recipe-detail", "groceries", "profile", "add-meal"];
@@ -190,6 +220,18 @@ function getTargetMeal(date: string, mealType: MealSlotType, target: DishTarget)
   if (!day) return null;
   const slot = day[mealType];
   return target.kind === 'main' ? slot.meal : (slot.altDishes[target.altIndex]?.meal ?? null);
+}
+
+// How many people the targeted dish (main, or a specific alt dish) is
+// actually portioned for — the main dish's group size shrinks whenever
+// someone carves out into their own alt dish, and each alt dish is scaled
+// for just the people it's for, so this is never simply the whole
+// household's familySize.
+function getTargetGroupSize(date: string, mealType: MealSlotType, target: DishTarget): number {
+  const day = generatedPlan?.find(d => d.date === date);
+  const slot = day?.[mealType];
+  if (!slot) return mealPlanInfo?.familySize ?? 1;
+  return target.kind === 'main' ? slot.mainGroupSize : (slot.altDishes[target.altIndex]?.groupSize ?? 1);
 }
 
 function setTargetMeal(date: string, mealType: MealSlotType, target: DishTarget, meal: Meal | null) {
@@ -360,21 +402,21 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
       <svg width="140" height="140" viewBox="0 0 100 100">
         <defs>
           <pattern id="donut-protein" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-            <rect width="4" height="4" fill="#D92662" />
-            <line x1="0" y1="0" x2="0" y2="4" stroke="#ffffff" stroke-width="1.6" />
+            <rect width="4" height="4" fill="var(--app-donut-protein)" />
+            <line x1="0" y1="0" x2="0" y2="4" stroke="var(--app-surface)" stroke-width="1.6" />
           </pattern>
           <pattern id="donut-carbs" patternUnits="userSpaceOnUse" width="6" height="6">
-            <rect width="6" height="6" fill="#BD808A" />
-            <circle cx="3" cy="3" r="1.1" fill="#ffffff" />
+            <rect width="6" height="6" fill="var(--app-donut-carbs)" />
+            <circle cx="3" cy="3" r="1.1" fill="var(--app-surface)" />
           </pattern>
           <pattern id="donut-fat" patternUnits="userSpaceOnUse" width="5" height="5">
-            <rect width="5" height="5" fill="#A8A39A" />
-            <line x1="0" y1="0" x2="5" y2="5" stroke="#ffffff" stroke-width="1.2" />
-            <line x1="5" y1="0" x2="0" y2="5" stroke="#ffffff" stroke-width="1.2" />
+            <rect width="5" height="5" fill="var(--app-donut-fat)" />
+            <line x1="0" y1="0" x2="5" y2="5" stroke="var(--app-surface)" stroke-width="1.2" />
+            <line x1="5" y1="0" x2="0" y2="5" stroke="var(--app-surface)" stroke-width="1.2" />
           </pattern>
         </defs>
         <g transform="rotate(-90 50 50)">
-          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#f0efec" stroke-width="10" />
+          <circle cx="50" cy="50" r="${radius}" fill="none" stroke="var(--app-border)" stroke-width="10" />
           <circle cx="50" cy="50" r="${radius}" fill="none" stroke="url(#donut-protein)" stroke-width="10"
             stroke-dasharray="${proteinLength} ${circumference - proteinLength}"
             stroke-dashoffset="${proteinOffset}" />
@@ -385,30 +427,31 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
             stroke-dasharray="${fatLength} ${circumference - fatLength}"
             stroke-dashoffset="${fatOffset}" />
         </g>
-        <text x="50" y="47" text-anchor="middle" font-size="16" font-weight="bold">${Math.round(nutrition.calories)}</text>
-        <text x="50" y="60" text-anchor="middle" font-size="8" fill="#666">kcal</text>
+        <text x="50" y="47" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--app-text)">${Math.round(nutrition.calories)}</text>
+        <text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--app-text-faint)">kcal</text>
       </svg>
       <div>
-        <div style="color:#D92662; font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
-        <div style="color:#BD808A; font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
-        <div style="color:#A8A39A; font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
+        <div style="color:var(--app-donut-protein); font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
+        <div style="color:var(--app-donut-carbs); font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
+        <div style="color:var(--app-donut-fat); font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
       </div>
     </div>
   `;
 }
 
 // Same idea as renderSlotCell, but every dish name is a clickable link
-// (tagged with the recipe's id) instead of plain text — used on Home,
-// where tapping a meal should jump straight to its recipe.
+// (tagged with the recipe's id, plus the actual group size it was
+// portioned for) instead of plain text — used on Home, where tapping a
+// meal should jump straight to its recipe.
 function renderClickableSlot(slot: MealSlotResult): string {
   const mainHtml = slot.meal
-    ? `<span class="recipe-link" data-recipe-id="${slot.meal.recipeId}" style="cursor:pointer; text-decoration:underline; color:#0645AD;">${slot.meal.name}</span>`
+    ? `<span class="recipe-link" data-recipe-id="${slot.meal.recipeId}" data-group-size="${slot.mainGroupSize}" style="cursor:pointer; text-decoration:underline; color:var(--app-link);">${slot.meal.name}</span>`
     : '—';
   const altHtml = slot.altDishes.map(alt => {
     const dishHtml = alt.meal
-      ? `<span class="recipe-link" data-recipe-id="${alt.meal.recipeId}" style="cursor:pointer; text-decoration:underline; color:#0645AD;">${alt.meal.name}</span>`
+      ? `<span class="recipe-link" data-recipe-id="${alt.meal.recipeId}" data-group-size="${alt.groupSize}" style="cursor:pointer; text-decoration:underline; color:var(--app-link);">${alt.meal.name}</span>`
       : '—';
-    return `<div style="font-size:0.8em; color:#666;">+ ${alt.forNames.join(', ')}: ${dishHtml}</div>`;
+    return `<div style="font-size:0.8em; color:var(--app-text-faint);">+ ${alt.forNames.join(', ')}: ${dishHtml}</div>`;
   }).join('');
   return `${mainHtml}${altHtml}`;
 }
@@ -422,6 +465,7 @@ function attachRecipeLinkHandlers() {
       const meal = meals.find(m => m.recipeId === recipeId);
       if (meal) {
         selectedMeal = meal;
+        selectedMealGroupSize = link.dataset.groupSize ? Number(link.dataset.groupSize) : null;
         recipeDetailReturnPage = "home";
         currentPage = "recipe-detail";
         localStorage.setItem("currentPage", currentPage);
@@ -555,7 +599,7 @@ function formatWeekRange(startStr: string, endStr: string): string {
     : `Week of ${startMonth} ${startDay} – ${endMonth} ${endDay}`;
 }
 
-function renderPopup() { 
+function renderPopup() {
   document.getElementById('meal-popup-overlay')?.remove(); //delete old overlay to avoid stacking
   if (!activeSlot || !popupMode || !mealPlanInfo) return;
 
@@ -566,7 +610,7 @@ function renderPopup() {
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:1000;';
 
   const box = document.createElement('div');
-  box.style.cssText = 'background:white; padding:20px; border-radius:8px; min-width:280px; max-width:90%; max-height:80vh; overflow-y:auto;';
+  box.style.cssText = 'background:var(--app-surface); color:var(--app-text); padding:20px; border-radius:8px; min-width:280px; max-width:90%; max-height:80vh; overflow-y:auto;';
 
   if (popupMode === 'select-dish') {
     const day = generatedPlan?.find(d => d.date === activeSlot!.date);
@@ -617,23 +661,18 @@ function renderPopup() {
       ? getImpliedRequiredDiets(activeSlot.date, activeSlot.mealType)
       : [getTargetDietType(activeSlot.date, activeSlot.mealType, activeDishTarget)];
 
-const alternatives = meals.filter(m =>
+    // Every diet/cuisine/mealType-eligible recipe is a valid swap candidate,
+    // regardless of whether that same recipe already appears elsewhere in
+    // today's plan (including as another dish in this very slot) — someone
+    // may deliberately want to unify a split back onto one shared dish, and
+    // there's no real reason two different slots/people can't eat the same
+    // thing on the same day.
+    const validAlternatives = meals.filter(m =>
       mealPlanInfo!.cuisines.includes(m.cuisine) &&
       m.mealType.includes(mealTypeLabel) &&
       requiredDiets.every(d => matchesDiet(m, d)) &&
       m.recipeId !== meal?.recipeId
     );
-
-    // Avoid suggesting a dish already used ANYWHERE today — across every
-    // slot's main dish AND every alt dish, not just this one slot.
-    const day = generatedPlan?.find(d => d.date === activeSlot!.date);
-    const allTodayIds: number[] = [];
-    for (const s of [day?.breakfast, day?.lunch, day?.dinner]) {
-      if (s?.meal) allTodayIds.push(s.meal.recipeId);
-      s?.altDishes.forEach(a => { if (a.meal) allTodayIds.push(a.meal.recipeId); });
-    }
-    const usedTodayIds = new Set(allTodayIds);
-    let validAlternatives = alternatives.filter(m => !usedTodayIds.has(m.recipeId));
 
     // If a health condition applies here, lean the LIST toward whichever
     // swaps would keep today's macro balance on track — the same soft nudge
@@ -648,10 +687,12 @@ const alternatives = meals.filter(m =>
     const healthTargets = getCombinedMacroTargets(applicableConditions);
     const fitInfo = new Map<number, { percent: number; reasons: string[] }>();
     let healthConditionNote: string | null = null;
+    let orderedAlternatives = validAlternatives;
 
     if (healthTargets) {
       const alreadyEatenToday = getOtherMealsNutritionToday(activeSlot.date, activeSlot.mealType, activeDishTarget);
       const tracker = {
+        calories: alreadyEatenToday.calories,
         carbs: alreadyEatenToday.carbs,
         protein: alreadyEatenToday.protein,
         fat: alreadyEatenToday.fat,
@@ -678,17 +719,17 @@ const alternatives = meals.filter(m =>
         fitInfo.set(s.meal.recipeId, { percent, reasons });
       }
 
-      validAlternatives = scored.sort((a, b) => a.score - b.score).map(s => s.meal);
+      orderedAlternatives = scored.sort((a, b) => a.score - b.score).map(s => s.meal);
       healthConditionNote = getHealthConditionSwapNote(activeSlot.date, activeSlot.mealType, activeDishTarget, applicableConditions);
     }
 
     box.innerHTML = `
       <h3>Swap ${mealTypeLabel} on ${activeSlot.date} (${targetLabel})</h3>
-      ${healthConditionNote ? `<p style="font-size:0.8em; color:#666; margin:-4px 0 8px;">${healthConditionNote}</p>` : ''}
-      ${swapRejectionMessage ? `<p style="color:#b00020; font-weight:bold;">${swapRejectionMessage}</p>` : ''}
-      ${validAlternatives.length === 0 ? '<p>No other matching recipes found for this slot.</p>' : ''}
+      ${healthConditionNote ? `<p style="font-size:0.8em; color:var(--app-text-faint); margin:-4px 0 8px;">${healthConditionNote}</p>` : ''}
+      ${swapRejectionMessage ? `<p style="color:var(--app-danger); font-weight:bold;">${swapRejectionMessage}</p>` : ''}
+      ${orderedAlternatives.length === 0 ? '<p>No other matching recipes found for this slot.</p>' : ''}
       <div style="display:flex; flex-direction:column; gap:6px; margin:12px 0;">
-        ${validAlternatives.map(m => {
+        ${orderedAlternatives.map(m => {
           const fit = fitInfo.get(m.recipeId);
           if (!fit) return `<button class="swap-option" data-recipe-id="${m.recipeId}" style="text-align:left;">${m.name}</button>`;
           return `
@@ -750,6 +791,7 @@ const alternatives = meals.filter(m =>
       const meal = getTargetMeal(activeSlot!.date, activeSlot!.mealType, activeDishTarget);
       if (meal) {
         selectedMeal = meal;
+        selectedMealGroupSize = getTargetGroupSize(activeSlot!.date, activeSlot!.mealType, activeDishTarget);
         recipeDetailReturnPage = "meal-plan";
         closePopup();
         currentPage = "recipe-detail";
@@ -804,12 +846,11 @@ const alternatives = meals.filter(m =>
   }
 }
 
-function renderBottomNav() { 
+function renderBottomNav() {
   document.getElementById('bottom-nav')?.remove(); //
-  const nav = document.createElement('div'); //creates empty div that doesn't exist on the page yet 
-  nav.id = 'bottom-nav'; //assigns id to the nav element 
-  // nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:white; border-top:1px solid #ccc; padding:8px 0; z-index:500;';
-  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:white; border-top:1px solid #ddd; padding:10px 0; z-index:500;';
+  const nav = document.createElement('div'); //creates empty div that doesn't exist on the page yet
+  nav.id = 'bottom-nav'; //assigns id to the nav element
+  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:var(--app-nav-bg); border-top:1px solid var(--app-border); box-shadow:0 -2px 6px rgba(0,0,0,0.25); padding:10px 0 calc(10px + env(safe-area-inset-bottom)); z-index:500;';
 
   const pageIcons: Record<string, string> = {
   'home': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
@@ -839,11 +880,11 @@ function renderBottomNav() {
   </svg>`,
 };
 
-  const pages: Page[] = ['home', 'meal-plan', 'groceries', 'profile']; 
-  
+  const pages: Page[] = ['home', 'meal-plan', 'groceries', 'profile'];
+
   const buttonsHtml = pages.map(page => {
     const isActive = page === currentPage;
-    const color = isActive ? '#FF77A8' : '#8b93a1';
+    const color = isActive ? 'var(--app-nav-active)' : 'var(--app-nav-inactive)';
     return `
     <button class="nav-tab" data-page="${page}" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; color:${color};">
       ${pageIcons[page]}
@@ -851,17 +892,17 @@ function renderBottomNav() {
     </button>
   `;
 }).join('');
-  nav.innerHTML = buttonsHtml; 
+  nav.innerHTML = buttonsHtml;
   document.body.appendChild(nav); //makes nav a child of whatever element method is called on (document.body meaning nav is sibling to app)
 
   nav.querySelectorAll<HTMLElement>('.nav-tab').forEach(btn => {
     btn.addEventListener('click', () => {
-      currentPage = btn.dataset.page as Page; // 
+      currentPage = btn.dataset.page as Page; //
       localStorage.setItem("currentPage", currentPage); //saves new page value in local storage with key currentPage
       render();
     })
   })
-} 
+}
 
 const SERVING_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","can","spear","slice","tomato","tortilla","olive","slices","egg","mini avocado","g","stick","stalk","pepper","medium onion"] as const;
 const RECIPE_AMOUNT_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","tortilla","can","stalk","unit","bag","egg"] as const;
@@ -927,7 +968,7 @@ function searchIngredientCatalog(query: string): Ingredient[] {
 
 function renderNewIngredientForm(): string {
   return `
-    <div id="new-ingredient-form" style="border:1px solid #ccc; padding:12px; margin:12px 0;">
+    <div id="new-ingredient-form" style="border:1px solid var(--app-border); padding:12px; margin:12px 0;">
       <h3>New Ingredient</h3>
       <div class="form-row"><label for="new-ing-name">Name</label><input id="new-ing-name" /></div>
       <div class="form-row"><label for="new-ing-category">Category</label>
@@ -1264,7 +1305,7 @@ switch (currentPage) {
         </fieldset>
         <fieldset>
           <legend>Health Condition</legend>
-          <p style="font-size:0.85em; color:#666; margin:0 0 8px;">Optional. Meals will lean toward nutrition guidance for these conditions, balanced across the whole day rather than requiring every single meal to match. Check any that apply.</p>
+          <p style="font-size:0.85em; color:var(--app-text-faint); margin:0 0 8px;">Optional. Meals will lean toward nutrition guidance for these conditions, balanced across the whole day rather than requiring every single meal to match. Check any that apply.</p>
         ${healthConditionOptions.map(condition => `
             <div>
             <input type="checkbox" id="health-${condition}" name="healthCondition" value="${condition}" />
@@ -1281,7 +1322,7 @@ switch (currentPage) {
             </div>
           `).join("")}
         </fieldset>
-        
+
         <div class="form-row">
         <span class="label-with-info">
           <label for="familySize">Family Size</label>
@@ -1289,7 +1330,7 @@ switch (currentPage) {
         </span>
         <input id="familySize" name="familySize" type="number" required />
         </div>
-       
+
         <div class="form-row">
         <label for="budget">Grocery Budget per Shopping Trip</label>
         <span class='currency-field'>
@@ -1316,7 +1357,7 @@ switch (currentPage) {
         <label for="shoppingDate">What day will you grocery shop?</label>
         <input type="date" id="shoppingDate" name="shoppingDate" value="${todayStr}" min="${todayStr}" required />
         </div>
-        <p style="font-size:0.85em; color:#666;">Pick any upcoming date that falls on your regular shopping day — this sets the pattern going forward (e.g. if you shop weekly, every future trip lands on this same day of the week; biweekly, every 2 weeks on this day; monthly, this same date each month). Your meal plan starts the day after each trip.</p>
+        <p style="font-size:0.85em; color:var(--app-text-faint);">Pick any upcoming date that falls on your regular shopping day — this sets the pattern going forward (e.g. if you shop weekly, every future trip lands on this same day of the week; biweekly, every 2 weeks on this day; monthly, this same date each month). Your meal plan starts the day after each trip.</p>
 
         <div>
           <p><strong>Does anyone in your family eat differently?</strong></p>
@@ -1559,7 +1600,7 @@ function addSpecialDietMemberRow() {
       ${weekChunks.map((chunk, i) => `
         <details class="week-accordion" ${i === 0 ? 'open' : ''}>
           <summary>${formatWeekRange(chunk[0].date, chunk[chunk.length - 1].date)}</summary>
-         
+
              <div class="day-card-list">
             ${chunk.map(day => {
               const dateObj = new Date(day.date + 'T00:00:00');
@@ -1605,7 +1646,7 @@ function addSpecialDietMemberRow() {
       </div>
     `;
 
-  
+
 
     document.querySelectorAll<HTMLElement>('.meal-main-name').forEach(el => {
       el.addEventListener('click', () => {
@@ -1655,7 +1696,12 @@ function addSpecialDietMemberRow() {
 
     const meal = selectedMeal;
     const originalServings = meal.recipeServings ?? 1;
-    const scaleFactor = mealPlanInfo.familySize / originalServings;
+    // The group size this specific dish was actually portioned for — the
+    // shared main dish and an individual's own split-off alt dish can have
+    // very different group sizes, so this always prefers the value carried
+    // alongside selectedMeal over blindly assuming the whole household.
+    const groupSize = selectedMealGroupSize ?? mealPlanInfo.familySize;
+    const scaleFactor = groupSize / originalServings;
     const perPersonNutrition = calculateMealNutrition(meal, 1, ingredients);
 
     appElement.innerHTML = `
@@ -1663,7 +1709,7 @@ function addSpecialDietMemberRow() {
       <button id="back-to-plan" class="recipe-back-btn">← Back to plan</button>
       <h1>${meal.name}</h1>
       ${meal.culturalName ? `<p class="recipe-cultural-name">${meal.culturalName}</p>` : ''}
-      <p class="recipe-scaled-note">Scaled for ${mealPlanInfo.familySize} ${mealPlanInfo.familySize === 1 ? 'person' : 'people'}
+      <p class="recipe-scaled-note">Scaled for ${groupSize} ${groupSize === 1 ? 'person' : 'people'}
          (original recipe serves ${originalServings})</p>
 
       <div class="recipe-card">
@@ -1796,8 +1842,8 @@ function addSpecialDietMemberRow() {
 
   case "groceries": {
     if (!generatedPlan || !generatedShoppingList || !mealPlanInfo) {
-    
-     
+
+
       appElement.innerHTML = `
       <h1>No shopping list yet</h1>
       <p>Please set up your profile first.</p>
@@ -1811,7 +1857,7 @@ function addSpecialDietMemberRow() {
       break;
     }
 
-    
+
 
     const maxBudget = getMaxBudget();
     const withinBudget = generatedTotalSpend <= maxBudget;
@@ -1845,7 +1891,7 @@ function addSpecialDietMemberRow() {
 
 
     appElement.innerHTML = `
-      
+
       <h1>Shopping List</h1>
       <p>For your ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date} shopping trip</p>
 
@@ -1866,7 +1912,7 @@ function addSpecialDietMemberRow() {
         <div class="groceries-list">
         ${itemsByAisle[aisle].map(item => {
           const isChecked = checkedGroceryItems.has(item.ingredientId);
-          return `<div class="grocery-item-row" style="${isChecked ? 'text-decoration: line-through; color: #999;' : ''}">
+          return `<div class="grocery-item-row" style="${isChecked ? 'text-decoration: line-through; color: var(--app-text-faint);' : ''}">
           <input type="checkbox" class="grocery-check" data-id="${item.ingredientId}" ${isChecked ? 'checked' : ''} />
           ${item.name}: : ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}
         </div>`;
@@ -1896,41 +1942,41 @@ function addSpecialDietMemberRow() {
       const row = checkbox.closest('.grocery-item-row') as HTMLElement | null;
       if (row) {
         row.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-        row.style.color = checkbox.checked ? '#999' : '';
+        row.style.color = checkbox.checked ? 'var(--app-text-faint)' : '';
       }
       });
     });
     break;
   }
 }
-renderBottomNav(); 
+renderBottomNav();
 }
 
 // TODO: build this yourself — check how many days away the next shopping
 // trip is, and if it's coming up soon, show a real OS-level notification
 // (the Notification API, not just an in-page message) prompting a review.
 function checkShoppingReminder() {
-  if(!mealPlanInfo) { 
-    return; //stops running function when theres no meal plan info to work with --> prevents error for shopingdate being nonexistent on app startup for first time user 
+  if(!mealPlanInfo) {
+    return; //stops running function when theres no meal plan info to work with --> prevents error for shopingdate being nonexistent on app startup for first time user
   }
   const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
   const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
   nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
-  
+
   const today = new Date(getLocalDateString() + 'T00:00:00');
   const msPerDay = 1000 * 60 * 60 * 24;
-  const daysUntil = Math.round((nextShoppingDate.getTime() - today.getTime()) / msPerDay); 
+  const daysUntil = Math.round((nextShoppingDate.getTime() - today.getTime()) / msPerDay);
   if (daysUntil != 1) {
-    return; 
+    return;
   }
 
-    if (Notification.permission === 'granted'){
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted'){
       const notification =  new Notification('Upcoming Grocery Shopping Trip', {
         body: "Tommorow is a grocery shopping day! Don't forget to generate a new meal plan :)",
         requireInteraction: true,
       })
       notification.onclick = () => {
-        currentPage = "profile"; 
+        currentPage = "profile";
         localStorage.setItem("currentPage", currentPage);
         render();
         window.focus();
@@ -1938,12 +1984,18 @@ function checkShoppingReminder() {
   }
 }
 
+
 render();
 
- Notification.requestPermission().then(permission => {
-    console.log('Permission result:', permission); 
-    checkShoppingReminder(); //only applicable when user has enabled notifications so put inside function 
+// The web Notification API doesn't exist inside Capacitor's iOS WebView (or reliably on Android),
+// so calling it unguarded crashes app startup there. Only run this on platforms that actually support it —
+// real cross-platform reminders on-device will need the @capacitor/local-notifications plugin instead.
+if (typeof Notification !== 'undefined') {
+  Notification.requestPermission().then(permission => {
+    console.log('Permission result:', permission);
+    checkShoppingReminder(); //only applicable when user has enabled notifications so put inside function
   })
+}
 
 // insert CRUD logic here
 
