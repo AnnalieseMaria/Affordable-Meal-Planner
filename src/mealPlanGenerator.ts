@@ -542,6 +542,7 @@ export type SpecialDietMember = {
 }
 
 type SpecialDietGroup = {
+  groupKey: string
   dietType: string
   names: string[]
   healthConditions: string[]
@@ -554,15 +555,18 @@ type SpecialDietGroup = {
 // their shared alt dish stays aware of whichever conditions apply to anyone
 // eating it.
 function groupSpecialDietMembers(members: SpecialDietMember[]): SpecialDietGroup[] {
-  const groups = new Map<string, { names: string[]; healthConditions: Set<string> }>()
+  const groups = new Map<string, { dietType: string; names: string[]; healthConditions: Set<string> }>()
   for (const member of members) {
-    const existing = groups.get(member.dietType) ?? { names: [], healthConditions: new Set<string>() }
+    const conditionSignature = [...(member.healthConditions ?? [])].sort().join(',')
+    const groupKey = `${member.dietType}::${conditionSignature}`
+    const existing = groups.get(groupKey) ?? { dietType: member.dietType, names: [], healthConditions: new Set<string>() }
     existing.names.push(member.name)
     for (const condition of member.healthConditions ?? []) existing.healthConditions.add(condition)
-    groups.set(member.dietType, existing)
+    groups.set(groupKey, existing)
   }
-  return [...groups.entries()].map(([dietType, g]) => ({
-    dietType,
+  return [...groups.entries()].map(([groupKey, g]) => ({
+    groupKey,
+    dietType: g.dietType,
     names: g.names,
     healthConditions: [...g.healthConditions],
   }))
@@ -880,7 +884,7 @@ function fillMealSlot(
       const stayingGroups: SpecialDietGroup[] = []
       for (const group of specialDietGroups) {
         const groupTargets = getCombinedMacroTargets(group.healthConditions)
-        const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
+        const groupTracker = altGroupTrackers?.get(group.groupKey) ?? null
         if (groupTargets && groupTracker && isPoorHealthFit(sharedMealNutrition, groupTracker, groupTargets, mealsRemainingToday)) {
           carveOutGroups.push(group)
         } else {
@@ -900,7 +904,7 @@ function fillMealSlot(
 
       for (const group of carveOutGroups) {
         const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType) && m.recipeId !== chosenSharedMeal.recipeId)
-        const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
+        const groupTracker = altGroupTrackers?.get(group.groupKey) ?? null
         const { meal: altMeal, cost: altCost } = pickAffordableVariedMeal(
           altPool, group.names.length, pantry, ingredients, usedIds,
           runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
@@ -930,7 +934,7 @@ function fillMealSlot(
       // later meals today see their true running total either way.
       for (const group of [...stayingGroups, ...revertedToShared]) {
         if (group.healthConditions.length === 0) continue
-        const groupTracker = altGroupTrackers?.get(group.dietType)
+        const groupTracker = altGroupTrackers?.get(group.groupKey)
         if (!groupTracker) continue
         groupTracker.calories += sharedMealNutrition.calories
         groupTracker.carbs += sharedMealNutrition.carbs
@@ -966,7 +970,7 @@ function fillMealSlot(
 
   for (const group of specialDietGroups) {
     const altPool = allDietPool.filter(m => matchesDiet(m, group.dietType))
-    const groupTracker = altGroupTrackers?.get(group.dietType) ?? null
+    const groupTracker = altGroupTrackers?.get(group.groupKey) ?? null
     const { meal: altMeal, cost: altCost } = pickAffordableVariedMeal(
       altPool, group.names.length, pantry, ingredients, usedIds,
       runningBudget, reserveForRest, excludeToday, fairShareCeiling, dayIndex,
@@ -1120,7 +1124,7 @@ export function generateMealPlan(
     // balanced separately from the shared main dish's tally.
     const dailyTracker: DailyNutritionTracker = { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }
     const altGroupTrackers = new Map<string, DailyNutritionTracker>(
-      specialDietGroups.map(g => [g.dietType, { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }])
+      specialDietGroups.map(g => [g.groupKey, { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0 }])
     )
 
     const freshBreakfastPool = breakfastPool.filter(m => isMealStillFreshOnDay(m, dayInCycle))
@@ -1137,7 +1141,10 @@ export function generateMealPlan(
       cheapestPossibleSlotCost(freshBreakfastPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients) +
       cheapestPossibleSlotCost(freshLunchPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients) +
       cheapestPossibleSlotCost(freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients)
-    const reserveForFutureDays = dailyMinCost * daysLeftInCycleAfterToday
+    const remainingBudgetToday = budgetPerTrip - cycleSpend
+    const reserveForFutureDaysUncapped = dailyMinCost * daysLeftInCycleAfterToday
+    const reserveForFutureDays = Math.max(0, Math.min(reserveForFutureDaysUncapped, remainingBudgetToday - dailyMinCost))
+    console.log(`[reserve check] day ${index}: uncapped=${reserveForFutureDaysUncapped.toFixed(2)}, capped=${reserveForFutureDays.toFixed(2)}, remainingBudgetToday=${remainingBudgetToday.toFixed(2)}`)
 
     const mealsRemainingInCycle = daysRemainingInCycle * 3
 
