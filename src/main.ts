@@ -3,7 +3,8 @@ import './style.css'
 import mealsData from './meals.json' // loads meals.json into JavaScript
 import ingredientsData from './ingredients.json'
 import type { Meal, Ingredient, MealIngredient} from './meals.ts'
-import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, getCombinedMacroTargets, nutritionFitScore, nutritionFitReasons, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
+import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, estimateMealCost, getCombinedMacroTargets, nutritionFitScore, nutritionFitReasons, getUsedRecipeIdsByMealType, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
+import OneSignalModule from 'onesignal-cordova-plugin'
 
 const meals: Meal[] = [...(mealsData as unknown as Meal[]), ...getCustomMeals()]
 const ingredients: Record<string, Ingredient> = { ...(ingredientsData as unknown as Record<string, Ingredient>) }
@@ -96,6 +97,23 @@ function sortAislesByStoreOrder(aisleNames: string[]): string[] {
   });
 }
 
+function renderGroceryRow(item: ShoppingListItem): string {
+  const isChecked = checkedGroceryItems.has(item.ingredientId);
+  const isSettling = settlingGroceryItems.has(item.ingredientId);
+  const classes = [
+    'grocery-item-row',
+    isChecked ? 'is-checked' : '',
+    isSettling ? 'is-settling' : ''
+  ].filter(Boolean).join(' ');
+
+  return `<div class="${classes}" data-row-id="${item.ingredientId}">
+    <input type="checkbox" class="grocery-check" data-id="${item.ingredientId}" ${isChecked ? 'checked' : ''} />
+    <span class="grocery-item-name">${item.name}</span>
+    <span class="grocery-item-qty">${item.packagesNeeded}×</span>
+    <span class="grocery-item-price">$${item.totalCost.toFixed(2)}</span>
+  </div>`;
+}
+
 type ShoppingFrequency = "weekly" | "biweekly" | "monthly";
 const shoppingFrequencyDays: Record<ShoppingFrequency, number> = {
   weekly: 7,
@@ -180,6 +198,12 @@ let generatedShoppingList: ShoppingListItem[] | null = null;
 let generatedTotalSpend: number = 0;
 
 let checkedGroceryItems: Set<number> = loadCheckedItems();
+
+// ids currently inside their 850ms "just checked" window — they render
+// checked but stay in their aisle until the timer clears them.
+let settlingGroceryItems: Set<number> = new Set();
+const settleTimers: Record<number, number> = {};
+const SETTLE_MS = 850;
 
 const savedPlanState = loadPlanState();
 if (savedPlanState) {
@@ -376,6 +400,31 @@ function splitOffPerson(date: string, mealType: MealSlotType, member: SpecialDie
   return newAltIndex;
 }
 
+// Clears every occurrence of a specific recipe across the WHOLE current
+// plan — both the shared main dish and every person's alt dish, regardless
+// of which slot the button was clicked from. This is a one-time cleanup of
+// THIS generated plan only: it doesn't touch anything used during
+// generation, doesn't block the recipe from future plans, and doesn't
+// remove it from swap search — someone can always swap it back in
+// manually afterward if they actually want it for a specific day.
+function removeMealEverywhereInPlan(recipeId: number) {
+  if (!generatedPlan) return;
+  generatedPlan = generatedPlan.map(day => {
+    const clearSlot = (slot: MealSlotResult): MealSlotResult => ({
+      ...slot,
+      meal: slot.meal?.recipeId === recipeId ? null : slot.meal,
+      altDishes: slot.altDishes.map(alt =>
+        alt.meal?.recipeId === recipeId ? { ...alt, meal: null } : alt
+      ),
+    });
+    return {
+      ...day,
+      breakfast: clearSlot(day.breakfast),
+      lunch: clearSlot(day.lunch),
+      dinner: clearSlot(day.dinner),
+    };
+  });
+}
 
 function renderNutritionDonut(nutrition: NutritionBreakdown): string {
   const proteinCal = nutrition.protein * 4;
@@ -396,6 +445,24 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
   const proteinOffset = 0;
   const carbsOffset = -proteinLength;
   const fatOffset = -(proteinLength + carbsLength);
+
+  // A small square swatch that reuses the SAME patterned fill as its donut
+  // slice (not a flat color) — so someone with color blindness can still
+  // tell protein/carbs/fat apart by pattern alone, same as the donut does.
+  // This only works because the <pattern> defs below share the page with
+  // this swatch's own little <svg> — IDs are global across the document,
+  // so url(#donut-protein) here resolves to the same pattern the ring uses.
+  const swatch = (patternId: string) =>
+    `<svg width="14" height="14" viewBox="0 0 14 14" style="flex-shrink:0;"><rect width="14" height="14" rx="3" fill="url(#${patternId})" /></svg>`;
+
+  const nutritionRow = (patternId: string, label: string, grams: number, pct: number) => `
+    <div class="nutrition-row">
+      ${swatch(patternId)}
+      <span class="nutrition-label">${label}</span>
+      <span class="nutrition-value">${grams.toFixed(1)}g</span>
+      <span class="nutrition-pct">${pct.toFixed(0)}%</span>
+    </div>
+  `;
 
   return `
     <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
@@ -428,12 +495,12 @@ function renderNutritionDonut(nutrition: NutritionBreakdown): string {
             stroke-dashoffset="${fatOffset}" />
         </g>
         <text x="50" y="47" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--app-text)">${Math.round(nutrition.calories)}</text>
-        <text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--app-text-faint)">kcal</text>
+        <text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--app-recipe-muted-2)">kcal</text>
       </svg>
-      <div>
-        <div style="color:var(--app-donut-protein); font-weight:bold;">Protein (${proteinPct.toFixed(0)}%) — ${nutrition.protein.toFixed(1)}g</div>
-        <div style="color:var(--app-donut-carbs); font-weight:bold;">Carbs (${carbsPct.toFixed(0)}%) — ${nutrition.carbs.toFixed(1)}g</div>
-        <div style="color:var(--app-donut-fat); font-weight:bold;">Fat (${fatPct.toFixed(0)}%) — ${nutrition.fat.toFixed(1)}g</div>
+      <div style="flex:1; min-width:160px;">
+        ${nutritionRow('donut-protein', 'Protein', nutrition.protein, proteinPct)}
+        ${nutritionRow('donut-carbs', 'Carbs', nutrition.carbs, carbsPct)}
+        ${nutritionRow('donut-fat', 'Fat', nutrition.fat, fatPct)}
       </div>
     </div>
   `;
@@ -501,6 +568,10 @@ function generateNextPlan() {
   const confirmed = window.confirm("This will build a new plan for your next shopping cycle, using your saved settings. Continue?");
   if (!confirmed) return;
 
+  // Capture what the OUTGOING plan used, before it gets replaced, so the
+  // new plan can actively avoid repeating it where alternatives exist.
+  const previousPlanUsedIds = generatedPlan ? getUsedRecipeIdsByMealType(generatedPlan) : null;
+
   const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
   const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
   nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
@@ -508,6 +579,7 @@ function generateNextPlan() {
 
   mealPlanInfo = { ...mealPlanInfo, shoppingDate: nextShoppingDateStr };
   saveMealPlanInfo(mealPlanInfo);
+  scheduleShoppingReminder(mealPlanInfo.shoppingDate, intervalDays);
 
 const { plan, pantry, totalSpend } = generateMealPlan(
     meals,
@@ -519,7 +591,8 @@ const { plan, pantry, totalSpend } = generateMealPlan(
     ingredients,
     mealPlanInfo.budget,
     mealPlanInfo.specialDietMembers,
-    mealPlanInfo.healthConditions ?? []
+    mealPlanInfo.healthConditions ?? [],
+    previousPlanUsedIds
   );
 
   generatedPlan = plan;
@@ -645,7 +718,8 @@ function renderPopup() {
       <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
         ${meal ? `<button id="popup-view">View Recipe</button>` : ''}
         <button id="popup-swap">Swap Meal</button>
-        ${meal ? `<button id="popup-remove">Remove</button>` : ''}
+        ${meal ? `<button id="popup-remove">Clear This Meal</button>` : ''}
+        ${meal ? `<button id="popup-remove-all">Remove All Instances From This Plan</button>` : ''}
         <button id="popup-close">Cancel</button>
       </div>
     `;
@@ -810,6 +884,16 @@ function renderPopup() {
       closePopup();
       render();
     });
+    document.getElementById('popup-remove-all')?.addEventListener('click', () => {
+      const meal = getTargetMeal(activeSlot!.date, activeSlot!.mealType, activeDishTarget);
+      if (!meal) return;
+      const confirmed = window.confirm(`Remove "${meal.name}" from every day in this plan? You can still add it back later with Swap.`);
+      if (!confirmed) return;
+      removeMealEverywhereInPlan(meal.recipeId);
+      recalculateShoppingList();
+      closePopup();
+      render();
+    });
   } else {
     document.querySelectorAll('.swap-option').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -850,7 +934,7 @@ function renderBottomNav() {
   document.getElementById('bottom-nav')?.remove(); //
   const nav = document.createElement('div'); //creates empty div that doesn't exist on the page yet
   nav.id = 'bottom-nav'; //assigns id to the nav element
-  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:var(--app-nav-bg); border-top:1px solid var(--app-border); box-shadow:0 -2px 6px rgba(0,0,0,0.25); padding:10px 0 calc(10px + env(safe-area-inset-bottom)); z-index:500;';
+  nav.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:var(--app-nav-bg); border-top:1px solid var(--app-border); box-shadow:0 -2px 6px rgba(0,0,0,0.25); padding:10px 0 calc(4px + env(safe-area-inset-bottom)); z-index:500;';
 
   const pageIcons: Record<string, string> = {
   'home': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
@@ -906,6 +990,47 @@ function renderBottomNav() {
 
 const SERVING_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","can","spear","slice","tomato","tortilla","olive","slices","egg","mini avocado","g","stick","stalk","pepper","medium onion"] as const;
 const RECIPE_AMOUNT_UNITS = ["1/4 tsp","1/2 tsp","3/4 tsp","tsp","tbsp","1/4 cup","1/2 cup","3/4 cup","cup","fl oz","oz","tortilla","can","stalk","unit","bag","egg"] as const;
+
+// Common cooking/baking fractions, checked closest-first. A small tolerance
+// (0.03) lets slightly-off decimals from scaling (e.g. 0.49999 from a
+// family-size scale factor) still snap to "1/2" instead of showing a
+// decimal — but anything that doesn't land near one of these just falls
+// back to a plain decimal instead of being forced into a wrong fraction.
+const COMMON_FRACTIONS: { value: number; display: string }[] = [
+  { value: 1 / 8, display: '⅛' },
+  { value: 1 / 4, display: '¼' },
+  { value: 1 / 3, display: '⅓' },
+  { value: 3 / 8, display: '⅜' },
+  { value: 1 / 2, display: '½' },
+  { value: 5 / 8, display: '⅝' },
+  { value: 2 / 3, display: '⅔' },
+  { value: 3 / 4, display: '¾' },
+  { value: 7 / 8, display: '⅞' },
+];
+const FRACTION_TOLERANCE = 0.03;
+
+function formatIngredientAmount(amount: number): string {
+  const whole = Math.floor(amount);
+  const remainder = amount - whole;
+
+  // Close enough to a clean whole number — no ".00" clutter (also catches
+  // floating-point drift from scaling, like 1.9999 → "2").
+  if (remainder < FRACTION_TOLERANCE || remainder > 1 - FRACTION_TOLERANCE) {
+    const rounded = remainder > 1 - FRACTION_TOLERANCE ? whole + 1 : whole;
+    return rounded.toString();
+  }
+
+  // Close enough to a common cooking fraction.
+  const closestFraction = COMMON_FRACTIONS.find(f => Math.abs(remainder - f.value) < FRACTION_TOLERANCE);
+  if (closestFraction) {
+    return whole > 0 ? `${whole}${closestFraction.display}` : closestFraction.display;
+  }
+
+  // Doesn't land near a clean fraction — fall back to a decimal, trimmed
+  // of trailing zeros (so "2.50" still shows as "2.5", not a fake fraction).
+  return amount.toFixed(2).replace(/\.?0+$/, '');
+}
+
 const MEAL_TYPE_OPTIONS = ["Breakfast", "Lunch", "Dinner"];
 
 type DraftIngredientEntry = {
@@ -1440,6 +1565,8 @@ function addSpecialDietMemberRow() {
       };
       profileViewMode = 'summary';
       saveMealPlanInfo(mealPlanInfo);
+      scheduleShoppingReminder(mealPlanInfo.shoppingDate, shoppingFrequencyDays[mealPlanInfo.shoppingFrequency]);
+
 
       const { plan, pantry, totalSpend } = generateMealPlan(
         meals,
@@ -1704,27 +1831,53 @@ function addSpecialDietMemberRow() {
     const scaleFactor = groupSize / originalServings;
     const perPersonNutrition = calculateMealNutrition(meal, 1, ingredients);
 
+    // Per-serving cost for THIS dish at its actual portioned size — reuses
+    // the same marginal-cost math the generator/shopping list already rely
+    // on (estimateMealCost), just scaled down to a single-serving price
+    // instead of a whole-dish or whole-trip total.
+    const dishCost = estimateMealCost(meal, groupSize, ingredients);
+    const perServingCost = groupSize > 0 ? dishCost / groupSize : 0;
+    const prepTimeDisplay = meal.prepTimeMinutes ? `${meal.prepTimeMinutes} min` : '—';
+
     appElement.innerHTML = `
       <div class="recipe-page">
       <button id="back-to-plan" class="recipe-back-btn">← Back to plan</button>
       <h1>${meal.name}</h1>
       ${meal.culturalName ? `<p class="recipe-cultural-name">${meal.culturalName}</p>` : ''}
-      <p class="recipe-scaled-note">Scaled for ${groupSize} ${groupSize === 1 ? 'person' : 'people'}
-         (original recipe serves ${originalServings})</p>
 
-      <div class="recipe-card">
+      <div class="recipe-stats-row">
+        <div class="recipe-stat">
+          <p class="recipe-stat-label">Serves</p>
+          <p class="recipe-stat-value">${groupSize}</p>
+        </div>
+        <div class="recipe-stat">
+          <p class="recipe-stat-label">Prep Time</p>
+          <p class="recipe-stat-value">${prepTimeDisplay}</p>
+        </div>
+        <div class="recipe-stat">
+          <p class="recipe-stat-label">Per Serving</p>
+          <p class="recipe-stat-value">$${perServingCost.toFixed(2)}</p>
+        </div>
+      </div>
+
+      <div class="recipe-section">
         <h2>Nutrition (per person)</h2>
         ${renderNutritionDonut(perPersonNutrition)}
       </div>
 
-      <div class="recipe-card">
+      <div class="recipe-section">
         <h2>Ingredients</h2>
-        <ul>
+        <div class="recipe-ingredient-list">
           ${meal.ingredients.map(ing => {
             const scaledSize = ing.amountInfo.size * scaleFactor;
-            return `<li>${scaledSize.toFixed(2)} ${ing.amountInfo.unit} ${ing.name}</li>`;
+            return `
+              <div class="recipe-ingredient-row">
+                <span class="recipe-ingredient-qty">${formatIngredientAmount(scaledSize)} ${ing.amountInfo.unit}</span>
+                <span class="recipe-ingredient-name">${ing.name}</span>
+              </div>
+            `;
           }).join('')}
-        </ul>
+        </div>
       </div>
 
       <h2>Steps</h2>
@@ -1857,16 +2010,6 @@ function addSpecialDietMemberRow() {
       break;
     }
 
-
-
-    const maxBudget = getMaxBudget();
-    const withinBudget = generatedTotalSpend <= maxBudget;
-
-    const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
-    const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
-    nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays);
-    const nextShoppingDateStr = nextShoppingDate.toISOString().split('T')[0];
-
     const itemsByAisle: Record<string, ShoppingListItem[]> = {};
 
     for (const item of generatedShoppingList) {
@@ -1888,62 +2031,115 @@ function addSpecialDietMemberRow() {
       }
     }
 
-
+  const itemsInCart = generatedShoppingList.filter(
+      item => checkedGroceryItems.has(item.ingredientId)
+              && !settlingGroceryItems.has(item.ingredientId)
+    );
+    const cartTotal = itemsInCart.reduce((sum, i) => sum + i.totalCost, 0);
+    const itemsLeft = generatedShoppingList.length - itemsInCart.length;
+    const budgetPct = generatedTotalSpend > 0
+      ? Math.min(100, (cartTotal / generatedTotalSpend) * 100)
+      : 0;
 
     appElement.innerHTML = `
+      <div class="shopping-page">
 
-      <h1>Shopping List</h1>
-      <p>For your ${generatedPlan[0].date} to ${generatedPlan[generatedPlan.length - 1].date} shopping trip</p>
+        <div class="shopping-head">
+          <div class="shopping-head-top">
+            <div>
+              <h1>Shopping list</h1>
+              <div class="shopping-head-meta">
+                Aldi · ${mealPlanInfo.shoppingDate} · ${itemsLeft} item${itemsLeft === 1 ? '' : 's'} left
+              </div>
+            </div>
+            <div class="shopping-head-total">
+              <strong>$${cartTotal.toFixed(2)}</strong>
+              <span>in cart</span>
+            </div>
+          </div>
+          <div class="shopping-bar">
+            <div class="shopping-bar-fill" style="width: ${budgetPct}%"></div>
+            </div>
+        </div>
 
-      <h2>Budget Status</h2>
-      <p>$${generatedTotalSpend.toFixed(2)} of $${maxBudget.toFixed(2)} spent this trip
-         — ${withinBudget ? '✅ Within budget' : '⚠️ Over budget'}</p>
-
-      <h2>Next Shopping Trip</h2>
-      <p>${nextShoppingDateStr}</p>
-
-      ${mealPlanInfo.usesSnap ? `
-      <h3>SNAP Breakdown</h3>
-      <p>$${snapEligibleTotal.toFixed(2)} SNAP-eligible · $${notEligibleTotal.toFixed(2)} not eligible (needs another payment method)</p>
-      ` : ''}
-
-     ${sortAislesByStoreOrder(Object.keys(itemsByAisle)).map(aisle => `
-      <h3>${aisle}</h3>
-        <div class="groceries-list">
-        ${itemsByAisle[aisle].map(item => {
-          const isChecked = checkedGroceryItems.has(item.ingredientId);
-          return `<div class="grocery-item-row" style="${isChecked ? 'text-decoration: line-through; color: var(--app-text-faint);' : ''}">
-          <input type="checkbox" class="grocery-check" data-id="${item.ingredientId}" ${isChecked ? 'checked' : ''} />
-          ${item.name}: : ${item.packagesNeeded}x @ $${item.costPerPackage.toFixed(2)} = $${item.totalCost.toFixed(2)}
-        </div>`;
+        ${sortAislesByStoreOrder(Object.keys(itemsByAisle)).map(aisle => {
+          // an item leaves its aisle only once its settle timer has fired
+          const stillHere = itemsByAisle[aisle].filter(
+            item => !checkedGroceryItems.has(item.ingredientId)
+                    || settlingGroceryItems.has(item.ingredientId)
+          );
+          if (stillHere.length === 0) return '';
+          const aisleSubtotal = itemsByAisle[aisle].reduce((sum, i) => sum + i.totalCost, 0);
+          return `
+          <div class="aisle-header">
+            <span>${aisle}</span>
+            <span class="aisle-meta">${itemsByAisle[aisle].length} · $${aisleSubtotal.toFixed(2)}</span>
+          </div>
+          <div class="groceries-list">
+            ${stillHere.map(item => renderGroceryRow(item)).join('')}
+          </div>`;
         }).join('')}
+
+        ${itemsInCart.length > 0 ? `
+        <div class="cart-group">
+          <div class="aisle-header">
+            <span>In the cart</span>
+            <span class="aisle-meta">${itemsInCart.length} items · $${cartTotal.toFixed(2)}</span>
+          </div>
+          <div class="groceries-list">
+            ${itemsInCart.map(item => renderGroceryRow(item)).join('')}
+          </div>
+        </div>` : ''}
+
+        <div class="shopping-total">
+          <span>Trip total</span>
+          <strong>$${getTotalCost(generatedShoppingList).toFixed(2)}</strong>
+        </div>
+
+        ${mealPlanInfo.usesSnap ? `
+        <p class="snap-note">
+          $${snapEligibleTotal.toFixed(2)} SNAP-eligible · $${notEligibleTotal.toFixed(2)} needs another payment method
+        </p>` : ''}
+
       </div>
-      `).join('')}
-
-      <p><strong>Total: $${getTotalCost(generatedShoppingList).toFixed(2)}</strong></p>
     `;
-
-    document.getElementById('back-to-plan')?.addEventListener('click', () => {
-      currentPage = "meal-plan";
-      localStorage.setItem("currentPage", currentPage);
-      render();
-    });
+   
 
   document.querySelectorAll<HTMLInputElement>('.grocery-check').forEach(checkbox => {
     checkbox.addEventListener('change', () => {
       const id = Number(checkbox.dataset.id);
+      const row = checkbox.closest('.grocery-item-row') as HTMLElement | null;
+
+      // cancel any timer already running for this id (double-tap)
+      if (settleTimers[id]) {
+        clearTimeout(settleTimers[id]);
+        delete settleTimers[id];
+      }
+
       if (checkbox.checked) {
         checkedGroceryItems.add(id);
+        settlingGroceryItems.add(id);
+        // paint the checked state immediately, in place — no re-render yet
+        row?.classList.add('is-checked', 'is-settling');
+
+        settleTimers[id] = window.setTimeout(() => {
+          delete settleTimers[id];
+          settlingGroceryItems.delete(id);
+          render(); // now it moves down into "In the cart"
+        }, SETTLE_MS);
       } else {
         checkedGroceryItems.delete(id);
+        settlingGroceryItems.delete(id);
+        render(); // unchecking returns it to its aisle right away
       }
-        saveCheckedItems(checkedGroceryItems);
 
-      const row = checkbox.closest('.grocery-item-row') as HTMLElement | null;
-      if (row) {
-        row.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-        row.style.color = checkbox.checked ? 'var(--app-text-faint)' : '';
-      }
+      saveCheckedItems(checkedGroceryItems);
+    });
+  });
+      document.querySelectorAll<HTMLElement>('.grocery-item-row').forEach(row => {
+      row.addEventListener('click', e => {
+        if ((e.target as HTMLElement).classList.contains('grocery-check')) return;
+        row.querySelector<HTMLInputElement>('.grocery-check')?.click();
       });
     });
     break;
@@ -1984,6 +2180,78 @@ function checkShoppingReminder() {
   }
 }
 
+const OneSignal: any = (OneSignalModule as any).default
+const ONESIGNAL_APP_ID = '5ee077fb-a3e5-4002-bfc1-7dfa9323eb34'
+
+function getOrCreateDeviceId(): string {
+  let id = localStorage.getItem('deviceExternalId')
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem('deviceExternalId', id)
+  }
+  return id
+}
+
+const NOTIFICATION_PROXY_URL = 'https://meal-planner-notifications.vercel.app/api/schedule-reminder'
+
+function getStoredReminderNotificationId(): string | null {
+  return localStorage.getItem('reminderNotificationId')
+}
+
+async function scheduleShoppingReminder(shoppingDateStr: string, intervalDays: number) {
+  const nextShoppingDate = new Date(shoppingDateStr + 'T08:00:00')
+  nextShoppingDate.setDate(nextShoppingDate.getDate() + intervalDays)
+  if (nextShoppingDate.getTime() <= Date.now()) return
+
+  const previousNotificationId = getStoredReminderNotificationId()
+
+  try {
+    const response = await fetch(NOTIFICATION_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        externalId: getOrCreateDeviceId(),
+        sendAfterISO: nextShoppingDate.toISOString(),
+        previousNotificationId: previousNotificationId ?? undefined,
+      }),
+    })
+    const data = await response.json()
+    if (data.notificationId) {
+      localStorage.setItem('reminderNotificationId', data.notificationId)
+    } else {
+      console.error('Reminder scheduling failed:', data)
+    }
+  } catch (err: any) {
+    console.error('Failed to reach notification proxy:', err?.message ?? String(err))
+  }
+}
+
+async function initOneSignal() {
+  try {
+    console.log('OneSignal object:', OneSignal)
+    OneSignal.initialize(ONESIGNAL_APP_ID)
+    console.log('OneSignal initialized OK')
+    const deviceId = getOrCreateDeviceId()
+    console.log('Device external ID:', deviceId)
+    OneSignal.login(deviceId)
+    console.log('OneSignal login called OK')
+    const result = await OneSignal.Notifications.requestPermission(true)
+    console.log('Permission request result:', result)
+  } catch (err) {
+    console.error('OneSignal init failed:', err)
+  }
+}
+
+initOneSignal()
+
+OneSignal.Notifications.addEventListener('click', (event: any) => {
+  const targetPage = event?.notification?.additionalData?.targetPage
+  if (targetPage === 'profile') {
+    currentPage = 'profile'
+    localStorage.setItem('currentPage', currentPage)
+    render()
+  }
+})
 
 render();
 

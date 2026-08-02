@@ -1022,6 +1022,38 @@ export function buildPantryFromPlan(
   return pantry
 }
 
+// Every recipe actually being served in a slot — the shared main dish AND
+// every alt dish — needs to be excluded from the rest of today's slots.
+// Previously only the main dish's recipeId was tracked here, which is why
+// someone split into their own alt dish could get served the same alt
+// dish twice in one day (e.g. lunch and dinner).
+function addSlotRecipesToExcludeToday(slot: MealSlotResult, excludeToday: Set<number>): void {
+  if (slot.meal) excludeToday.add(slot.meal.recipeId)
+  for (const alt of slot.altDishes) {
+    if (alt.meal) excludeToday.add(alt.meal.recipeId)
+  }
+}
+
+// Every distinct recipe — main dish AND every alt dish — used anywhere in
+// an already-generated plan, split out by meal type. Used to seed the NEXT
+// plan's "already used" tracking so regenerating with the same settings
+// actively prefers genuinely different recipes over repeating the exact
+// same week, instead of starting from a blank slate with no memory of what
+// was just served.
+export function getUsedRecipeIdsByMealType(plan: DayPlan[]): { breakfast: Set<number>; lunch: Set<number>; dinner: Set<number> } {
+  const result = { breakfast: new Set<number>(), lunch: new Set<number>(), dinner: new Set<number>() }
+  for (const day of plan) {
+    for (const mealType of ['breakfast', 'lunch', 'dinner'] as const) {
+      const slot = day[mealType]
+      if (slot.meal) result[mealType].add(slot.meal.recipeId)
+      for (const alt of slot.altDishes) {
+        if (alt.meal) result[mealType].add(alt.meal.recipeId)
+      }
+    }
+  }
+  return result
+}
+
 export function generateMealPlan(
   allMeals: Meal[],
   cuisines: string[],
@@ -1032,7 +1064,8 @@ export function generateMealPlan(
   ingredients: Record<string, Ingredient>,
   budgetPerTrip: number,
   specialDietMembers: SpecialDietMember[] = [],
-  healthConditions: string[] = []
+  healthConditions: string[] = [],
+  previousPlanUsedIds: { breakfast: Set<number>; lunch: Set<number>; dinner: Set<number> } | null = null  
 ): { plan: DayPlan[]; pantry: Pantry; totalSpend: number } {
   const usableMeals = getUsableMeals(allMeals, ingredients)
 
@@ -1055,7 +1088,14 @@ export function generateMealPlan(
   const dinnerPool = filterMealsBySlotAndCuisine(usableMeals, cuisines, 'Dinner')
 
   const pantry: Pantry = new Map()
-  const usedIds = { breakfast: new Set<number>(), lunch: new Set<number>(), dinner: new Set<number>() }
+  // Seeding with the previous plan's picks (if any) means "unused" candidates
+  // this cycle actively exclude last week's choices first — a repeat only
+  // happens if literally nothing else in the pool qualifies.
+  const usedIds = {
+  breakfast: new Set<number>(previousPlanUsedIds?.breakfast ?? []),
+  lunch: new Set<number>(previousPlanUsedIds?.lunch ?? []),
+  dinner: new Set<number>(previousPlanUsedIds?.dinner ?? []),
+}
 
   const plan: DayPlan[] = []
   let totalSpend = 0
@@ -1112,7 +1152,7 @@ export function generateMealPlan(
     )
     cycleSpend += bCost
     totalSpend += bCost
-    if (breakfast.meal) excludeToday.add(breakfast.meal.recipeId)
+    addSlotRecipesToExcludeToday(breakfast, excludeToday)
 
     const lunchReserve = reserveForFutureDays +
       cheapestPossibleSlotCost(freshDinnerPool, dietType, specialDietGroups, mainGroupSize, pantry, ingredients)
@@ -1124,7 +1164,7 @@ export function generateMealPlan(
     )
     cycleSpend += lCost
     totalSpend += lCost
-    if (lunch.meal) excludeToday.add(lunch.meal.recipeId)
+    addSlotRecipesToExcludeToday(lunch, excludeToday)
 
     const dinnerFairShare = (budgetPerTrip - cycleSpend) / (mealsRemainingInCycle - 2) * GENEROSITY
     const { result: dinner, cost: dCost } = fillMealSlot(

@@ -41183,9 +41183,9 @@
     "sodium": 50,
     "nutritionFlagged": false,
     "servingsPerContainer": 4,
-    "servingSize": 3,
-    "servingUnit": "oz",
-    "servingDisplay": "3/4 cup"
+    "servingSize": 0.75,
+    "servingUnit": "cup",
+    "servingDisplay": "3/4 cup or 3 oz"
   },
   "1539": {
     "ingredientId": 1539,
