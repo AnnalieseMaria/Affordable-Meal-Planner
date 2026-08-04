@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.annaliese.mealplanner',
-  appName: 'Affordable Meal Planner',
+  appId: 'com.annaliese.plentyplate',
+  appName: 'PlentyPlate',
   webDir: 'dist'
 };
 

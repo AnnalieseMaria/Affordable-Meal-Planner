@@ -3,7 +3,7 @@ import './style.css'
 import mealsData from './meals.json' // loads meals.json into JavaScript
 import ingredientsData from './ingredients.json'
 import type { Meal, Ingredient, MealIngredient} from './meals.ts'
-import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, matchesDiet, NO_DIET, calculateMealNutrition, estimateMealCost, getCombinedMacroTargets, nutritionFitScore, nutritionFitReasons, getUsedRecipeIdsByMealType, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
+import { generateMealPlan, generateShoppingList, getTotalCost, buildPantryFromPlan, extractShelfStableCarryover, matchesDiet, NO_DIET, calculateMealNutrition, estimateMealCost, getCombinedMacroTargets, nutritionFitScore, nutritionFitReasons, getUsedRecipeIdsByMealType, type DayPlan, type ShoppingListItem, type SpecialDietMember, type MealSlotResult, type NutritionBreakdown} from './mealPlanGenerator.ts'
 import OneSignalModule from 'onesignal-cordova-plugin'
 
 const meals: Meal[] = [...(mealsData as unknown as Meal[]), ...getCustomMeals()]
@@ -184,6 +184,20 @@ function loadPlanState(): { plan: DayPlan[]; shoppingList: ShoppingListItem[]; t
     return JSON.parse(raw);
   } catch {
     return null;
+  }
+}
+
+function saveCarryoverInventory(carryover: Record<number, number>) {
+  localStorage.setItem('pantryCarryover', JSON.stringify(carryover));
+}
+
+function loadCarryoverInventory(): Record<number, number> {
+  const raw = localStorage.getItem('pantryCarryover');
+  if (raw == null) return {};
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return {};
   }
 }
 
@@ -551,7 +565,7 @@ function getMaxBudget(): number {
 
 function recalculateShoppingList() {
   if (!generatedPlan || !mealPlanInfo) return;
-  const pantry = buildPantryFromPlan(generatedPlan, ingredients);
+  const pantry = buildPantryFromPlan(generatedPlan, ingredients, loadCarryoverInventory());
   generatedShoppingList = generateShoppingList(pantry, ingredients);
   generatedTotalSpend = getTotalCost(generatedShoppingList);
   savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
@@ -571,6 +585,14 @@ function generateNextPlan() {
   // Capture what the OUTGOING plan used, before it gets replaced, so the
   // new plan can actively avoid repeating it where alternatives exist.
   const previousPlanUsedIds = generatedPlan ? getUsedRecipeIdsByMealType(generatedPlan) : null;
+  let newCarryover: Record<number, number> = {};
+  if (generatedPlan) {
+    const outgoingPantry = buildPantryFromPlan(generatedPlan, ingredients, loadCarryoverInventory());
+    newCarryover = extractShelfStableCarryover(outgoingPantry, ingredients);
+  }
+  console.log('[carryover check] carrying into new cycle:', Object.fromEntries(
+    Object.entries(newCarryover).map(([id, amt]) => [ingredients[id]?.name ?? id, amt])
+  ));
 
   const intervalDays = shoppingFrequencyDays[mealPlanInfo.shoppingFrequency];
   const nextShoppingDate = new Date(mealPlanInfo.shoppingDate + 'T00:00:00');
@@ -581,7 +603,7 @@ function generateNextPlan() {
   saveMealPlanInfo(mealPlanInfo);
   scheduleShoppingReminder(mealPlanInfo.shoppingDate, intervalDays);
 
-const { plan, pantry, totalSpend } = generateMealPlan(
+const { plan } = generateMealPlan(
     meals,
     mealPlanInfo.cuisines,
     mealPlanInfo.dietType,
@@ -596,9 +618,19 @@ const { plan, pantry, totalSpend } = generateMealPlan(
   );
 
   generatedPlan = plan;
-  generatedShoppingList = generateShoppingList(pantry, ingredients);
-  generatedTotalSpend = totalSpend;
+  const shoppingPantry = buildPantryFromPlan(plan, ingredients, newCarryover);
+  console.log('[carryover check] final pantry after this cycle\'s consumption:', [...shoppingPantry.values()].map(e => ({
+    name: ingredients[e.ingredientId]?.name ?? e.ingredientId,
+    remainingAmount: e.remainingAmount,
+    packagesPurchased: e.packagesPurchased,
+  })));
+  generatedShoppingList = generateShoppingList(shoppingPantry, ingredients);
+  generatedTotalSpend = getTotalCost(generatedShoppingList);
+  saveCarryoverInventory(newCarryover);
   savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
+
+  checkedGroceryItems = new Set();
+  saveCheckedItems(checkedGroceryItems);
 
   currentPage = "meal-plan";
   localStorage.setItem("currentPage", currentPage);
@@ -1567,8 +1599,8 @@ function addSpecialDietMemberRow() {
       saveMealPlanInfo(mealPlanInfo);
       scheduleShoppingReminder(mealPlanInfo.shoppingDate, shoppingFrequencyDays[mealPlanInfo.shoppingFrequency]);
 
-
-      const { plan, pantry, totalSpend } = generateMealPlan(
+//Initial profile submit handle (very first plan generation, no previous cycle yet)
+        const { plan } = generateMealPlan(
         meals,
         mealPlanInfo.cuisines,
         mealPlanInfo.dietType,
@@ -1582,9 +1614,13 @@ function addSpecialDietMemberRow() {
       );
 
       generatedPlan = plan;
-      generatedShoppingList = generateShoppingList(pantry, ingredients);
-      generatedTotalSpend = totalSpend;
+      const shoppingPantry = buildPantryFromPlan(plan, ingredients, loadCarryoverInventory());
+      generatedShoppingList = generateShoppingList(shoppingPantry, ingredients);
+      generatedTotalSpend = getTotalCost(generatedShoppingList);
       savePlanState(generatedPlan, generatedShoppingList, generatedTotalSpend);
+
+      checkedGroceryItems = new Set();
+      saveCheckedItems(checkedGroceryItems);
 
       currentPage = "meal-plan";
       localStorage.setItem("currentPage", currentPage);
@@ -2244,14 +2280,18 @@ async function initOneSignal() {
 
 initOneSignal()
 
-OneSignal.Notifications.addEventListener('click', (event: any) => {
-  const targetPage = event?.notification?.additionalData?.targetPage
-  if (targetPage === 'profile') {
-    currentPage = 'profile'
-    localStorage.setItem('currentPage', currentPage)
-    render()
-  }
-})
+try {
+  OneSignal.Notifications.addEventListener('click', (event: any) => {
+    const targetPage = event?.notification?.additionalData?.targetPage
+    if (targetPage === 'profile') {
+      currentPage = 'profile'
+      localStorage.setItem('currentPage', currentPage)
+      render()
+    }
+  })
+} catch (err) {
+  console.error('OneSignal addEventListener failed:', err)
+}
 
 render();
 

@@ -51,6 +51,13 @@ const PERISHABLE_SHELF_LIFE_DAYS: Record<number, number> = {
   1093: 7,
 }
 
+const SHELF_STABLE_CATEGORIES = new Set(['Pantry Essentials', 'Frozen Foods'])
+
+export function isShelfStable(ingredientId: number, ingredients: Record<string, Ingredient>): boolean {
+  const category = ingredients[ingredientId.toString()]?.mainCategoryName
+  return category != null && SHELF_STABLE_CATEGORIES.has(category)
+}
+
 function getNeededAmountInPriceUnits(ing: MealIngredient, price: Ingredient, scaleFactor: number): number | null {
   const recipeUnit = ing.amountInfo.unit
   const priceUnit = price.servingUnit
@@ -1011,9 +1018,22 @@ function cheapestPossibleSlotCost(
 
 export function buildPantryFromPlan(
   plan: DayPlan[],
-  ingredients: Record<string, Ingredient>
+  ingredients: Record<string, Ingredient>,
+  carryoverInventory: Record<number, number> = {}
 ) {
   const pantry: Pantry = new Map()
+  for (const [ingredientIdStr, remainingAmount] of Object.entries(carryoverInventory)) {
+    if (remainingAmount <= 0) continue
+    const ingredientId = Number(ingredientIdStr)
+    const price = ingredients[ingredientIdStr]
+    pantry.set(ingredientId, {
+      ingredientId,
+      name: price?.name ?? '',
+      remainingAmount,
+      packagesPurchased: 0,
+      lastPurchaseDayIndex: 0,
+    })
+  }
   plan.forEach((day, dayIndex) => {
     agePerishables(pantry, dayIndex)
     for (const { meal, groupSize } of getAllDishesForDay(day)) {
@@ -1024,6 +1044,16 @@ export function buildPantryFromPlan(
     }
   })
   return pantry
+}
+
+export function extractShelfStableCarryover(pantry: Pantry, ingredients: Record<string, Ingredient>): Record<number, number> {
+  const carryover: Record<number, number> = {}
+  for (const entry of pantry.values()) {
+    if (isShelfStable(entry.ingredientId, ingredients) && entry.remainingAmount > 0) {
+      carryover[entry.ingredientId] = entry.remainingAmount
+    }
+  }
+  return carryover
 }
 
 // Every recipe actually being served in a slot — the shared main dish AND
@@ -1249,6 +1279,7 @@ export function generateShoppingListsByInterval(
 export function generateShoppingList(pantry: Pantry, ingredients: Record<string, Ingredient>): ShoppingListItem[] {
   const list: ShoppingListItem[] = []
   for (const entry of pantry.values()) {
+    if (entry.packagesPurchased <= 0) continue
     const price = ingredients[entry.ingredientId.toString()]
     if (!price) continue
     const costPerPackage = parsePrice(price.formattedPrice)
